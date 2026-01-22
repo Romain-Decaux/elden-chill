@@ -1,5 +1,13 @@
+:root {
+  --bg-color: rgb(31, 31, 31);
+  --active-btn: rgb(222, 222, 200);
+  --hover-btn: rgb(242, 253, 167);
+  --pressed-btn: rgb(252, 112, 77);
+  --disabled-btn: rgb(136, 136, 136);
+}
+
 body {
-  background-color: rgb(31, 31, 31);
+  background-color: var(--bg-color);
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -29,16 +37,41 @@ button:active {
 }
 
 #main-btn {
-  background-color: rgb(222, 222, 200);
+  background-color: var(--active-btn);
 }
 
 #main-btn:hover {
   scale: 1.1;
   cursor: pointer;
-  background-color: rgb(242, 253, 167);
+  background-color: var(--hover-btn);
 }
 
 #main-btn:active {
   scale: 0.9;
   background-color: rgb(252, 112, 77);
+}
+
+.shop {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  label {
+    color: rgb(185, 185, 170);
+  }
+
+  #buy-str {
+    background-color: var(--active-btn);
+  }
+
+  #buy-str:hover {
+    background-color: var(--hover-btn);
+  }
+
+  #buy-str:disabled {
+    background-color: rgb(136, 136, 136);
+  }
 }
