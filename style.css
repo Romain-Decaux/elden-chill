@@ -1,77 +1,152 @@
+/* Conservation de tes variables d'origine */
 :root {
   --bg-color: rgb(31, 31, 31);
   --active-btn: rgb(222, 222, 200);
   --hover-btn: rgb(242, 253, 167);
   --pressed-btn: rgb(252, 112, 77);
   --disabled-btn: rgb(136, 136, 136);
+  --card-bg: rgb(
+    45,
+    45,
+    45
+  ); /* Un peu plus clair que le fond pour le contraste */
 }
 
 body {
   background-color: var(--bg-color);
-  width: 100vw;
-  height: 100vh;
+  color: beige; /* Ta couleur de texte préférée */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
   display: flex;
-  flex: content;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  color: beige;
+  align-items: center;
+  min-height: 100vh;
 }
 
-button {
-  background-color: rgb(166, 166, 166);
+#game-container {
+  width: 90%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--active-btn);
+}
+
+header {
+  border-bottom: 2px solid var(--active-btn);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+/* Style des Runes */
+#currency-panel p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+.risk {
+  color: var(--pressed-btn); /* Utilisation de ton orange pour le danger */
+  font-weight: bold;
+}
+
+/* Grille de statistiques moderne */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background-color: var(--card-bg);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+.stat-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 0.8em;
+  color: var(--active-btn);
+  text-transform: uppercase;
+}
+
+.stat-card p {
+  font-size: 1.4em;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+/* Section Équipement */
+.slots-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.slot {
+  width: 70px;
+  height: 70px;
+  border: 2px dashed var(--disabled-btn);
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 10px;
+  color: var(--disabled-btn);
+}
+
+/* Boutons universels avec tes animations d'origine */
+button {
+  background-color: var(--active-btn);
+  color: var(--bg-color);
   border: none;
-  margin: 10px;
-  padding: 4px 6px;
-  user-select: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
   transition: ease-in-out 0.2s;
+  user-select: none;
 }
 
 button:hover {
   scale: 1.1;
+  background-color: var(--hover-btn);
 }
 
 button:active {
   scale: 0.9;
+  background-color: var(--pressed-btn);
 }
 
-#main-btn {
-  background-color: var(--active-btn);
+button:disabled {
+  background-color: var(--disabled-btn);
+  scale: 1 !important;
+  cursor: not-allowed;
 }
 
-#main-btn:hover {
-  scale: 1.1;
-  cursor: pointer;
-  background-color: var(--hover-btn);
+/* Bouton spécial pour l'expédition */
+#start-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1em;
+  margin-top: 10px;
 }
 
-#main-btn:active {
-  scale: 0.9;
-  background-color: rgb(252, 112, 77);
-}
-
-.shop {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-  margin-bottom: 10px;
-
-  label {
-    color: rgb(185, 185, 170);
-  }
-
-  #buy-str {
-    background-color: var(--active-btn);
-  }
-
-  #buy-str:hover {
-    background-color: var(--hover-btn);
-  }
-
-  #buy-str:disabled {
-    background-color: rgb(136, 136, 136);
-  }
+/* Style du Biome / Log de combat */
+#action-log {
+  background: black;
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+  margin: 15px 0;
+  border: 1px solid var(--active-btn);
 }
