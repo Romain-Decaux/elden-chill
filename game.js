@@ -235,7 +235,6 @@ const nextEncounter = () => {
 const handleCampfireEvent = () => {
   gameState.world.checkpointReached = true;
   const container = document.getElementById("game-container");
-  const banner = document.getElementById("grace-banner");
 
   // Effet visuel immédiat
   container.classList.add("blink-effect");
@@ -249,7 +248,6 @@ const handleCampfireEvent = () => {
   updateUI();
 
   setTimeout(() => {
-    banner.classList.replace("grace-visible", "grace-hidden");
     container.classList.remove("blink-effect");
     ActionLog("Site de grâce touché. Runes sécurisées.");
     nextEncounter();
