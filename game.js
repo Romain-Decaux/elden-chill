@@ -21,7 +21,7 @@ let gameState = {
   inventory: [],
 
   world: {
-    currentBiome: "Nécrolimbe",
+    currentBiome: "necrolimbe",
     unlockedBiomes: ["necrolimbe"],
     progress: 0,
     isExploring: false,
