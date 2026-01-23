@@ -75,13 +75,13 @@ export const MONSTERS = {
     runes: 500,
     isBoss: true,
   },
-  rotten_stray: { name: "Chien Errant Putréfié", hp: 60, atk: 12, runes: 40 },
-  giant_crow: { name: "Corbeau Géant", hp: 120, atk: 18, runes: 85 },
+  rotten_stray: { name: "Chien Errant Putréfié", hp: 70, atk: 18, runes: 80 },
+  giant_crow: { name: "Corbeau Géant", hp: 135, atk: 20, runes: 150 },
   radahn: {
     name: "Vestige de Radahn",
     hp: 500,
     atk: 45,
-    runes: 2500,
+    runes: 3000,
     isBoss: true,
   },
 };

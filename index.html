@@ -75,10 +75,30 @@
           <h3>Inventaire</h3>
           <div id="inventory-grid"></div>
         </div>
-        <div class="danger-zone">
-          <button class="reset-btn" onclick="resetGame()">
-            Réinitialiser la sauvegarde
+        <div class="options-zone">
+          <button id="open-options-btn" onclick="toggleOptions(true)">
+            Options & Infos
           </button>
+        </div>
+
+        <div id="options-modal" class="modal-hidden">
+          <div class="modal-content">
+            <span class="close-modal" onclick="toggleOptions(false)"
+              >&times;</span
+            >
+            <h2>Paramètres du Monde</h2>
+
+            <div id="biome-details">
+              <h3>Codex des Biomes</h3>
+              <div id="biome-stats-list"></div>
+            </div>
+
+            <hr />
+            <h3>Zone de Danger</h3>
+            <button class="reset-btn" onclick="resetGame()">
+              Réinitialiser la Sauvegarde
+            </button>
+          </div>
         </div>
       </section>
 

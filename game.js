@@ -234,37 +234,28 @@ const nextEncounter = () => {
 
 const handleCampfireEvent = () => {
   gameState.world.checkpointReached = true;
-  const overlay = document.getElementById("fade-overlay");
+  const container = document.getElementById("game-container");
   const banner = document.getElementById("grace-banner");
 
-  // 1. Fondu au noir
-  overlay.classList.add("active");
+  // Effet visuel immédiat
+  container.classList.add("blink-effect");
+
+  // Sécurisation instantanée des runes
+  gameState.runes.banked += gameState.runes.carried;
+  gameState.runes.carried = 0;
+  playerCurrentHp = getEffectiveStats().vigor * 10;
+
+  updateHealthBars();
+  updateUI();
 
   setTimeout(() => {
-    // 2. Afficher la bannière
-    banner.classList.remove("grace-hidden");
-    banner.classList.add("grace-visible");
-
-    // Sécurisation des runes
-    gameState.runes.banked += gameState.runes.carried;
-    gameState.runes.carried = 0;
-    playerCurrentHp = getEffectiveStats().vigor * 10;
-
-    updateHealthBars();
-    updateUI();
-    saveGame();
-
-    // 3. Tout retirer après 3 secondes
-    setTimeout(() => {
-      banner.classList.remove("grace-visible");
-      banner.classList.add("grace-hidden");
-      overlay.classList.remove("active");
-
-      ActionLog("Vous reprenez la route...");
-      nextEncounter();
-    }, 3000);
-  }, 1000);
+    banner.classList.replace("grace-visible", "grace-hidden");
+    container.classList.remove("blink-effect");
+    ActionLog("Site de grâce touché. Runes sécurisées.");
+    nextEncounter();
+  }, 1200);
 };
+
 const spawnMonster = (monsterId) => {
   const monster = MONSTERS[monsterId];
   currentEnemy = { ...monster, currentHp: monster.hp };
@@ -323,7 +314,7 @@ const combatLoop = () => {
         setTimeout(combatLoop, 1000);
       }
     }, 500);
-  }, 500);
+  }, 300);
 };
 
 const handleDeath = () => {
@@ -525,6 +516,38 @@ const updateStepper = () => {
   }
 };
 
+const toggleOptions = (show) => {
+  const modal = document.getElementById("options-modal");
+  modal.className = show ? "modal-visible" : "modal-hidden";
+  if (show) updateBiomeStats();
+};
+
+const updateBiomeStats = () => {
+  const list = document.getElementById("biome-stats-list");
+  list.innerHTML = "";
+
+  Object.keys(BIOMES).forEach((id) => {
+    const biome = BIOMES[id];
+    const loots = LOOT_TABLES[id] || [];
+
+    let biomeDiv = document.createElement("div");
+    biomeDiv.className = "biome-stat-entry";
+
+    let lootHtml = loots
+      .map((l) => {
+        const item = ITEMS[l.id];
+        return `<li>${item.name} : <strong>${(l.chance * 100).toFixed(0)}%</strong></li>`;
+      })
+      .join("");
+
+    biomeDiv.innerHTML = `
+      <h4>${biome.name}</h4>
+      <ul>${lootHtml || "<li>Aucun objet répertorié</li>"}</ul>
+    `;
+    list.appendChild(biomeDiv);
+  });
+};
+
 const dev = {
   // Se donner des runes : dev.giveRunes(5000)
   giveRunes: (amount) => {
@@ -565,4 +588,5 @@ window.toggleView = toggleView;
 window.startExploration = startExploration;
 window.equipItem = equipItem;
 window.resetGame = resetGame;
+window.toggleOptions = toggleOptions;
 //window.dev = dev;
