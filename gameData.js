@@ -1,9 +1,9 @@
 export const ITEMS = {
   iron_sword: {
     name: "Épée en Fer",
-    description: "+5 Force <em style='color: grey;'>(+ 1 / Niv)</em>",
+    description: "+5 Force <em style='color: grey;'>(+ 2 / Niv)</em>",
     apply: (stats, itemLevel) => {
-      stats.strength += 5 + itemLevel - 1;
+      stats.strength += 5 + 2 * (itemLevel - 1);
     },
   },
   twin_blade: {
