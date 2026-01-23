@@ -201,7 +201,13 @@ const getEffectiveStats = () => {
 };
 
 const startExploration = (biomeId) => {
+  if (gameState.world.isExploring) {
+    toggleView("biome");
+    return;
+  }
+
   currentCombatSession++;
+  const sessionAtStart = currentCombatSession;
   const biome = BIOMES[biomeId];
   gameState.world.isExploring = true;
   gameState.world.currentBiome = biomeId;
@@ -217,10 +223,12 @@ const startExploration = (biomeId) => {
   updateHealthBars();
   updateStepper();
 
-  nextEncounter();
+  nextEncounter(sessionAtStart);
 };
 
-const nextEncounter = () => {
+const nextEncounter = (sessionId) => {
+  if (sessionId !== currentCombatSession) return;
+
   const biome = BIOMES[gameState.world.currentBiome];
   const midPoint = Math.floor(biome.length / 2);
 
@@ -228,20 +236,21 @@ const nextEncounter = () => {
     gameState.world.progress === midPoint &&
     !gameState.world.checkpointReached
   ) {
-    handleCampfireEvent();
+    handleCampfireEvent(sessionId);
     return;
   }
 
   if (gameState.world.progress >= biome.length) {
-    spawnMonster(biome.boss);
+    spawnMonster(biome.boss, sessionId);
   } else {
     spawnMonster(
       biome.monsters[Math.floor(Math.random() * biome.monsters.length)],
+      sessionId,
     );
   }
 };
 
-const handleCampfireEvent = () => {
+const handleCampfireEvent = (sessionId) => {
   gameState.world.checkpointReached = true;
   const container = document.getElementById("game-container");
 
@@ -259,11 +268,13 @@ const handleCampfireEvent = () => {
   setTimeout(() => {
     container.classList.remove("blink-effect");
     ActionLog("Site de grâce touché. Runes sécurisées.");
-    nextEncounter();
+    nextEncounter(sessionId);
   }, 1200);
 };
 
-const spawnMonster = (monsterId) => {
+const spawnMonster = (monsterId, sessionId) => {
+  if (sessionId !== currentCombatSession) return;
+
   const monster = MONSTERS[monsterId];
   currentEnemy = { ...monster, currentHp: monster.hp };
 
@@ -272,7 +283,7 @@ const spawnMonster = (monsterId) => {
 
   ActionLog(`Un ${currentEnemy.name} apparaît !`);
 
-  setTimeout(combatLoop, 1000);
+  setTimeout(() => combatLoop(sessionId), 500);
 };
 
 const ActionLog = (message) => {
@@ -282,16 +293,17 @@ const ActionLog = (message) => {
   log.prepend(entry);
 };
 
-const combatLoop = () => {
+const combatLoop = (sessionId) => {
   if (!gameState.world.isExploring) {
     return;
   }
 
-  const sessionId = currentCombatSession;
+  if (sessionId !== currentCombatSession || !gameState.world.isExploring) {
+    console.log(`Ancienne session ${sessionId} stoppée.`);
+    return;
+  }
 
   setTimeout(() => {
-    if (sessionId !== currentCombatSession || !gameState.world.isExploring)
-      return;
     const stats = getEffectiveStats();
     //Attaque du joueur
     for (let i = 0; i < stats.attacksPerTurn; i++) {
@@ -309,7 +321,7 @@ const combatLoop = () => {
 
     //vérification de mort ennemi
     if (currentEnemy.currentHp <= 0) {
-      handleVictory();
+      setTimeout(() => handleVictory(sessionId), 500);
       return;
     }
 
@@ -324,10 +336,10 @@ const combatLoop = () => {
       if (playerCurrentHp <= 0) {
         handleDeath();
       } else {
-        setTimeout(combatLoop, 1000);
+        setTimeout(() => combatLoop(sessionId), 500);
       }
-    }, 500);
-  }, 300);
+    }, 800);
+  }, 800);
 };
 
 const handleDeath = () => {
@@ -337,7 +349,7 @@ const handleDeath = () => {
   setTimeout(() => toggleView("camp"), 3000);
 };
 
-const handleVictory = () => {
+const handleVictory = (sessionId) => {
   ActionLog(`Vous avez vaincu ${currentEnemy.name} !`);
   gameState.runes.carried += currentEnemy.runes;
   gameState.world.progress++;
@@ -366,7 +378,7 @@ const handleVictory = () => {
 
     setTimeout(() => toggleView("camp"), 3000);
   } else {
-    setTimeout(nextEncounter, 2000);
+    setTimeout(() => nextEncounter(sessionId), 1000);
   }
   updateUI();
 };
@@ -511,8 +523,36 @@ const showTooltip = (e, item) => {
 
 const moveTooltip = (e) => {
   const tooltip = document.getElementById("tooltip");
-  tooltip.style.left = e.clientX + 15 + "px";
-  tooltip.style.top = e.clientY + 15 + "px";
+
+  // On ne calcule rien si le tooltip est caché (car offsetWidth serait 0)
+  if (tooltip.classList.contains("tooltip-hidden")) return;
+
+  const padding = 15; // Distance entre le curseur et le tooltip
+  let left = e.clientX + padding;
+  let top = e.clientY + padding;
+
+  // On récupère les dimensions réelles du tooltip
+  const tooltipWidth = tooltip.offsetWidth;
+  const tooltipHeight = tooltip.offsetHeight;
+
+  // Vérification du bord droit
+  if (left + tooltipWidth > window.innerWidth) {
+    // Si ça dépasse, on l'affiche à gauche du curseur
+    left = e.clientX - tooltipWidth - padding;
+  }
+
+  // Vérification du bord bas
+  if (top + tooltipHeight > window.innerHeight) {
+    // Si ça dépasse, on le remonte au-dessus du curseur
+    top = e.clientY - tooltipHeight - padding;
+  }
+
+  // Sécurité pour le bord gauche/haut (si l'écran est tout petit)
+  left = Math.max(5, left);
+  top = Math.max(5, top);
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
 };
 
 const hideTooltip = () => {
