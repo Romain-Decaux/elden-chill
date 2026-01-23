@@ -259,3 +259,89 @@ button:disabled {
 #fade-overlay.active {
   opacity: 1;
 }
+#grace-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+  transition: opacity 0.8s ease-in-out;
+}
+
+#grace-banner h1 {
+  font-family: var(--header-font);
+  font-size: 3.5em;
+  color: #f0ad4e; /* Or mat */
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  letter-spacing: 12px;
+  margin: 0;
+}
+
+.grace-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.grace-visible {
+  opacity: 1;
+  visibility: visible;
+}
+#dungeon-stepper-container {
+  margin: 10px 0 20px 0;
+  text-align: center;
+}
+
+#stepper-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+
+#stepper-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--active-btn); /* Ta couleur beige/or */
+  box-shadow: 0 0 10px rgba(222, 222, 200, 0.5);
+  transition: width 0.5s ease;
+}
+
+#stepper-text {
+  font-size: 0.75em;
+  font-family: var(--header-font);
+  color: var(--disabled-btn);
+  margin: 5px 0;
+}
+
+/* Marqueurs spéciaux */
+.marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-color);
+}
+
+.marker-grace {
+  background: #dbee4d; /* Cyan magique pour la grâce */
+  box-shadow: 0 0 8px #deee4d;
+}
+
+.marker-boss {
+  background: var(--pressed-btn); /* Ton orange/rouge */
+  box-shadow: 0 0 8px var(--pressed-btn);
+  clip-path: polygon(
+    50% 0%,
+    100% 50%,
+    50% 100%,
+    0% 50%
+  ); /* Losange pour le boss */
+}

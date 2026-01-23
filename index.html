@@ -84,6 +84,13 @@
 
       <section id="biome-view" style="display: none">
         <h2 id="current-biome-name">Nécrolimbe</h2>
+        <div id="dungeon-stepper-container">
+          <div id="stepper-track">
+            <div id="stepper-fill"></div>
+            <div id="stepper-markers"></div>
+          </div>
+          <p id="stepper-text">Progression : 0 / 10</p>
+        </div>
         <div id="action-log">
           <p>Vous avancez dans la brume...</p>
         </div>
@@ -102,13 +109,16 @@
           </div>
         </div>
         <button class="safe-btn" onclick="toggleView('camp')">
-          Se replier au Feu de Camp
+          Se replier au Camp
         </button>
       </section>
     </div>
 
     <div id="tooltip" class="tooltip-hidden"></div>
     <div id="fade-overlay"></div>
+    <div id="grace-banner" class="grace-hidden">
+      <h1>GRACE RESTAURÉE</h1>
+    </div>
     <script type="module" src="game.js"></script>
   </body>
 </html>

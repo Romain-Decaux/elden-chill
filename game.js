@@ -31,8 +31,8 @@ let gameState = {
 const upgradeCosts = {
   vigor: 10,
   strength: 10,
-  critChance: 25,
-  critDamage: 25,
+  critChance: 150,
+  critDamage: 1500,
 };
 
 const upgradeStat = (statName) => {
@@ -80,6 +80,7 @@ const loadGame = () => {
       alert("Erreur de chargement : sauvegarde corrompue ou format obsolète.");
     }
   }
+  updateStepper();
   updateUI();
 };
 
@@ -205,6 +206,7 @@ const startExploration = (biomeId) => {
   toggleView("biome");
   document.getElementById("current-biome-name").innerText = biome.name;
   updateHealthBars();
+  updateStepper();
 
   nextEncounter();
 };
@@ -232,29 +234,35 @@ const nextEncounter = () => {
 
 const handleCampfireEvent = () => {
   gameState.world.checkpointReached = true;
-  ActionLog("✨ SITES DE GRÂCE DÉCOUVERT !");
   const overlay = document.getElementById("fade-overlay");
+  const banner = document.getElementById("grace-banner");
 
+  // 1. Fondu au noir
   overlay.classList.add("active");
 
   setTimeout(() => {
-    ActionLog("✨ SITE DE GRÂCE DÉCOUVERT !");
-    ActionLog("Vos runes ont été sécurisées.");
+    // 2. Afficher la bannière
+    banner.classList.remove("grace-hidden");
+    banner.classList.add("grace-visible");
 
+    // Sécurisation des runes
     gameState.runes.banked += gameState.runes.carried;
     gameState.runes.carried = 0;
-
     playerCurrentHp = getEffectiveStats().vigor * 10;
+
     updateHealthBars();
     updateUI();
     saveGame();
 
-    // 2. Retirer le fondu après le repos
+    // 3. Tout retirer après 3 secondes
     setTimeout(() => {
+      banner.classList.remove("grace-visible");
+      banner.classList.add("grace-hidden");
       overlay.classList.remove("active");
+
       ActionLog("Vous reprenez la route...");
       nextEncounter();
-    }, 2000);
+    }, 3000);
   }, 1000);
 };
 const spawnMonster = (monsterId) => {
@@ -329,6 +337,8 @@ const handleVictory = () => {
   ActionLog(`Vous avez vaincu ${currentEnemy.name} !`);
   gameState.runes.carried += currentEnemy.runes;
   gameState.world.progress++;
+
+  updateStepper();
 
   if (currentEnemy.isBoss) {
     const currentBiome = BIOMES[gameState.world.currentBiome];
@@ -478,6 +488,40 @@ const decodeSave = (encodedData) => {
   } catch (err) {
     console.error("Erreur de décodage de la sauvegarde :", err);
     return null;
+  }
+};
+
+const updateStepper = () => {
+  const biome = BIOMES[gameState.world.currentBiome];
+  const progress = gameState.world.progress;
+  const total = biome.length;
+
+  // 1. Mise à jour de la barre et du texte
+  const percent = (progress / total) * 100;
+  document.getElementById("stepper-fill").style.width =
+    `${Math.min(100, percent)}%`;
+  document.getElementById("stepper-text").innerText =
+    `Ennemis vaincus : ${progress} / ${total}`;
+
+  // 2. Génération des marqueurs (seulement au début de l'exploration)
+  const markersContainer = document.getElementById("stepper-markers");
+  if (progress === 0) {
+    markersContainer.innerHTML = "";
+
+    // Marqueur de Grâce (Milieu)
+    const midPoint = Math.floor(total / 2);
+    const graceMarker = document.createElement("div");
+    graceMarker.className = "marker marker-grace";
+    graceMarker.style.left = `${(midPoint / total) * 100}%`;
+    graceMarker.title = "Site de Grâce";
+    markersContainer.appendChild(graceMarker);
+
+    // Marqueur de Boss (Fin)
+    const bossMarker = document.createElement("div");
+    bossMarker.className = "marker marker-boss";
+    bossMarker.style.left = "100%";
+    bossMarker.title = "Boss de zone";
+    markersContainer.appendChild(bossMarker);
   }
 };
 
