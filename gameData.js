@@ -1,13 +1,21 @@
+export const ITEM_TYPES = {
+  WEAPON: "Arme",
+  ARMOR: "Armure",
+  ACCESSORY: "Accessoire",
+};
+
 export const ITEMS = {
   iron_sword: {
     name: "Épée en Fer",
     description: "+5 Force <em style='color: grey;'>(+ 2 / Niv)</em>",
+    type: ITEM_TYPES.WEAPON,
     apply: (stats, itemLevel) => {
       stats.strength += 5 + 2 * (itemLevel - 1);
     },
   },
   crimson_amber: {
     name: "Médaillon d'Ambre",
+    type: ITEM_TYPES.ACCESSORY,
     description:
       "Vigueur +10% <em style='color: grey;'>( plus 5% par Niv)</em>",
     apply: (stats, itemLevel) => {
@@ -16,6 +24,7 @@ export const ITEMS = {
   },
   great_shield: {
     name: "Pavois du Chevalier",
+    type: ITEM_TYPES.ARMOR,
     description:
       "Vigueur +30% mais -50% Dextérité. Ajoute 15% de votre Vigueur à votre Force. <em style='color: grey;'>(+3% / Niv)</em>",
     apply: (stats, itemLevel) => {
@@ -29,6 +38,7 @@ export const ITEMS = {
   },
   keen_dagger: {
     name: "Dague Afilée",
+    type: ITEM_TYPES.WEAPON,
     description:
       "+10% Chance Crit. <em style='color: grey;'>(+2% par Niv)</em>",
     apply: (stats, itemLevel) => {
@@ -37,6 +47,7 @@ export const ITEMS = {
   },
   scavenger_mask: {
     name: "Masque de Pillard",
+    type: ITEM_TYPES.ACCESSORY,
     description:
       "Dégâts Crit x2 mais Vigueur -40% <em style='color: grey;'>(+4% Vigueur par Niv)</em>",
     apply: (stats, itemLevel) => {
@@ -46,6 +57,7 @@ export const ITEMS = {
   },
   scholars_ring: {
     name: "Anneau d'Érudit",
+    type: ITEM_TYPES.ACCESSORY,
     description: "+5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
     apply: (stats, itemLevel) => {
       stats.intelligence += 5 + 2 * (itemLevel - 1);
@@ -54,6 +66,7 @@ export const ITEMS = {
 
   twin_blade: {
     name: "Lames Jumelles",
+    type: ITEM_TYPES.WEAPON,
     description:
       "Attaque 2 fois, mais réduit la Force de 60%. <em style='color: grey;'>(Malus réduit de 3% par Niv)</em>",
     apply: (stats, itemLevel) => {
@@ -65,6 +78,7 @@ export const ITEMS = {
 
   leather_boots: {
     name: "Bottes de Cuir",
+    type: ITEM_TYPES.ARMOR,
     description: "+5 Dextérité <em style='color: grey;'>(+2 / Niv)</em>",
     apply: (stats, itemLevel) => {
       stats.dexterity += 5 + 2 * (itemLevel - 1);

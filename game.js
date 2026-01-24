@@ -1,6 +1,6 @@
 // Main entry point for the game
 import { BIOMES, ITEMS } from "./gameData.js";
-import { gameState } from "./state.js";
+import { gameState, runtimeState } from "./state.js";
 import { loadGame, saveGame } from "./save.js";
 import {
   equipItem,
@@ -59,6 +59,17 @@ const dev = {
     console.log("🔧 DEV : Tous les biomes sont débloqués.");
     updateUI();
     saveGame();
+  },
+  forceResetToCamp: () => {
+    console.log("🔧 DEV : Forcing reset to camp view...");
+    // Invalidate any active combat loops
+    runtimeState.currentCombatSession++;
+    // Reset exploration state
+    gameState.world.isExploring = false;
+    gameState.runes.carried = 0;
+    // Switch view and save
+    toggleView("camp");
+    console.log("Reset complete. You are back at the camp.");
   },
 };
 

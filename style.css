@@ -569,3 +569,51 @@ button:disabled {
   font-weight: bold;
   text-shadow: skyblue;
 }
+
+.slot-wrapper {
+  text-align: center;
+}
+
+.slot-label {
+  display: block;
+  font-size: 0.8em;
+  color: var(--disabled-btn);
+  margin-bottom: 5px;
+  font-family: var(--header-font);
+}
+
+.item-type-conflict {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+:root {
+  --type-weapon-color: #d9534f;
+  --type-armor-color: #5bc0de;
+  --type-accessory-color: #56f04e;
+}
+
+/* Style for Typed Equipment Slots */
+#slot-weapon {
+  border-color: var(--type-weapon-color);
+  border-style: solid;
+}
+#slot-armor {
+  border-color: var(--type-armor-color);
+  border-style: solid;
+}
+#slot-accessory {
+  border-color: var(--type-accessory-color);
+  border-style: solid;
+}
+
+/* Style for Typed Inventory Items */
+.inventory-item.item-type-weapon {
+  border-left: 5px solid var(--type-weapon-color);
+}
+.inventory-item.item-type-armor {
+  border-left: 5px solid var(--type-armor-color);
+}
+.inventory-item.item-type-accessory {
+  border-left: 5px solid var(--type-accessory-color);
+}

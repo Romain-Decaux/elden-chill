@@ -1,6 +1,7 @@
 import { gameState } from "./state.js";
 import { saveGame, SAVE_NAME } from "./save.js";
 import { updateUI } from "./ui.js";
+import { ITEM_TYPES, ITEMS } from "./gameData.js";
 
 const upgradeCosts = {
   vigor: 10,
@@ -51,25 +52,37 @@ export const upgradeStat = (statName) => {
 };
 
 export const equipItem = (itemId) => {
-  const alreadyEquippedIndex = gameState.equipped.indexOf(itemId);
+  const itemData = ITEMS[itemId];
+  if (!itemData) return;
 
-  if (alreadyEquippedIndex !== -1) {
-    gameState.equipped[alreadyEquippedIndex] = null;
-  } else {
-    const emptySlot = gameState.equipped.indexOf(null);
-    if (emptySlot !== -1) {
-      gameState.equipped[emptySlot] = itemId; // On stocke l'ID
-    } else {
-      alert("Slots d'équipement pleins !");
-    }
+  // Map the item type from the French string to the English key used in the state
+  const typeToSlotKey = {
+    "Arme": "weapon",
+    "Armure": "armor",
+    "Accessoire": "accessory",
+  };
+  const slotKey = typeToSlotKey[itemData.type];
+
+  if (!slotKey) {
+    console.error(`Type d'objet inconnu: ${itemData.type}`);
+    return;
   }
+
+  // If the item is already in its slot, unequip it. Otherwise, equip it.
+  if (gameState.equipped[slotKey] === itemId) {
+    gameState.equipped[slotKey] = null;
+  } else {
+    gameState.equipped[slotKey] = itemId;
+  }
+
+  saveGame();
   updateUI();
 };
 
 export const resetGame = () => {
   if (
     confirm(
-      "Êtes-vous sûr de vouloir tout effacer ? Votre progression sera perdue à jamais."
+      "Êtes-vous sûr de vouloir tout effacer ? Votre progression sera perdue à jamais.",
     )
   ) {
     localStorage.removeItem(SAVE_NAME);

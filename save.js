@@ -35,6 +35,14 @@ export const loadGame = () => {
   if (savedData) {
     const decrypted = decodeSave(savedData);
     if (decrypted) {
+      // Migration check for old save files
+      if (decrypted.equipped && Array.isArray(decrypted.equipped)) {
+        console.warn(
+          "Ancienne structure de sauvegarde détectée. Les objets équipés ont été réinitialisés."
+        );
+        // Reset to the new object structure to prevent crash
+        decrypted.equipped = { weapon: null, armor: null, accessory: null };
+      }
       setGameState(decrypted);
     }
   }
