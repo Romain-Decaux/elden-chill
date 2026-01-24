@@ -83,8 +83,9 @@ const updateStatDisplay = () => {
 };
 
 const updateEquipmentDisplay = () => {
-  gameState.equipped.forEach((itemId, index) => {
-    const slot = document.getElementById(`slot-${index}`);
+  Object.keys(gameState.equipped).forEach((slotType) => {
+    const itemId = gameState.equipped[slotType];
+    const slot = document.getElementById(`slot-${slotType}`);
     if (itemId) {
       const itemInInv = gameState.inventory.find((i) => i.id === itemId);
       if (itemInInv) {
@@ -97,6 +98,8 @@ const updateEquipmentDisplay = () => {
     }
     slot.innerText = "Vide";
     slot.onmouseenter = null;
+    slot.onmousemove = null;
+    slot.onmouseleave = null;
   });
 };
 
@@ -125,9 +128,30 @@ const updateInventoryDisplay = () => {
     return;
   }
 
+  const typeToSlotKey = {
+    "Arme": "weapon",
+    "Armure": "armor",
+    "Accessoire": "accessory",
+  };
+
   gameState.inventory.forEach((item) => {
     const itemDiv = document.createElement("div");
     itemDiv.className = "inventory-item";
+
+    const itemData = ITEMS[item.id];
+    const slotKey = typeToSlotKey[itemData.type];
+
+    // Add class for the item's type for coloring
+    if (slotKey) {
+      itemDiv.classList.add(`item-type-${slotKey}`);
+    }
+
+    // Add a class if there's a type conflict
+    const currentlyEquippedId = gameState.equipped[slotKey];
+    if (currentlyEquippedId && currentlyEquippedId !== item.id) {
+      itemDiv.classList.add('item-type-conflict');
+    }
+
     const progressText =
       item.level >= 10 ? "MAX" : `(${item.count}/${item.level})`;
     itemDiv.innerHTML = `<strong>${item.name}</strong><br>Niv.${item.level}<br>${progressText}`;

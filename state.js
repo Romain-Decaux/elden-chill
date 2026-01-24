@@ -14,7 +14,11 @@ export let gameState = {
     critChance: 0.05,
     critDamage: 1.5,
   },
-  equipped: [null, null, null],
+  equipped: {
+    weapon: null,
+    armor: null,
+    accessory: null,
+  },
   inventory: [],
   world: {
     currentBiome: "necrolimbe",
@@ -45,7 +49,7 @@ export function setGameState(newState) {
 export function getEffectiveStats() {
   let effStats = { ...gameState.stats, attacksPerTurn: 1 };
 
-  gameState.equipped.forEach((itemId) => {
+  Object.values(gameState.equipped).forEach((itemId) => {
     if (itemId) {
       const itemInInv = gameState.inventory.find((i) => i.id === itemId);
       if (itemInInv && ITEMS[itemId]) {
