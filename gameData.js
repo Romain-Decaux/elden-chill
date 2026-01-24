@@ -6,19 +6,6 @@ export const ITEMS = {
       stats.strength += 5 + 2 * (itemLevel - 1);
     },
   },
-  twin_blade: {
-    name: "Lames Jumelles",
-    description:
-      "Attaque 2 fois, -50% Force.\n<em style='color: grey;'>Réduis le malus de 5% par niveau (max 40%)</em>",
-    apply: (stats, itemLevel) => {
-      stats.attacksPerTurn = 2;
-      if (0.05 * (itemLevel - 1) >= 0.4) {
-        stats.strength *= 0.9;
-      } else {
-        stats.strength *= 0.5 + 0.05 * (itemLevel - 1);
-      }
-    },
-  },
   crimson_amber: {
     name: "Médaillon d'Ambre",
     description:
@@ -28,12 +15,16 @@ export const ITEMS = {
     },
   },
   great_shield: {
-    name: "Grand Bouclier",
+    name: "Pavois du Chevalier",
     description:
-      "Vigueur x1.5 mais -20% Force. <em style='color: grey;'>(+0.05x Force par Niv)</em>",
+      "Vigueur x1.3 mais -50% Dextérité. Ajoute 15% de votre Vigueur à votre Force. <em style='color: grey;'>(+3% / Niv)</em>",
     apply: (stats, itemLevel) => {
-      stats.vigor = Math.floor(stats.vigor * 1.5);
-      stats.strength *= 0.8 + 0.05 * (itemLevel - 1);
+      stats.vigor = Math.floor(stats.vigor * 1.3);
+
+      stats.dexterity = Math.floor(stats.dexterity * 0.5);
+
+      const conversionRatio = 0.15 + 0.03 * (itemLevel - 1);
+      stats.strength += Math.floor(stats.vigor * conversionRatio);
     },
   },
   keen_dagger: {
@@ -53,19 +44,48 @@ export const ITEMS = {
       stats.vigor = Math.floor(stats.vigor * (0.4 + 0.1 * (itemLevel - 1)));
     },
   },
+  scholars_ring: {
+    name: "Anneau d'Érudit",
+    description: "+5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
+    apply: (stats, itemLevel) => {
+      stats.intelligence += 5 + 2 * (itemLevel - 1);
+    },
+  },
+
+  twin_blade: {
+    name: "Lames Jumelles",
+    description:
+      "Attaque 2 fois, mais réduit la Force de 60%. <em style='color: grey;'>(Malus réduit de 3% par Niv)</em>",
+    apply: (stats, itemLevel) => {
+      stats.attacksPerTurn = 2;
+      const penaltyReduction = 0.03 * (itemLevel - 1);
+      stats.strength *= 0.4 + penaltyReduction;
+    },
+  },
+
+  leather_boots: {
+    name: "Bottes de Cuir",
+    description: "+5 Dextérité <em style='color: grey;'>(+2 / Niv)</em>",
+    apply: (stats, itemLevel) => {
+      stats.dexterity += 5 + 2 * (itemLevel - 1);
+    },
+  },
 };
 
 export const LOOT_TABLES = {
   necrolimbe: [
     { id: "iron_sword", chance: 0.6 },
     { id: "crimson_amber", chance: 0.3 },
-    { id: "twin_blade", chance: 0.1 },
+    { id: "scholars_ring", chance: 0.1 },
   ],
   caelid: [
-    { id: "twin_blade", chance: 0.15 },
-    { id: "great_shield", chance: 0.3 },
-    { id: "keen_dagger", chance: 0.5 },
-    { id: "scavenger_mask", chance: 0.05 },
+    { id: "great_shield", chance: 0.1 },
+    { id: "keen_dagger", chance: 0.6 },
+    { id: "leather_boots", chance: 0.3 },
+  ],
+  liurnia: [
+    { id: "twin_blade", chance: 0.2 },
+    { id: "scavenger_mask", chance: 0.8 },
   ],
 };
 
@@ -88,6 +108,15 @@ export const MONSTERS = {
     runes: 3000,
     isBoss: true,
   },
+  clayman: { name: "Homme d'Argile", hp: 250, atk: 35, runes: 400 },
+  sorcerer: { name: "Sorcier de Raya Lucaria", hp: 180, atk: 55, runes: 550 },
+  rennala: {
+    name: "Rennala, Reine de la Pleine Lune",
+    hp: 1200,
+    atk: 80,
+    runes: 15000,
+    isBoss: true,
+  },
 };
 export const BIOMES = {
   necrolimbe: {
@@ -102,6 +131,13 @@ export const BIOMES = {
     monsters: ["rotten_stray", "giant_crow"],
     boss: "radahn",
     length: 15,
+    unlocks: "liurnia",
+  },
+  liurnia: {
+    name: "Liurnia des Lacs",
+    monsters: ["clayman", "sorcerer"],
+    boss: "rennala",
+    length: 18,
     unlocks: null,
   },
 };

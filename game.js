@@ -640,39 +640,67 @@ const showTooltip = (e, item) => {
   const tooltip = document.getElementById("tooltip");
   const itemData = ITEMS[item.id];
 
-  // Simulation pour calculer le bonus réel
+  // Base de référence
   let base = {
     vigor: 10,
     strength: 10,
+    dexterity: 10,
+    intelligence: 10,
     critChance: 0.05,
     critDamage: 1.5,
     attacksPerTurn: 1,
   };
   let modified = { ...base };
-  itemData.apply(modified, item.level); // On applique le niveau de l'objet
+  itemData.apply(modified, item.level);
 
-  // Génération du texte de stats (comparaison)
   let statBonus = "";
-  if (modified.strength !== base.strength) {
-    const diff = modified.strength - base.strength;
-    statBonus += `<br><span class="tooltip-stat">${diff > 0 ? "+" : ""}${diff.toFixed(1)} Force</span>`;
+  const statsToCompare = ["strength", "vigor", "dexterity", "intelligence"];
+
+  // On détecte si l'objet est censé être multiplicatif via sa description
+  const isMultiplicative =
+    itemData.description.includes("%") || itemData.description.includes("x");
+
+  statsToCompare.forEach((s) => {
+    const diff = modified[s] - base[s];
+    if (diff !== 0) {
+      let displayValue = "";
+      const isPos = diff > 0;
+      const color = isPos ? "#4dff4d" : "#ff4d4d";
+
+      if (isMultiplicative) {
+        // Affichage en % (ex: -15%)
+        const percent = (modified[s] / base[s] - 1) * 100;
+        displayValue = `${isPos ? "+" : ""}${percent.toFixed(0)}%`;
+      } else {
+        // Affichage Flat (ex: +5)
+        displayValue = `${isPos ? "+" : ""}${diff.toFixed(0)}`;
+      }
+
+      statBonus += `<br><span class="tooltip-stat" style="color:${color}">
+        ${displayValue} ${s.charAt(0).toUpperCase() + s.slice(1)}
+      </span>`;
+    }
+  });
+
+  // Cas particuliers : Critiques et Attaques
+  if (modified.critChance !== base.critChance) {
+    const cDiff = (modified.critChance - base.critChance) * 100;
+    statBonus += `<br><span style="color:#4dff4d">+${cDiff.toFixed(0)}% Crit</span>`;
   }
-  if (modified.vigor !== base.vigor) {
-    const ratio = (modified.vigor / base.vigor).toFixed(1);
-    statBonus += `<br><span class="tooltip-stat">x${ratio} Vigueur</span>`;
+  if (modified.attacksPerTurn > 1) {
+    statBonus += `<br><span style="color:#4dff4d">+${modified.attacksPerTurn - 1} Attaque(s)</span>`;
   }
 
   tooltip.innerHTML = `
     <strong style="color:var(--active-btn)">${itemData.name} (Niv.${item.level})</strong><br>
     <small style="font-style:italic; color:#aaa;">${itemData.description}</small>
     <hr style="border:0; border-top:1px solid #444; margin:5px 0;">
-    <strong>Bonus actuel :</strong>${statBonus}
+    <strong>Effet actuel :</strong>${statBonus}
   `;
 
   tooltip.classList.remove("tooltip-hidden");
   moveTooltip(e);
 };
-
 const showStatTooltip = (e, statType) => {
   const tooltip = document.getElementById("tooltip");
 
