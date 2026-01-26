@@ -1,4 +1,4 @@
-import { runtimeState } from "./state.js";
+import { gameState, getHealth, runtimeState } from "./state.js";
 
 export const ITEM_TYPES = {
   WEAPON: "Arme",
@@ -103,6 +103,16 @@ export const ITEMS = {
     },
     passiveStatus: "THORNS",
   },
+  burn_sword: {
+    name: "Épée Brûlante",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Attaques avec une chance d'infliger Brûlure. +8 Force <em style='color: grey;'>(+4 / Niv)</em>",
+    apply: (stats, itemLevel) => {
+      stats.strength += 8 + 4 * (itemLevel - 1);
+    },
+    onHitEffect: { id: "BURN", duration: 2, chance: 0.3 },
+  },
 };
 
 export const LOOT_TABLES = {
@@ -131,8 +141,20 @@ export const MONSTERS = {
     onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
   },
   wolf: { name: "Loup Affamé", hp: 15, atk: 8, runes: 10 },
-  wolf_2: { name: "Couple de Loups Affamés", hp: 15, atk: 16, runes: 10, linkedFight:"wolf" },
-  wolf_3: { name: "Meute de Loups Affamés", hp: 15, atk: 24, runes: 10, linkedFight:"wolf_2" },
+  wolf_2: {
+    name: "Couple de Loups Affamés",
+    hp: 15,
+    atk: 16,
+    runes: 10,
+    linkedFight: "wolf",
+  },
+  wolf_3: {
+    name: "Meute de Loups Affamés",
+    hp: 15,
+    atk: 24,
+    runes: 10,
+    linkedFight: "wolf_2",
+  },
   margit: {
     name: "Margit le Déchu",
     hp: 200,
@@ -226,9 +248,13 @@ export const STATUS_EFFECTS = {
     id: "POISON",
     name: "Poison",
     color: "#2ecc71",
-    onTurnStart: (entity, isPlayer) => {
-      const damage = Math.max(1, Math.floor(entity.maxHp * 0.03));
-      entity.currentHp -= damage;
+    onTurnStart: (entity) => {
+      const damage = Math.max(1, Math.floor((entity.maxHp || 100) * 0.03));
+      if (entity.hasOwnProperty("currentHp")) {
+        entity.currentHp -= damage;
+      } else {
+        entity.hp -= damage;
+      }
       return {
         damage,
         message: `${entity.name} subit ${damage} dégâts de poison !`,
@@ -244,7 +270,7 @@ export const STATUS_EFFECTS = {
       if (attacker.name && attacker.name === "player") {
         runtimeState.playerCurrentHp -= reflectDamage;
       } else {
-        attacker.currentHp -= reflectDamage;
+        attacker.hp -= reflectDamage;
       }
 
       return {
@@ -282,11 +308,39 @@ export const STATUS_EFFECTS = {
     name: "Putréfaction",
     color: "#922b21",
     onTurnStart: (entity) => {
-      const damage = Math.max(2, Math.floor(entity.maxHp * 0.05));
-      entity.currentHp -= damage;
+      const damage = Math.max(2, Math.floor((entity.maxHp || 100) * 0.05));
+      if (entity.hasOwnProperty("currentHp")) {
+        entity.currentHp -= damage;
+      } else {
+        entity.hp -= damage;
+      }
       return {
         damage,
         message: `${entity.name} est rongé par la putréfaction (-${damage} PV) !`,
+      };
+    },
+  },
+  BURN: {
+    id: "BURN",
+    name: "Brûlure",
+    color: "#e74c3c",
+    onTurnStart: (entity) => {
+      const max = entity.maxHp || entity.hp || 100;
+      let damage = 0;
+      if (entity.hasOwnProperty("currentHp")) {
+        const maxHealth = getHealth(gameState.stats.vigor);
+        damage = Math.min(
+          Math.floor(maxHealth * 0.03),
+          Math.floor((maxHealth - entity.currentHp) * 0.1),
+        );
+        entity.currentHp -= damage;
+      } else {
+        damage = Math.max(1, Math.floor((max * 0.1) / 2));
+        entity.hp -= damage;
+      }
+      return {
+        damage,
+        message: `${entity.name} brûle ! (-${damage} PV)`,
       };
     },
   },

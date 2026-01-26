@@ -5,7 +5,12 @@ import {
   MONSTERS,
   STATUS_EFFECTS,
 } from "./gameData.js";
-import { gameState, getEffectiveStats, runtimeState, getHealth } from "./state.js";
+import {
+  gameState,
+  getEffectiveStats,
+  runtimeState,
+  getHealth,
+} from "./state.js";
 import { saveGame } from "./save.js";
 import {
   ActionLog,
@@ -80,16 +85,14 @@ const handleVictory = (sessionId) => {
 
   let monster = runtimeState.currentEnemy;
   console.log(monster);
-  while (monster.linkedFight != null){
+  while (monster.linkedFight != null) {
     monster = MONSTERS[monster.linkedFight];
     console.log("dernier monstre trouvé :", monster);
-  } 
-  
+  }
+
   ActionLog(
-    `Vous avez vaincu ${
-      monster.name
-    } ! (+${formatNumber(totalRunes)} runes)`,
-    );
+    `Vous avez vaincu ${monster.name} ! (+${formatNumber(totalRunes)} runes)`,
+  );
 
   const enemy = runtimeState.currentEnemy;
 
@@ -113,14 +116,14 @@ const handleVictory = (sessionId) => {
   }
 
   gameState.ennemyEffects = [];
-  
-  if(runtimeState.currentEnemy.linkedFight) {
+
+  if (runtimeState.currentEnemy.linkedFight) {
     const nextMonster = MONSTERS[runtimeState.currentEnemy.linkedFight];
     ActionLog(` Il vous reste encore à vaincre ${nextMonster.name} !`);
     spawnMonster(runtimeState.currentEnemy.linkedFight, sessionId);
     updateHealthBars();
     return;
-  };
+  }
   gameState.world.progress++;
   updateStepper();
 
@@ -169,7 +172,7 @@ const combatLoop = (sessionId) => {
   if (sessionId !== runtimeState.currentCombatSession) return;
 
   const playerObj = {
-    name: "player",
+    name: "Vôtre héros",
     currentHp: runtimeState.playerCurrentHp,
     maxHp: getEffectiveStats().vigor * 10,
   };
@@ -195,7 +198,7 @@ const combatLoop = (sessionId) => {
         if (isCrit) {
           damage *= stats.critDamage;
         }
-        runtimeState.currentEnemy.currentHp -= Math.floor(damage);
+        runtimeState.currentEnemy.hp -= Math.floor(damage);
         updateHealthBars();
         const message = `Vous infligez ${formatNumber(
           Math.floor(damage),
@@ -215,10 +218,24 @@ const combatLoop = (sessionId) => {
             }
           }
         });
+
+        Object.values(gameState.equipped).forEach((itemId) => {
+          const item = ITEMS[itemId];
+          if (item && item.onHitEffect) {
+            const { id, duration, chance } = item.onHitEffect;
+            if (Math.random() < chance) {
+              applyEffect(gameState.ennemyEffects, id, duration);
+              ActionLog(
+                `Vous appliquez ${duration} ${STATUS_EFFECTS[id].name} à l'ennemi !`,
+                "log-warning",
+              );
+            }
+          }
+        });
       }
     }
 
-    if (runtimeState.currentEnemy.currentHp <= 0) {
+    if (runtimeState.currentEnemy.hp <= 0) {
       setTimeout(() => handleVictory(sessionId), 500);
       return;
     }
@@ -235,6 +252,20 @@ const combatLoop = (sessionId) => {
         gameState.ennemyEffects,
       );
 
+      if (enemyStatus.logMessages.length > 0) {
+        setTimeout(() => {
+          enemyStatus.logMessages.forEach((msg) =>
+            ActionLog(msg, "log-status"),
+          );
+          updateHealthBars();
+        }, 500);
+      }
+
+      if (runtimeState.currentEnemy.hp <= 0) {
+        setTimeout(() => handleVictory(sessionId), 500);
+        return;
+      }
+
       if (!enemyStatus.skipTurn) {
         const eff = getEffectiveStats();
         const dodgeChance = Math.min(0.5, eff.dexterity / 500);
@@ -245,18 +276,18 @@ const combatLoop = (sessionId) => {
           return;
         }
 
-      runtimeState.playerCurrentHp -= runtimeState.currentEnemy.atk;
-      updateHealthBars();
+        runtimeState.playerCurrentHp -= runtimeState.currentEnemy.atk;
+        updateHealthBars();
 
-      if (runtimeState.currentEnemy.atk > getHealth(eff.vigor) * 0.15) {
-        triggerShake();
-      }
+        if (runtimeState.currentEnemy.atk > getHealth(eff.vigor) * 0.15) {
+          triggerShake();
+        }
 
-      ActionLog(
-        `${runtimeState.currentEnemy.name} frappe ! -${formatNumber(
-          runtimeState.currentEnemy.atk,
-        )} PV`,
-      );
+        ActionLog(
+          `${runtimeState.currentEnemy.name} frappe ! -${formatNumber(
+            runtimeState.currentEnemy.atk,
+          )} PV`,
+        );
         gameState.playerEffects.forEach((eff) => {
           const effectData = STATUS_EFFECTS[eff.id];
           if (effectData.onBeingHit) {
@@ -270,7 +301,7 @@ const combatLoop = (sessionId) => {
             }
           }
         });
-        if (runtimeState.currentEnemy.currentHp <= 0) {
+        if (runtimeState.currentEnemy.hp <= 0) {
           handleVictory(sessionId);
           return;
         }
@@ -307,7 +338,8 @@ const spawnMonster = (monsterId, sessionId) => {
   const multiplier = Math.pow(1.25, runtimeState.currentLoopCount);
   runtimeState.currentEnemy = {
     ...monster,
-    currentHp: Math.floor(monster.hp * multiplier),
+    maxHp: Math.floor(monster.hp * multiplier),
+    hp: Math.floor(monster.hp * multiplier),
     atk: Math.floor(monster.atk * multiplier),
     runes: Math.floor(monster.runes * multiplier),
     hp: Math.floor(monster.hp * multiplier),
