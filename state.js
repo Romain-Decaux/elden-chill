@@ -38,12 +38,21 @@ export const runtimeState = {
 };
 
 export function setGameState(newState) {
-  gameState = {
-    ...gameState,
-    ...newState,
-    stats: { ...gameState.stats, ...newState.stats },
-    world: { ...gameState.world, ...newState.world },
-  };
+  if (newState.runes) Object.assign(gameState.runes, newState.runes);
+  if (newState.stats) Object.assign(gameState.stats, newState.stats);
+  if (newState.equipped) Object.assign(gameState.equipped, newState.equipped);
+
+  if (newState.world) {
+    Object.assign(gameState.world, newState.world);
+    if (
+      !gameState.world.unlockedBiomes ||
+      gameState.world.unlockedBiomes.length === 0
+    ) {
+      gameState.world.unlockedBiomes = ["necrolimbe"];
+    }
+  }
+
+  gameState.inventory = newState.inventory || [];
 }
 
 export function getEffectiveStats() {

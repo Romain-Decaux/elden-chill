@@ -35,15 +35,26 @@ export const loadGame = () => {
   if (savedData) {
     const decrypted = decodeSave(savedData);
     if (decrypted) {
-      // Migration check for old save files
+      // 1. Initialisation des objets s'ils sont absents pour éviter les plantages
+      decrypted.world = decrypted.world || { unlockedBiomes: ["necrolimbe"] };
+      decrypted.runes = decrypted.runes || { banked: 0, carried: 0 };
+      decrypted.inventory = decrypted.inventory || [];
+
+      // 2. Migration structurelle (ton code existant)
       if (decrypted.equipped && Array.isArray(decrypted.equipped)) {
         console.warn(
-          "Ancienne structure de sauvegarde détectée. Les objets équipés ont été réinitialisés."
+          "Ancienne structure détectée, réinitialisation de l'équipement.",
         );
-        // Reset to the new object structure to prevent crash
         decrypted.equipped = { weapon: null, armor: null, accessory: null };
       }
+
+      // 3. Reset forcé de l'état d'expédition pour éviter le soft-lock
+      decrypted.world.isExploring = false;
+      decrypted.runes.carried = 0;
+
+      // 4. On applique l'état et on SAUVEGARDE tout de suite sur le disque
       setGameState(decrypted);
+      saveGame(); // Force l'écriture de "isExploring: false" dans le localStorage
     }
   }
   updateUI();

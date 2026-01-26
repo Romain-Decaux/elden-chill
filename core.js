@@ -31,8 +31,8 @@ const dropItem = (itemId) => {
         100 * BIOMES[gameState.world.currentBiome].length;
       ActionLog(
         `Vous recevez ${formatNumber(
-          100 * BIOMES[gameState.world.currentBiome].length
-        )} runes en compensation.`
+          100 * BIOMES[gameState.world.currentBiome].length,
+        )} runes en compensation.`,
       );
       saveGame();
     }
@@ -42,11 +42,11 @@ const dropItem = (itemId) => {
       inventoryItem.level++;
       inventoryItem.count = 0;
       ActionLog(
-        `${itemTemplate.name} monte au niveau ${inventoryItem.level} !`
+        `${itemTemplate.name} monte au niveau ${inventoryItem.level} !`,
       );
     } else {
       ActionLog(
-        `Copie de ${itemTemplate.name} trouvée (${inventoryItem.count}/${inventoryItem.level})`
+        `Copie de ${itemTemplate.name} trouvée (${inventoryItem.count}/${inventoryItem.level})`,
       );
     }
   }
@@ -69,7 +69,7 @@ const handleVictory = (sessionId) => {
   ActionLog(
     `Vous avez vaincu ${
       runtimeState.currentEnemy.name
-    } ! (+${formatNumber(totalRunes)} runes)`
+    } ! (+${formatNumber(totalRunes)} runes)`,
   );
   gameState.runes.carried += totalRunes;
   gameState.world.progress++;
@@ -86,8 +86,10 @@ const handleVictory = (sessionId) => {
     ) {
       gameState.world.unlockedBiomes.push(currentBiome.unlocks);
       ActionLog(
-        `Nouvelle zone découverte : ${BIOMES[currentBiome.unlocks].name} !`
+        `Nouvelle zone découverte : ${BIOMES[currentBiome.unlocks].name} !`,
       );
+      saveGame();
+      updateUI();
     }
 
     const loot = LOOT_TABLES[gameState.world.currentBiome];
@@ -128,7 +130,7 @@ const combatLoop = (sessionId) => {
       runtimeState.currentEnemy.currentHp -= Math.floor(damage);
       updateHealthBars();
       const message = `Vous infligez ${formatNumber(
-        Math.floor(damage)
+        Math.floor(damage),
       )} dégâts ${isCrit ? "CRITIQUES !" : "."}`;
       ActionLog(message, isCrit ? "log-crit" : "");
     }
@@ -163,8 +165,8 @@ const combatLoop = (sessionId) => {
 
       ActionLog(
         `${runtimeState.currentEnemy.name} frappe ! -${formatNumber(
-          runtimeState.currentEnemy.atk
-        )} PV`
+          runtimeState.currentEnemy.atk,
+        )} PV`,
       );
 
       if (runtimeState.playerCurrentHp <= 0) {
@@ -211,6 +213,7 @@ const handleCampfireEvent = (sessionId) => {
 
   updateHealthBars();
   updateUI();
+  saveGame();
 
   setTimeout(() => {
     container.classList.remove("blink-effect");
@@ -238,7 +241,7 @@ export function nextEncounter(sessionId) {
   } else {
     spawnMonster(
       biome.monsters[Math.floor(Math.random() * biome.monsters.length)],
-      sessionId
+      sessionId,
     );
   }
 }
