@@ -164,7 +164,7 @@ export const MONSTERS = {
   },
   ripper_boar: {
     name: "Sanglier Éventreur",
-    hp: 80,
+    hp: 22,
     atk: 15,
     runes: 90,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
@@ -183,8 +183,8 @@ export const MONSTERS = {
     runes: 270,
     isRare: true,
     drops: [
-      { item: "knight_greatsword", chance: 0.05 },
-      { ash: "storm_stomp", chance: 0.2, unique: true },
+      { item: "knight_greatsword", chance: 0.95 },
+      { ashId: "storm_stomp", chance: 0.05, unique: true },
     ],
   },
   rotten_stray: {
@@ -218,8 +218,8 @@ export const MONSTERS = {
     runes: 450,
     isRare: true,
     drops: [
-      { id: "briar_armor", chance: 0.2 },
-      { ashId: "ash_stomp", chance: 0.5, unique: true },
+      { id: "briar_armor", chance: 0.95 },
+      { ashId: "storm_stomp", chance: 0.05, unique: true },
     ],
   },
   beastman: {
@@ -228,7 +228,10 @@ export const MONSTERS = {
     atk: 18,
     runes: 300,
     isRare: true,
-    drops: [{ id: "iron_sword", chance: 0.8 }],
+    drops: [
+      { id: "iron_sword", chance: 0.95 },
+      { ashId: "storm_stomp", chance: 0.05, unique: true },
+    ],
   },
 };
 export const BIOMES = {
@@ -363,6 +366,36 @@ export const STATUS_EFFECTS = {
       return {
         damage,
         message: `${entity.name} brûle ! (-${damage} PV)`,
+      };
+    },
+  },
+};
+
+export const ASHES_OF_WAR = {
+  storm_stomp: {
+    name: "Piétinement Tempétueux",
+    description:
+      "Augmente vos dégats légèrement et étourdit l'ennemi au prochain coup.",
+    maxUses: 3,
+    effect: (stats, enemy) => {
+      return {
+        damageMult: 1.2,
+        status: { id: "STUN", duration: 1 },
+        msg: "La tempête déséquilibre l'ennemi !",
+      };
+    },
+  },
+  bloody_slash: {
+    name: "Entaille Sanglante",
+    description:
+      "Sacrifie un peu de PV pour infliger d'énormes dégâts de saignement.",
+    maxUses: 2,
+    effect: (stats, enemy) => {
+      runtimeState.playerCurrentHp -= 20; // Risque/Récompense
+      return {
+        damageMult: 2.5,
+        status: { id: "BLEED", duration: 3 },
+        msg: "Une entaille sanglante déchire l'air !",
       };
     },
   },

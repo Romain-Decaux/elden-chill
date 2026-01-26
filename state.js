@@ -20,7 +20,7 @@ export let gameState = {
     armor: null,
     accessory: null,
   },
-  inventory: [{id: "fists", name: "poings", level: 10, count: 0}],
+  inventory: [{ id: "fists", name: "poings", level: 10, count: 0 }],
   world: {
     currentBiome: "limgrave_west",
     unlockedBiomes: ["limgrave_west"],
@@ -32,6 +32,8 @@ export let gameState = {
   playerEffects: [],
   ennemyEffects: [],
   ashesOfWaruses: {},
+  ashesOfWarOwned: [],
+  equippedAsh: null,
 };
 
 // Non-saved, runtime state
@@ -41,6 +43,8 @@ export const runtimeState = {
   playerCurrentHp: 0,
   currentCombatSession: 0,
   currentLoopCount: 0,
+  ashUsesLeft: 0,
+  ashIsPrimed: false,
 };
 
 export function setGameState(newState) {
@@ -54,6 +58,9 @@ export function setGameState(newState) {
 
   if (newState.ashesOfWaruses)
     Object.assign(gameState.ashesOfWaruses, newState.ashesOfWaruses);
+  if (newState.ashesOfWarOwned)
+    Object.assign(gameState.ashesOfWarOwned, newState.ashesOfWarOwned);
+  if (newState.equippedAsh) gameState.equippedAsh = newState.equippedAsh;
 
   if (newState.world) {
     Object.assign(gameState.world, newState.world);
@@ -83,7 +90,7 @@ export function getEffectiveStats() {
 }
 
 export function getHealth(vigor) {
-  return Math.floor(300 
-      + 1650 * (1 - Math.exp(-0.035 * vigor)) 
-      + 0.18 * vigor * vigor);
+  return Math.floor(
+    300 + 1650 * (1 - Math.exp(-0.035 * vigor)) + 0.18 * vigor * vigor,
+  );
 }

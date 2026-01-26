@@ -650,3 +650,82 @@ button:disabled {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+/* style.css */
+.ashes-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.ash-item {
+  background: var(--card-bg);
+  border: 1px solid var(--disabled-btn);
+  color: beige;
+  padding: 10px;
+  min-width: 120px;
+  text-align: left;
+}
+
+.ash-item:hover {
+  scale: 1.05;
+  background: var(--active-btn);
+  color: #222;
+  transition: ease-in-out 0.2s;
+  scale: 1.08;
+}
+
+.active-ash {
+  border: 2px solid #d4af37 !important; /* Bordure dorée pour l'élément équipé */
+  background: rgba(212, 175, 55, 0.1);
+  scale: 1.05;
+}
+
+/* Styles pour les Cendres de Guerre (Ash of War) */
+
+/* Style pour l'emplacement de la cendre équipée */
+#slot-ash {
+  border-color: #d4af37; /* Or */
+  border-style: solid;
+}
+
+/* Style pour le message "Posture de combat !" */
+.log-self {
+  color: #00ffff; /* Cyan */
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+/* Style pour le message d'activation de la cendre */
+.log-ash-activation {
+  color: #ffd700; /* Or Vif */
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #ffd700;
+}
+
+/* Animation pour le bouton de cendre préparée */
+@keyframes pulse-gold {
+  0% {
+    box-shadow:
+      0 0 5px gold,
+      inset 0 0 5px rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 20px 5px gold,
+      inset 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 5px gold,
+      inset 0 0 5px rgba(255, 215, 0, 0.1);
+  }
+}
+
+.ash-primed {
+  animation: pulse-gold 1.5s infinite;
+  border: 1px solid gold;
+}

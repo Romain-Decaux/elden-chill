@@ -12,11 +12,17 @@ const upgradeCosts = {
   critDamage: 3,
 };
 
+export const equipAsh = (ashId) => {
+  gameState.equippedAsh = ashId;
+  saveGame();
+  updateUI();
+};
+
 export const getUpgradeCost = (statName) => {
   const baseCost = upgradeCosts[statName] || 10;
   let count = gameState.stats.level;
-  let x = Math.max((count-11)*0.02, 0);
-  return Math.floor(baseCost*((x+0.1)*(Math.pow(count+81,2))+1));
+  let x = Math.max((count - 11) * 0.02, 0);
+  return Math.floor(baseCost * ((x + 0.1) * Math.pow(count + 81, 2) + 1));
 };
 
 export const upgradeStat = (statName) => {
@@ -51,9 +57,9 @@ export const equipItem = (itemId) => {
 
   // Map the item type from the French string to the English key used in the state
   const typeToSlotKey = {
-    "Arme": "weapon",
-    "Armure": "armor",
-    "Accessoire": "accessory",
+    Arme: "weapon",
+    Armure: "armor",
+    Accessoire: "accessory",
   };
   const slotKey = typeToSlotKey[itemData.type];
 

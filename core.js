@@ -1,4 +1,5 @@
 import {
+  ASHES_OF_WAR,
   BIOMES,
   ITEMS,
   LOOT_TABLES,
@@ -175,8 +176,24 @@ const combatLoop = (sessionId) => {
 
     if (!playerStatus.skipTurn) {
       const stats = getEffectiveStats();
+
+      //ash of war
+      let ashEffect = null;
+      if (runtimeState.ashIsPrimed && runtimeState.ashUsesLeft > 0) {
+        const ash = ASHES_OF_WAR[gameState.equippedAsh];
+        ashEffect = ash.effect(stats, runtimeState.currentEnemyGroup[0]);
+        runtimeState.ashUsesLeft--;
+        runtimeState.ashIsPrimed = false;
+        ActionLog(`CENDRE : ${ash.name} activée !`, "log-ash-activation");
+        if (ashEffect.msg) ActionLog(ashEffect.msg, "log-status");
+      }
+
       for (let i = 0; i < stats.attacksPerTurn; i++) {
         let damage = stats.strength;
+        if (ashEffect && ashEffect.damageMult) {
+          damage *= ashEffect.damageMult;
+        }
+
         const isCrit = Math.random() < stats.critChance;
         if (isCrit) {
           damage *= stats.critDamage;
@@ -188,6 +205,13 @@ const combatLoop = (sessionId) => {
         )} dégâts ${isCrit ? "CRITIQUES !" : "."}`;
         ActionLog(message, isCrit ? "log-crit" : "");
 
+        if (ashEffect && ashEffect.status) {
+          applyEffect(
+            gameState.ennemyEffects,
+            ashEffect.status.id,
+            ashEffect.status.duration,
+          );
+        }
         gameState.ennemyEffects.forEach((eff) => {
           const effectData = STATUS_EFFECTS[eff.id];
           if (effectData.onBeingHit) {
@@ -406,38 +430,6 @@ const spawnMonster = (monsterId, sessionId) => {
   setTimeout(() => combatLoop(sessionId), 500);
 };
 
-const spawnMonsters = (monsterId, sessionId) => {
-  const monster = MONSTERS[monsterId];
-  const groupSize = getGroupSize(monster.groupCombinations);
-  const enemies = [];
-
-  for (let i = 0; i < groupSize; i++) {
-    enemies.push({ id: monsterId, ...monster });
-  }
-
-  return enemies; // Return the array of spawned enemies
-};
-
-const handleMonsterAttack = (enemies) => {
-  enemies.forEach((enemy) => {
-    // Logic for each enemy to attack
-    console.log(`${enemy.name} attacks!`);
-    // Implement attack logic here
-  });
-};
-
-const getGroupSize = (groupCombinations) => {
-  const random = Math.random();
-  let cumulativeChance = 0;
-  for (const combination of groupCombinations) {
-    cumulativeChance += combination.chance;
-    if (random <= cumulativeChance) {
-      return combination.size;
-    }
-  }
-  return 1; // Default to 1 if no match
-};
-
 const handleCampfireEvent = (sessionId) => {
   gameState.world.checkpointReached = true;
   const container = document.getElementById("game-container");
@@ -513,6 +505,10 @@ export const startExploration = (biomeId) => {
   gameState.ashesOfWaruses = {};
   gameState.playerEffects = [];
   gameState.ennemyEffects = [];
+  gameState.world.rareSpawnsCount = 0;
+  const selectedAsh = ASHES_OF_WAR[gameState.equippedAsh];
+  runtimeState.ashUsesLeft = selectedAsh ? selectedAsh.maxUses : 0;
+  runtimeState.ashIsPrimed = false;
 
   runtimeState.playerCurrentHp = getHealth(getEffectiveStats().vigor);
 

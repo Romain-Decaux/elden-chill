@@ -2,7 +2,7 @@
 import { BIOMES, ITEMS } from "./gameData.js";
 import { gameState, runtimeState } from "./state.js";
 import { exportSave, importSave, loadGame, saveGame } from "./save.js";
-import { equipItem, resetGame, upgradeStat } from "./actions.js";
+import { equipAsh, equipItem, resetGame, upgradeStat } from "./actions.js";
 import {
   hideTooltip,
   moveTooltip,
@@ -51,6 +51,14 @@ const dev = {
       console.error("ID d'objet inconnu.");
     }
   },
+  giveAsh: (ashId) => {
+    if (!gameState.ashesOfWarOwned.includes(ashId)) {
+      gameState.ashesOfWarOwned.push(ashId);
+      console.log(`🔧 DEV : Cendre de guerre ${ashId}`);
+      updateUI();
+      saveGame();
+    }
+  },
   unlockAll: () => {
     Object.keys(BIOMES).forEach((id) => {
       if (!gameState.world.unlockedBiomes.includes(id)) {
@@ -88,6 +96,7 @@ window.hideTooltip = hideTooltip;
 window.dev = dev;
 window.exportSave = exportSave;
 window.importSave = importSave;
+window.equipAsh = equipAsh;
 
 // --- Game Initialization ---
 // Set the onload handler

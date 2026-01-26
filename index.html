@@ -165,6 +165,10 @@
               <span class="slot-label">Accessoire</span>
               <div class="slot" id="slot-accessory">Vide</div>
             </div>
+            <div class="slot-wrapper">
+              <span class="slot-label">Cendre de Guerre</span>
+              <div class="slot" id="slot-ash">Vide</div>
+            </div>
           </div>
         </div>
 
@@ -177,6 +181,14 @@
           <h3>Inventaire</h3>
           <div id="inventory-grid"></div>
         </div>
+
+        <div id="ashes-selection-section">
+          <h3>Cendres de Guerre</h3>
+          <div id="ashes-list" class="ashes-container">
+            Aucune cendre de guerre possédée
+          </div>
+        </div>
+
         <div class="options-zone">
           <button id="open-options-btn" onclick="toggleOptions(true)">
             Options & Infos
@@ -221,6 +233,14 @@
         </div>
         <div id="action-log">
           <p>Vous avancez dans la brume...</p>
+        </div>
+        <div id="ash-container" style="margin-top: 10px; text-align: center">
+          <button id="ash-button" onclick="primeAsh()">
+            Utiliser Cendre : <span id="ash-name">---</span> (<span
+              id="ash-uses"
+              >0</span
+            >)
+          </button>
         </div>
         <div id="combat-zone">
           <div class="hp-container">

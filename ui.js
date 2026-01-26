@@ -1,5 +1,16 @@
-import { BIOMES, ITEMS, LOOT_TABLES, STATUS_EFFECTS } from "./gameData.js";
-import { gameState, getEffectiveStats, runtimeState, getHealth } from "./state.js";
+import {
+  ASHES_OF_WAR,
+  BIOMES,
+  ITEMS,
+  LOOT_TABLES,
+  STATUS_EFFECTS,
+} from "./gameData.js";
+import {
+  gameState,
+  getEffectiveStats,
+  runtimeState,
+  getHealth,
+} from "./state.js";
 import { getUpgradeCost, upgradeStat, equipItem } from "./actions.js";
 import { startExploration } from "./core.js";
 import { saveGame } from "./save.js";
@@ -101,6 +112,21 @@ const updateEquipmentDisplay = () => {
     slot.onmousemove = null;
     slot.onmouseleave = null;
   });
+
+  const ashSlot = document.getElementById("slot-ash");
+  const equippedAshId = gameState.equippedAsh;
+  if (equippedAshId) {
+    const ashData = ASHES_OF_WAR[equippedAshId];
+    ashSlot.innerText = ashData.name;
+    ashSlot.onmouseenter = (e) => showAshTooltip(e, equippedAshId);
+    ashSlot.onmousemove = (e) => moveTooltip(e);
+    ashSlot.onmouseleave = () => hideTooltip();
+  } else {
+    ashSlot.innerText = "Vide";
+    ashSlot.onmouseenter = null;
+    ashSlot.onmousemove = null;
+    ashSlot.onmouseleave = null;
+  }
 };
 
 const updateBiomeDisplay = () => {
@@ -188,6 +214,55 @@ export const updateStatusIcons = () => {
   }
 };
 
+window.primeAsh = () => {
+  if (runtimeState.ashUsesLeft > 0 && !runtimeState.ashIsPrimed) {
+    runtimeState.ashIsPrimed = true;
+    ActionLog("Posture de combat !", "log-self");
+    document.getElementById("ash-button").classList.add("ash-primed");
+  }
+};
+
+export const updateAshButton = () => {
+  const ashBtn = document.getElementById("ash-button");
+  const ash = ASHES_OF_WAR[gameState.equippedAsh];
+  if (ash && gameState.world.isExploring) {
+    document.getElementById("ash-name").innerText = ash.name;
+    document.getElementById("ash-uses").innerText = runtimeState.ashUsesLeft;
+    ashBtn.disabled = runtimeState.ashUsesLeft <= 0 || runtimeState.ashIsPrimed;
+
+    if (runtimeState.ashIsPrimed) {
+      ashBtn.classList.add("ash-primed");
+    } else {
+      ashBtn.classList.remove("ash-primed");
+    }
+  }
+};
+
+const updateAshesDisplay = () => {
+  const container = document.getElementById("ashes-list");
+  if (!container || gameState.ashesOfWarOwned.length === 0) return;
+
+  container.innerHTML = "";
+
+  gameState.ashesOfWarOwned.forEach((ashId) => {
+    const data = ASHES_OF_WAR[ashId];
+    const isEquipped = gameState.equippedAsh === ashId;
+
+    const btn = document.createElement("button");
+    btn.className = `ash-item ${isEquipped ? "active-ash" : ""}`;
+    btn.innerHTML = `
+      <strong>${data.name}</strong><br>
+      <small>${data.maxUses} utilisations</small>
+    `;
+
+    btn.onclick = () => equipAsh(ashId);
+    btn.onmouseenter = (e) => showAshTooltip(e, ashId);
+    btn.onmousemove = (e) => moveTooltip(e);
+    btn.onmouseleave = () => hideTooltip();
+    container.appendChild(btn);
+  });
+};
+
 export const updateUI = () => {
   updateRuneDisplay();
   updateStatDisplay();
@@ -196,6 +271,8 @@ export const updateUI = () => {
   updateInventoryDisplay();
   updateCycleDisplay();
   updateStatusIcons();
+  updateAshButton();
+  updateAshesDisplay();
 };
 
 export const toggleView = (view) => {
@@ -243,10 +320,12 @@ export const updateHealthBars = () => {
 
   const enemyBar = document.getElementById("enemy-hp-fill");
   const enemyText = document.getElementById("enemy-hp-text");
-  if (runtimeState.currentEnemyGroup && runtimeState.currentEnemyGroup.length > 0) {
+  if (
+    runtimeState.currentEnemyGroup &&
+    runtimeState.currentEnemyGroup.length > 0
+  ) {
     const firstEnemy = runtimeState.currentEnemyGroup[0];
-    const enemyPercent =
-      (firstEnemy.hp / firstEnemy.maxHp) * 100;
+    const enemyPercent = (firstEnemy.hp / firstEnemy.maxHp) * 100;
     enemyBar.style.width = `${Math.max(0, enemyPercent)}%`;
     enemyText.innerText = `${formatNumber(
       Math.floor(firstEnemy.hp),
@@ -353,6 +432,18 @@ export const showStatTooltip = (e, statType) => {
   tooltip.innerHTML = `
     <strong style="color:var(--hover-btn)">${data.title}</strong><br>
     <small style="color:beige;">${data.text}</small>
+  `;
+  tooltip.classList.remove("tooltip-hidden");
+  moveTooltip(e);
+};
+
+export const showAshTooltip = (e, ashId) => {
+  const tooltip = document.getElementById("tooltip");
+  const ashData = ASHES_OF_WAR[ashId];
+  if (!ashData) return;
+  tooltip.innerHTML = `
+    <strong style="color:var(--active-btn)">${ashData.name}</strong><br>
+    <small style="font-style:italic; color:#aaa;">${ashData.description}</small>
   `;
   tooltip.classList.remove("tooltip-hidden");
   moveTooltip(e);
