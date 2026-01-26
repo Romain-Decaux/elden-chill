@@ -5,7 +5,7 @@ import {
   MONSTERS,
   STATUS_EFFECTS,
 } from "./gameData.js";
-import { gameState, getEffectiveStats, runtimeState } from "./state.js";
+import { gameState, getEffectiveStats, runtimeState, getHealth } from "./state.js";
 import { saveGame } from "./save.js";
 import {
   ActionLog,
@@ -76,11 +76,20 @@ const handleVictory = (sessionId) => {
   const intBonus = 1 + eff.intelligence / 100;
   const totalRunes = Math.floor(runtimeState.currentEnemy.runes * intBonus);
 
+  gameState.runes.carried += totalRunes;
+
+  let monster = runtimeState.currentEnemy;
+  console.log(monster);
+  while (monster.linkedFight != null){
+    monster = MONSTERS[monster.linkedFight];
+    console.log("dernier monstre trouvé :", monster);
+  } 
+  
   ActionLog(
     `Vous avez vaincu ${
-      runtimeState.currentEnemy.name
+      monster.name
     } ! (+${formatNumber(totalRunes)} runes)`,
-  );
+    );
 
   const enemy = runtimeState.currentEnemy;
 
@@ -104,9 +113,15 @@ const handleVictory = (sessionId) => {
   }
 
   gameState.ennemyEffects = [];
-  gameState.runes.carried += totalRunes;
+  
+  if(runtimeState.currentEnemy.linkedFight) {
+    const nextMonster = MONSTERS[runtimeState.currentEnemy.linkedFight];
+    ActionLog(` Il vous reste encore à vaincre ${nextMonster.name} !`);
+    spawnMonster(runtimeState.currentEnemy.linkedFight, sessionId);
+    updateHealthBars();
+    return;
+  };
   gameState.world.progress++;
-
   updateStepper();
 
   if (runtimeState.currentEnemy.isBoss) {
@@ -230,6 +245,18 @@ const combatLoop = (sessionId) => {
           return;
         }
 
+      runtimeState.playerCurrentHp -= runtimeState.currentEnemy.atk;
+      updateHealthBars();
+
+      if (runtimeState.currentEnemy.atk > getHealth(eff.vigor) * 0.15) {
+        triggerShake();
+      }
+
+      ActionLog(
+        `${runtimeState.currentEnemy.name} frappe ! -${formatNumber(
+          runtimeState.currentEnemy.atk,
+        )} PV`,
+      );
         runtimeState.playerCurrentHp -= runtimeState.currentEnemy.atk;
         ActionLog(
           `${runtimeState.currentEnemy.name} frappe ! -${formatNumber(
@@ -331,7 +358,7 @@ const handleCampfireEvent = (sessionId) => {
 
   gameState.runes.banked += gameState.runes.carried;
   gameState.runes.carried = 0;
-  runtimeState.playerCurrentHp = getEffectiveStats().vigor * 10;
+  runtimeState.playerCurrentHp = getHealth(getEffectiveStats().vigor);
 
   updateHealthBars();
   updateUI();
@@ -400,7 +427,7 @@ export const startExploration = (biomeId) => {
   gameState.playerEffects = [];
   gameState.ennemyEffects = [];
 
-  runtimeState.playerCurrentHp = getEffectiveStats().vigor * 10;
+  runtimeState.playerCurrentHp = getHealth(getEffectiveStats().vigor);
 
   document.getElementById("action-log").innerHTML = "";
 
