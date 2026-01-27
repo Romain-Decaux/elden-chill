@@ -159,10 +159,10 @@ export const ITEMS = {
     name: "Boluses Styptiques",
     type: ITEM_TYPES.ARMOR,
     description:
-      "+10 d'armure <em style='color: grey;'>(+2 / Niv)</em>Réduit de moitié les charges de Saignement au début de votre tour.",
+      "+5 d'armure <em style='color: grey;'>(+0.5 / Niv)</em>Réduit de moitié les charges de Saignement au début de votre tour.",
     passiveEffect: "HALVE_BLEED",
     apply: (stats, itemLevel) => {
-      stats.armor += 10 + 2 * (itemLevel - 1);
+      stats.armor += 5 + Math.floor(0.5 * (itemLevel - 1));
     },
   },
 
