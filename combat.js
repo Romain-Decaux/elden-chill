@@ -153,9 +153,8 @@ export function performAttack({
       const playerFlatPen = eff.flatDamagePenetration ?? 0;
 
       armor = monsterArmor;
-      armor *= (1 - playerPercentPen);
+      armor *= 1 - playerPercentPen;
       armor -= playerFlatPen;
-
     } else {
       /* MONSTER ATTACKING PLAYER */
       const playerFlatRed = eff.flatDamageReduction ?? 0;
@@ -165,8 +164,8 @@ export function performAttack({
 
       armor = 100;
       armor += playerFlatRed;
-      armor *= (1 + playerPercentRed);
-      armor *= (1 - monsterPercentPen);
+      armor *= 1 + playerPercentRed;
+      armor *= 1 - monsterPercentPen;
       armor -= monsterFlatPen;
     }
 
@@ -183,7 +182,7 @@ export function performAttack({
 
     ActionLog(
       `${logPrefix} ${isPlayer ? "infligez" : "frappe"} ${formatNumber(finalDamage)} dégâts ${isCrit ? "CRITIQUES !" : "."}`,
-      isCrit ? "log-crit" : ""
+      isCrit ? "log-crit" : "",
     );
 
     /* ================= PHASE CHECK ================= */
@@ -447,7 +446,7 @@ export const combatLoop = (sessionId) => {
 
         if (!enemyStatus.skipTurn) {
           const eff = getEffectiveStats();
-          const dodgeChance = Math.min(0.5, eff.dexterity / 500);
+          const dodgeChance = Math.min(0.5, eff.dexterity / 200);
 
           if (Math.random() < dodgeChance) {
             ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");

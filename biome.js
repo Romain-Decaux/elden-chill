@@ -1,7 +1,7 @@
 export const LOOT_TABLES = {
   limgrave_west: [
-    { id: "iron_sword", chance: 0.5 },
-    { id: "crimson_amber", chance: 0.3 },
+    { id: "iron_sword", chance: 0.3 },
+    { id: "crimson_amber", chance: 0.5 },
     { id: "scholars_ring", chance: 0.1 },
     { id: "kama", chance: 0.1 },
   ],
@@ -21,8 +21,6 @@ export const LOOT_TABLES = {
     { id: "scavenger_mask", chance: 0.8 },
   ],
 };
-
-
 
 export const BIOMES = {
   limgrave_west: {

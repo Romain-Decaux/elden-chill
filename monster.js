@@ -43,7 +43,7 @@ export const MONSTERS = {
     thresholdForPhase2: 0.5,
     dmgMultPhase2: 2,
     flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
-    },
+  },
   runeBear1: {
     name: "Ours Runique",
     hp: 294,
@@ -67,9 +67,7 @@ export const MONSTERS = {
     thresholdForPhase2: 0.5,
     dmgMultPhase2: 2,
     flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
-    groupCombinations: [
-      { size: 2, chance: 1.0 },
-    ],
+    groupCombinations: [{ size: 2, chance: 1.0 }],
   },
   kaiden_sellsword: {
     name: "Mercenaire de Kaiden",
@@ -97,7 +95,6 @@ export const MONSTERS = {
     hp: 75,
     atk: 10,
     runes: 270,
-    isRare: true,
     drops: [
       { item: "knight_greatsword", chance: 0.95 },
       { ashId: "storm_stomp", chance: 0.05, unique: true },

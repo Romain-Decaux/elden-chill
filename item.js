@@ -46,9 +46,10 @@ export const ITEMS = {
   leather_vest: {
     name: "Veste en Cuir",
     type: ITEM_TYPES.ARMOR,
-    description: "réduit les dégats subits de 2. <em style='color: grey;'>(+1 par Niv)</em>",
+    description:
+      "réduit les dégats subits de 2. <em style='color: grey;'>(+1 par Niv)</em>",
     apply: (stats, itemLevel) => {
-      const flatDamageReduction = 2 + (1 * (itemLevel - 1));
+      const flatDamageReduction = 2 + 1 * (itemLevel - 1);
       stats.flatDamageReduction += flatDamageReduction;
     },
   },
@@ -141,7 +142,7 @@ export const ITEMS = {
     apply: (stats, itemLevel) => {
       stats.dexterity += 5 + (itemLevel - 1);
     },
-    onHitEffect: { id: "BLEED", duration: 2, chance: 0.3 },
+    onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
   },
   astronomer_staff: {
     name: "Bâton de l'Astronome",
