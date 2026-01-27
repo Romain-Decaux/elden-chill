@@ -11,7 +11,7 @@ import {
   getHealth,
 } from "./state.js";
 import {
-  ActionLog, 
+  ActionLog,
   formatNumber,
   triggerShake,
   updateHealthBars,
@@ -20,13 +20,14 @@ import {
 
 /* ================= STATUS EFFECTS ================= */
 
-export const applyEffect = (targetEffects, effectId, value) => { // value can be duration or stacks
+export const applyEffect = (targetEffects, effectId, value) => {
+  // value can be duration or stacks
   const existing = targetEffects.find((e) => e.id === effectId);
   if (effectId === "BLEED") {
     if (existing) {
       existing.stacks = (existing.stacks || 0) + (value || 1);
     } else {
-      targetEffects.push({ id: effectId, stacks: (value || 1) });
+      targetEffects.push({ id: effectId, stacks: value || 1 });
     }
   } else {
     if (existing) {
@@ -51,11 +52,11 @@ const processTurnEffects = (entity, effectsArray) => {
       if (result?.skipTurn) skipTurn = true;
     }
 
-    if (effectRef.id !== 'BLEED') {
-        effectRef.duration--;
-        if (effectRef.duration <= 0) {
-          effectsArray.splice(i, 1);
-        }
+    if (effectRef.id !== "BLEED") {
+      effectRef.duration--;
+      if (effectRef.duration <= 0) {
+        effectsArray.splice(i, 1);
+      }
     }
   }
   return { logMessages, skipTurn };
@@ -94,27 +95,30 @@ export function performAttack({
   stats,
   logPrefix,
   isPlayer = false,
-  ashEffect = null
+  ashEffect = null,
 }) {
   attackers.forEach((attacker) => {
     let damage = attacker.atk ?? stats?.strength ?? 0;
 
     // --- NEW BLEED LOGIC ---
-    const bleedEffect = targetEffects.find(eff => eff.id === 'BLEED');
+    const bleedEffect = targetEffects.find((eff) => eff.id === "BLEED");
     if (bleedEffect && bleedEffect.stacks > 0) {
-        const procChance = bleedEffect.stacks * 0.1;
-        if (Math.random() < procChance) {
-            const bleedDamage = Math.floor(damage * (0.20 * bleedEffect.stacks));
-            damage += bleedDamage;
-            
-            ActionLog(`HÉMORRAGIE ! Le saignement inflige ${formatNumber(bleedDamage)} dégâts supplémentaires !`, 'log-crit');
+      const procChance = bleedEffect.stacks * 0.1;
+      if (Math.random() < procChance) {
+        const bleedDamage = Math.floor(damage * (0.2 * bleedEffect.stacks));
+        damage += bleedDamage;
 
-            // Consume stacks
-            const bleedIndex = targetEffects.findIndex(eff => eff.id === 'BLEED');
-            if (bleedIndex > -1) {
-                targetEffects.splice(bleedIndex, 1);
-            }
+        ActionLog(
+          `HÉMORRAGIE ! Le saignement inflige ${formatNumber(bleedDamage)} dégâts supplémentaires !`,
+          "log-crit",
+        );
+
+        // Consume stacks
+        const bleedIndex = targetEffects.findIndex((eff) => eff.id === "BLEED");
+        if (bleedIndex > -1) {
+          targetEffects.splice(bleedIndex, 1);
         }
+      }
     }
     // --- END NEW BLEED LOGIC ---
 
@@ -123,14 +127,21 @@ export function performAttack({
     }
 
     if (ashEffect?.status) {
-        applyEffect(targetEffects, ashEffect.status.id, ashEffect.status.duration);
+      applyEffect(
+        targetEffects,
+        ashEffect.status.id,
+        ashEffect.status.duration,
+      );
     }
 
     let isCrit = false;
-    if (stats?.critChance && Math.random() < stats.critChance) {
+    const critChance = stats?.critChance ?? 0;
+    const critDamage = stats?.critDamage ?? 1.5;
+    if (critChance && Math.random() < critChance) {
       isCrit = true;
-      damage *= stats.critDamage;
+      damage *= critDamage;
     }
+    damage = Math.max(0, Math.floor(damage || 0));
 
     // -------------------- APPLY REDUCTIONS/PENETRATIONS --------------------
     const flatReduction = target.flatDamageReduction ?? 0;
@@ -154,7 +165,7 @@ export function performAttack({
 
     ActionLog(
       `${logPrefix} ${isPlayer ? "infligez" : "frappe"} ${formatNumber(damage)} dégâts ${isCrit ? "CRITIQUES !" : "."}`,
-      isCrit ? "log-crit" : ""
+      isCrit ? "log-crit" : "",
     );
 
     /* ===== SPLASH ===== */
@@ -165,7 +176,7 @@ export function performAttack({
       }
 
       ActionLog(
-        `${logPrefix} ${isPlayer ? "infligez" : "inflige"} ${formatNumber(splash)} dégâts de zone au reste du groupe de ${targetGroup[0].name}.`
+        `${logPrefix} ${isPlayer ? "infligez" : "inflige"} ${formatNumber(splash)} dégâts de zone au reste du groupe de ${targetGroup[0].name}.`,
       );
     }
 
@@ -185,13 +196,16 @@ export function performAttack({
       const { id, duration, chance } = attacker.onHitEffect;
       if (Math.random() < chance) {
         applyEffect(targetEffects, id, duration);
-        if (id === 'BLEED') {
-            ActionLog(`Saignement appliqué ! (+${duration} stack(s))`, "log-status");
+        if (id === "BLEED") {
+          ActionLog(
+            `Saignement appliqué ! (+${duration} stack(s))`,
+            "log-status",
+          );
         } else {
-            ActionLog(
-              `${isPlayer ? "Vous appliquez" : "L'attaque applique"} ${duration} ${STATUS_EFFECTS[id].name} !`,
-              "log-warning"
-            );
+          ActionLog(
+            `${isPlayer ? "Vous appliquez" : "L'attaque applique"} ${duration} ${STATUS_EFFECTS[id].name} !`,
+            "log-warning",
+          );
         }
       }
     }
@@ -204,13 +218,16 @@ export function performAttack({
           const { id, duration, chance } = item.onHitEffect;
           if (Math.random() < chance) {
             applyEffect(targetEffects, id, duration);
-            if (id === 'BLEED') {
-                ActionLog(`Saignement appliqué ! (+${duration} stack(s))`, "log-status");
+            if (id === "BLEED") {
+              ActionLog(
+                `Saignement appliqué ! (+${duration} stack(s))`,
+                "log-status",
+              );
             } else {
-                ActionLog(
-                  `Vous appliquez ${duration} ${STATUS_EFFECTS[id].name} à l'ennemi !`,
-                  "log-warning"
-                );
+              ActionLog(
+                `Vous appliquez ${duration} ${STATUS_EFFECTS[id].name} à l'ennemi !`,
+                "log-warning",
+              );
             }
           }
         }
@@ -219,18 +236,18 @@ export function performAttack({
 
     // -------------------- PHASE CHECK --------------------
     if (target.hasSecondPhase && !target.isInSecondPhase) {
-        const hpFraction = getEntityHp(target) / (target.maxHp ?? target.hp ?? 1);
-        if (hpFraction <= target.thresholdForPhase2) {
-            target.isInSecondPhase = true;
-            // Multiply damage if defined
-            if (target.dmgMultPhase2) {
-                if ("atk" in target) target.atk *= target.dmgMultPhase2;
-            }
-            // Display flavor text in combat log with a bright color
-            if (target.flavorTextPhase2) {
-                ActionLog(target.flavorTextPhase2, "log-flavor-orange"); // You can define this CSS class
-            }
+      const hpFraction = getEntityHp(target) / (target.maxHp ?? target.hp ?? 1);
+      if (hpFraction <= target.thresholdForPhase2) {
+        target.isInSecondPhase = true;
+        // Multiply damage if defined
+        if (target.dmgMultPhase2) {
+          if ("atk" in target) target.atk *= target.dmgMultPhase2;
         }
+        // Display flavor text in combat log with a bright color
+        if (target.flavorTextPhase2) {
+          ActionLog(target.flavorTextPhase2, "log-flavor-orange"); // You can define this CSS class
+        }
+      }
     }
   });
 }
@@ -249,7 +266,9 @@ const generateRemainingEnemiesMessage = (enemies) => {
   if (enemies.length === 0) return "";
 
   const counts = countEnemyTypes(enemies);
-  const parts = Object.entries(counts).map(([name, count]) => `${count} ${name}`);
+  const parts = Object.entries(counts).map(
+    ([name, count]) => `${count} ${name}`,
+  );
 
   if (parts.length === 1) return `Il reste encore ${parts[0]} !`;
   if (parts.length === 2) return `Il reste encore ${parts[0]} et ${parts[1]} !`;
@@ -309,90 +328,110 @@ export const combatLoop = (sessionId) => {
           stats,
           logPrefix: "Vous",
           isPlayer: true,
-          ashEffect
+          ashEffect,
         });
       }
     }
 
-    const enemyIsDefeated = runtimeState.currentEnemyGroup.length > 0 && runtimeState.currentEnemyGroup[0].hp <= 0;
+    const enemyIsDefeated =
+      runtimeState.currentEnemyGroup.length > 0 &&
+      runtimeState.currentEnemyGroup[0].hp <= 0;
 
     const continueCombat = () => {
-        /* ================= KILL CHECK ================= */
-        let defeatedEnemies = [];
+      /* ================= KILL CHECK ================= */
+      let defeatedEnemies = [];
 
-        for (let i = runtimeState.currentEnemyGroup.length - 1; i >= 0; i--) {
-          const enemy = runtimeState.currentEnemyGroup[i];
-          if (enemy.hp <= 0) {
-            defeatedEnemies.push(enemy);
-            runtimeState.currentEnemyGroup.splice(i, 1);
-          }
+      for (let i = runtimeState.currentEnemyGroup.length - 1; i >= 0; i--) {
+        const enemy = runtimeState.currentEnemyGroup[i];
+        if (enemy.hp <= 0) {
+          defeatedEnemies.push(enemy);
+          runtimeState.currentEnemyGroup.splice(i, 1);
         }
+      }
 
-        // Reward runes
-        if (defeatedEnemies.length > 0) {
-          const eff = getEffectiveStats();
-          const intBonus = 1 + eff.intelligence / 100;
+      // Reward runes
+      if (defeatedEnemies.length > 0) {
+        const eff = getEffectiveStats();
+        const intBonus = 1 + eff.intelligence / 100;
 
-          defeatedEnemies.forEach((enemy) => {
-            const runesAwarded = Math.floor(enemy.runes * intBonus);
-            gameState.runes.carried += runesAwarded;
-            ActionLog(`${enemy.name} a été vaincu ! (+${formatNumber(runesAwarded)} runes)`, "log-runes");
-          });
+        defeatedEnemies.forEach((enemy) => {
+          const runesAwarded = Math.floor(enemy.runes * intBonus);
+          gameState.runes.carried += runesAwarded;
+          ActionLog(
+            `${enemy.name} a été vaincu ! (+${formatNumber(runesAwarded)} runes)`,
+            "log-runes",
+          );
+        });
 
-          // Show remaining enemies message only if there are enemies left
-          if (runtimeState.currentEnemyGroup.length > 0) {
-            const msg = generateRemainingEnemiesMessage(runtimeState.currentEnemyGroup);
-            if (msg) ActionLog(msg);
-          }
+        // Show remaining enemies message only if there are enemies left
+        if (runtimeState.currentEnemyGroup.length > 0) {
+          const msg = generateRemainingEnemiesMessage(
+            runtimeState.currentEnemyGroup,
+          );
+          if (msg) ActionLog(msg);
         }
+      }
 
-        /* ================= VICTORY CHECK ================= */
-        if (runtimeState.currentEnemyGroup.length === 0) {
-          runtimeState.lastDefeatedEnemy =
-            defeatedEnemies[defeatedEnemies.length - 1] || null;
-          setTimeout(() => handleVictory(sessionId), 500);
+      /* ================= VICTORY CHECK ================= */
+      if (runtimeState.currentEnemyGroup.length === 0) {
+        runtimeState.lastDefeatedEnemy =
+          defeatedEnemies[defeatedEnemies.length - 1] || null;
+        setTimeout(() => handleVictory(sessionId), 500);
+        return;
+      }
+
+      /* ================= UI UPDATE ================= */
+      const front = runtimeState.currentEnemyGroup[0];
+      const groupSizeText =
+        runtimeState.currentEnemyGroup.length > 1
+          ? ` (x${runtimeState.currentEnemyGroup.length})`
+          : "";
+
+      document.getElementById("enemy-name").innerText =
+        runtimeState.currentLoopCount > 0
+          ? `${front.name}${groupSizeText} +${runtimeState.currentLoopCount}`
+          : `${front.name}${groupSizeText}`;
+
+      updateHealthBars();
+      updateUI();
+
+      /* ================= ENEMY TURN ================= */
+      setTimeout(() => {
+        if (
+          sessionId !== runtimeState.currentCombatSession ||
+          !gameState.world.isExploring
+        )
           return;
+
+        const enemyStatus = processTurnEffects(
+          runtimeState.currentEnemyGroup[0],
+          gameState.ennemyEffects,
+        );
+
+        if (enemyStatus.logMessages.length > 0) {
+          enemyStatus.logMessages.forEach((msg) =>
+            ActionLog(msg, "log-status"),
+          );
         }
 
-        /* ================= UI UPDATE ================= */
-        const front = runtimeState.currentEnemyGroup[0];
-        const groupSizeText =
-          runtimeState.currentEnemyGroup.length > 1
-            ? ` (x${runtimeState.currentEnemyGroup.length})`
-            : "";
+        if (!enemyStatus.skipTurn) {
+          const eff = getEffectiveStats();
+          const dodgeChance = Math.min(0.5, eff.dexterity / 500);
 
-        document.getElementById("enemy-name").innerText =
-          runtimeState.currentLoopCount > 0
-            ? `${front.name}${groupSizeText} +${runtimeState.currentLoopCount}`
-            : `${front.name}${groupSizeText}`;
-
-        updateHealthBars();
-        updateUI();
-
-        /* ================= ENEMY TURN ================= */
-        setTimeout(() => {
-          if (
-            sessionId !== runtimeState.currentCombatSession ||
-            !gameState.world.isExploring
-          ) return;
-
-          const enemyStatus = processTurnEffects(runtimeState.currentEnemyGroup[0], gameState.ennemyEffects);
-
-          if (enemyStatus.logMessages.length > 0) {
-            enemyStatus.logMessages.forEach((msg) => ActionLog(msg, "log-status"));
+          if (Math.random() < dodgeChance) {
+            ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");
+            setTimeout(() => combatLoop(sessionId), 500);
+            return;
           }
 
-          if (!enemyStatus.skipTurn) {
-            const eff = getEffectiveStats();
-            const dodgeChance = Math.min(0.5, eff.dexterity / 500);
+          const loop =
+            runtimeState.currentEnemyGroup[0].specificStats &&
+            runtimeState.currentEnemyGroup[0].specificStats.attacksPerTurn
+              ? runtimeState.currentEnemyGroup[0].specificStats.attacksPerTurn
+              : 1;
 
-            if (Math.random() < dodgeChance) {
-              ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");
-              setTimeout(() => combatLoop(sessionId), 500);
-              return;
-            }
-
-            // Enemy attacks the player
+          // Enemy attacks the player
+          for (let i = 0; i < loop; i++) {
             playerObj.currentHp = runtimeState.playerCurrentHp; // sync before attack
             performAttack({
               attackers: runtimeState.currentEnemyGroup,
@@ -400,34 +439,36 @@ export const combatLoop = (sessionId) => {
               targetGroup: null,
               attackerEffects: gameState.ennemyEffects,
               targetEffects: gameState.playerEffects,
-              stats: null,
+              stats: runtimeState.currentEnemyGroup[0].specificStats
+                ? runtimeState.currentEnemyGroup[0].specificStats
+                : null,
               logPrefix: runtimeState.currentEnemyGroup[0].name,
-              isPlayer: false
+              isPlayer: false,
             });
             runtimeState.playerCurrentHp = playerObj.currentHp; // sync back
 
             // Shake effect for heavy hits
-            runtimeState.currentEnemyGroup.forEach(enemy => {
+            runtimeState.currentEnemyGroup.forEach((enemy) => {
               if (enemy.atk > getHealth(eff.vigor) * 0.15) triggerShake();
             });
-
-            updateHealthBars();
-            updateUI();
           }
+        }
 
-          if (runtimeState.playerCurrentHp <= 0) {
-            handleDeath();
-          } else {
-            setTimeout(() => combatLoop(sessionId), 500);
-          }
-        }, 800);
+        updateHealthBars();
+        updateUI();
+
+        if (runtimeState.playerCurrentHp <= 0) {
+          handleDeath();
+        } else {
+          setTimeout(() => combatLoop(sessionId), 500);
+        }
+      }, 800);
     };
 
     if (enemyIsDefeated) {
-        setTimeout(continueCombat, 400); // Delay for animation
+      setTimeout(continueCombat, 400); // Delay for animation
     } else {
-        continueCombat();
+      continueCombat();
     }
-
   }, 800);
 };

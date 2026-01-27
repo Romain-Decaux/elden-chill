@@ -15,6 +15,7 @@ import {
   updateUI,
   playCampMusic,
 } from "./ui.js";
+import { enqueueDevSpawn } from "./spawn.js";
 
 // Dev tools
 const dev = {
