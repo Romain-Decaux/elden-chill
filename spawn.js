@@ -46,12 +46,14 @@ export const spawnMonster = (monsterId, sessionId) => {
   // Create the enemy group
   runtimeState.currentEnemyGroup = [];
   for (let i = 0; i < groupSize; i++) {
+    let randomMultiplier = 1;
+    if (!template.isBoss && !template.isRare) { randomMultiplier += Math.random(); }
     const enemy = {
       ...template,
-      maxHp: Math.floor(template.hp * multiplier),
+      maxHp: Math.floor(template.hp * multiplier * randomMultiplier),
       atk: Math.floor(template.atk * multiplier),
-      runes: Math.floor(template.runes * multiplier),
-      hp: Math.floor(template.hp * multiplier),
+      runes: Math.floor(template.runes * multiplier * randomMultiplier),
+      hp: Math.floor(template.hp * multiplier * randomMultiplier),
     };
     runtimeState.currentEnemyGroup.push(enemy);
   }

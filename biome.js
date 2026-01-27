@@ -21,10 +21,10 @@ export const LOOT_TABLES = {
 export const BIOMES = {
   limgrave_west: {
     name: "Nécrolimbe Ouest",
-    rareMonsters: ["crucible_knight", "beastman"],
+    rareMonsters: ["beastman1"],
     maxRareSpawns: 2,
-    monsters: ["soldier", "wolf", "ripper_boar"],
-    boss: "margit",
+    monsters: ["soldier1", "wolf1"],
+    boss: "troll1_boss",
     length: 10,
     unlocks: "caelid",
   },

@@ -5,7 +5,6 @@ import { gameState, runtimeState } from "./state.js";
 import { exportSave, importSave, loadGame, saveGame } from "./save.js";
 import { equipAsh, equipItem, resetGame, upgradeStat } from "./actions.js";
 import { startExploration } from "./core.js";
-import { stopCombat } from "./combatController.js";
 import {
   hideTooltip,
   moveTooltip,

@@ -1,34 +1,61 @@
+/*regles de bases que je vais tester
+hp d'origine divisé par 10 pour les mobs. pour les normaux, un multiplicateur de 1 a 2 sure la vie et le drop de runes
+mobs normaux ont un drop de rune de base egal au minimum in game. les Rares ont un tier. Les boss sont divisé par 10. Exception si le monstre n est normalement pas un boss, tiraité au cas par cas.
+*/
 export const MONSTERS = {
-  soldier: {
+  soldier1: {
     name: "Soldat de Godrick",
-    hp: 30,
+    hp: 19,
     atk: 5,
-    runes: 15,
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
+    runes: 40,
+    //onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
   },
-  wolf: {
+  wolf1: {
     name: "Loup Affamé",
-    hp: 15,
-    atk: 8,
-    runes: 10,
+    hp: 8,
+    atk: 6,
+    runes: 60,
     groupCombinations: [
-      { size: 5, chance: 0.5 },
-      { size: 5, chance: 0.3 },
-      { size: 5, chance: 0.2 },
+      { size: 1, chance: 0.5 },
+      { size: 2, chance: 0.3 },
+      { size: 3, chance: 0.2 },
     ],
   },
+   beastman1: {
+    name: "Homme-Bête de Farum Azula",
+    hp: 142,
+    atk: 18,
+    runes: 333,
+    isRare: true,
+    drops: [
+      { id: "iron_sword", chance: 0.95 },
+      { ashId: "storm_stomp", chance: 0.05, unique: true },
+    ],
+  },
+  troll1_boss: {
+    name: "Troll des Collines",
+    hp: 217,
+    atk: 20,
+    runes: 500,
+    isBoss : true,
+    hasSecondPhase: true,
+    isInSecondPhase: false,
+    thresholdForPhase2: 0.5,
+    dmgMultPhase2: 2,
+    flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
+    },
   ripper_boar: {
     name: "Sanglier Éventreur",
     hp: 22,
     atk: 15,
-    runes: 90,
+    runes: 100,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
   },
   margit: {
     name: "Margit le Déchu",
     hp: 200,
     atk: 25,
-    runes: 500,
+    runes: 1200,
     isBoss: true,
   },
   godrick_knight: {
@@ -74,17 +101,6 @@ export const MONSTERS = {
     isRare: true,
     drops: [
       { id: "briar_armor", chance: 0.95 },
-      { ashId: "storm_stomp", chance: 0.05, unique: true },
-    ],
-  },
-  beastman: {
-    name: "Homme-Bête de Farum Azula",
-    hp: 140,
-    atk: 18,
-    runes: 300,
-    isRare: true,
-    drops: [
-      { id: "iron_sword", chance: 0.95 },
       { ashId: "storm_stomp", chance: 0.05, unique: true },
     ],
   },

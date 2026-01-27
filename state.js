@@ -15,6 +15,10 @@ export let gameState = {
     critChance: 0.05,
     critDamage: 1.5,
     splashDamage: 0,
+    flatDamageReduction: 0,
+    percentDamageReduction: 0,
+    flatDamagePenetration: 0,
+    percentDamagePenetration: 0,
   },
   equipped: {
     weapon: "fists",

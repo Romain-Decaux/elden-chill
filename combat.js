@@ -99,7 +99,21 @@ export function performAttack({
       damage *= stats.critDamage;
     }
 
-    damage = Math.floor(damage);
+    // -------------------- APPLY REDUCTIONS/PENETRATIONS --------------------
+    const flatReduction = target.flatDamageReduction ?? 0;
+    const percentReduction = target.percentDamageReduction ?? 0;
+
+    const flatPenetration = attacker.flatDamagePenetration ?? 0;
+    const percentPenetration = attacker.percentDamagePenetration ?? 0;
+
+    let effectiveFlat = Math.max(0, flatReduction - flatPenetration);
+    let effectivePercent = Math.max(0, percentReduction - percentPenetration);
+
+    damage = damage - effectiveFlat;
+    damage = damage * (1 - effectivePercent);
+
+    damage = Math.max(0, Math.floor(damage)); // no negative damage
+    // ------------------------------------------------------------------------
 
     /* ===== MAIN TARGET ===== */
     setEntityHp(target, getEntityHp(target) - damage);
@@ -160,6 +174,22 @@ export function performAttack({
           }
         }
       });
+    }
+
+    // -------------------- PHASE CHECK --------------------
+    if (target.hasSecondPhase && !target.isInSecondPhase) {
+        const hpFraction = getEntityHp(target) / (target.maxHp ?? target.hp ?? 1);
+        if (hpFraction <= target.thresholdForPhase2) {
+            target.isInSecondPhase = true;
+            // Multiply damage if defined
+            if (target.dmgMultPhase2) {
+                if ("atk" in target) target.atk *= target.dmgMultPhase2;
+            }
+            // Display flavor text in combat log with a bright color
+            if (target.flavorTextPhase2) {
+                ActionLog(target.flavorTextPhase2, "log-flavor-orange"); // You can define this CSS class
+            }
+        }
     }
   });
 }
