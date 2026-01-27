@@ -468,7 +468,7 @@ export const showStatTooltip = (e, statType) => {
     },
     strength: {
       title: "Force",
-      text: "Augmente la puissance de vos attaques.<br><strong>1 point = 1 dégât de base. 10 dégats de base.</strong>",
+      text: "Augmente la puissance de vos attaques.<br><strong>1 point = 1 dégât de base.</strong>",
     },
     dexterity: {
       title: "Dextérité",
