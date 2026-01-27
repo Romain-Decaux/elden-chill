@@ -5,7 +5,6 @@ import { MONSTERS } from "./monster.js";
 import { gameState } from "./state.js";
 import { ITEMS } from "./item.js";
 
-
 export const devSpawnQueue = [];
 
 export const enqueueDevSpawn = (monsterId) => {
@@ -47,7 +46,9 @@ export const spawnMonster = (monsterId, sessionId) => {
   runtimeState.currentEnemyGroup = [];
   for (let i = 0; i < groupSize; i++) {
     let randomMultiplier = 1;
-    if (!template.isBoss && !template.isRare) { randomMultiplier += Math.random(); }
+    if (!template.isBoss && !template.isRare) {
+      randomMultiplier += Math.random();
+    }
     const enemy = {
       ...template,
       maxHp: Math.floor(template.hp * multiplier * randomMultiplier),
@@ -83,7 +84,7 @@ export const spawnMonster = (monsterId, sessionId) => {
 
   ActionLog(
     groupSize > 1
-      ? `Un Groupe de ${groupSize} ${firstEnemy.name} apparaît !`
+      ? `Un Groupe de ${firstEnemy.isRare ? "⭐ " : ""}${groupSize} ${firstEnemy.name} apparaît !`
       : `Un ${firstEnemy.isRare ? "⭐ " + firstEnemy.name : firstEnemy.name} apparaît !`,
   );
 
