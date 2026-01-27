@@ -273,110 +273,120 @@ export const combatLoop = (sessionId) => {
       }
     }
 
-    /* ================= KILL CHECK ================= */
-    let defeatedEnemies = [];
+    const enemyIsDefeated = runtimeState.currentEnemyGroup.length > 0 && runtimeState.currentEnemyGroup[0].hp <= 0;
 
-    for (let i = runtimeState.currentEnemyGroup.length - 1; i >= 0; i--) {
-      const enemy = runtimeState.currentEnemyGroup[i];
-      if (enemy.hp <= 0) {
-        defeatedEnemies.push(enemy);
-        runtimeState.currentEnemyGroup.splice(i, 1);
-      }
-    }
+    const continueCombat = () => {
+        /* ================= KILL CHECK ================= */
+        let defeatedEnemies = [];
 
-    // Reward runes
-    if (defeatedEnemies.length > 0) {
-      const eff = getEffectiveStats();
-      const intBonus = 1 + eff.intelligence / 100;
+        for (let i = runtimeState.currentEnemyGroup.length - 1; i >= 0; i--) {
+          const enemy = runtimeState.currentEnemyGroup[i];
+          if (enemy.hp <= 0) {
+            defeatedEnemies.push(enemy);
+            runtimeState.currentEnemyGroup.splice(i, 1);
+          }
+        }
 
-      defeatedEnemies.forEach((enemy) => {
-        const runesAwarded = Math.floor(enemy.runes * intBonus);
-        gameState.runes.carried += runesAwarded;
-        ActionLog(`${enemy.name} a été vaincu ! (+${formatNumber(runesAwarded)} runes)`, "log-runes");
-      });
+        // Reward runes
+        if (defeatedEnemies.length > 0) {
+          const eff = getEffectiveStats();
+          const intBonus = 1 + eff.intelligence / 100;
 
-      // Show remaining enemies message only if there are enemies left
-      if (runtimeState.currentEnemyGroup.length > 0) {
-        const msg = generateRemainingEnemiesMessage(runtimeState.currentEnemyGroup);
-        if (msg) ActionLog(msg);
-      }
-    }
+          defeatedEnemies.forEach((enemy) => {
+            const runesAwarded = Math.floor(enemy.runes * intBonus);
+            gameState.runes.carried += runesAwarded;
+            ActionLog(`${enemy.name} a été vaincu ! (+${formatNumber(runesAwarded)} runes)`, "log-runes");
+          });
 
-    /* ================= VICTORY CHECK ================= */
-    if (runtimeState.currentEnemyGroup.length === 0) {
-      runtimeState.lastDefeatedEnemy =
-        defeatedEnemies[defeatedEnemies.length - 1] || null;
-      setTimeout(() => handleVictory(sessionId), 500);
-      return;
-    }
+          // Show remaining enemies message only if there are enemies left
+          if (runtimeState.currentEnemyGroup.length > 0) {
+            const msg = generateRemainingEnemiesMessage(runtimeState.currentEnemyGroup);
+            if (msg) ActionLog(msg);
+          }
+        }
 
-    /* ================= UI UPDATE ================= */
-    const front = runtimeState.currentEnemyGroup[0];
-    const groupSizeText =
-      runtimeState.currentEnemyGroup.length > 1
-        ? ` (x${runtimeState.currentEnemyGroup.length})`
-        : "";
-
-    document.getElementById("enemy-name").innerText =
-      runtimeState.currentLoopCount > 0
-        ? `${front.name}${groupSizeText} +${runtimeState.currentLoopCount}`
-        : `${front.name}${groupSizeText}`;
-
-    updateHealthBars();
-    updateUI();
-
-    /* ================= ENEMY TURN ================= */
-    setTimeout(() => {
-      if (
-        sessionId !== runtimeState.currentCombatSession ||
-        !gameState.world.isExploring
-      ) return;
-
-      const enemyStatus = processTurnEffects(runtimeState.currentEnemyGroup[0], gameState.ennemyEffects);
-
-      if (enemyStatus.logMessages.length > 0) {
-        enemyStatus.logMessages.forEach((msg) => ActionLog(msg, "log-status"));
-      }
-
-      if (!enemyStatus.skipTurn) {
-        const eff = getEffectiveStats();
-        const dodgeChance = Math.min(0.5, eff.dexterity / 500);
-
-        if (Math.random() < dodgeChance) {
-          ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");
-          setTimeout(() => combatLoop(sessionId), 500);
+        /* ================= VICTORY CHECK ================= */
+        if (runtimeState.currentEnemyGroup.length === 0) {
+          runtimeState.lastDefeatedEnemy =
+            defeatedEnemies[defeatedEnemies.length - 1] || null;
+          setTimeout(() => handleVictory(sessionId), 500);
           return;
         }
 
-        // Enemy attacks the player
-        playerObj.currentHp = runtimeState.playerCurrentHp; // sync before attack
-        performAttack({
-          attackers: runtimeState.currentEnemyGroup,
-          target: playerObj,
-          targetGroup: null,
-          attackerEffects: gameState.ennemyEffects,
-          targetEffects: gameState.playerEffects,
-          stats: null,
-          logPrefix: runtimeState.currentEnemyGroup[0].name,
-          isPlayer: false
-        });
-        runtimeState.playerCurrentHp = playerObj.currentHp; // sync back
+        /* ================= UI UPDATE ================= */
+        const front = runtimeState.currentEnemyGroup[0];
+        const groupSizeText =
+          runtimeState.currentEnemyGroup.length > 1
+            ? ` (x${runtimeState.currentEnemyGroup.length})`
+            : "";
 
-        // Shake effect for heavy hits
-        runtimeState.currentEnemyGroup.forEach(enemy => {
-          if (enemy.atk > getHealth(eff.vigor) * 0.15) triggerShake();
-        });
+        document.getElementById("enemy-name").innerText =
+          runtimeState.currentLoopCount > 0
+            ? `${front.name}${groupSizeText} +${runtimeState.currentLoopCount}`
+            : `${front.name}${groupSizeText}`;
 
         updateHealthBars();
         updateUI();
-      }
 
-      if (runtimeState.playerCurrentHp <= 0) {
-        handleDeath();
-      } else {
-        setTimeout(() => combatLoop(sessionId), 500);
-      }
-    }, 800);
+        /* ================= ENEMY TURN ================= */
+        setTimeout(() => {
+          if (
+            sessionId !== runtimeState.currentCombatSession ||
+            !gameState.world.isExploring
+          ) return;
+
+          const enemyStatus = processTurnEffects(runtimeState.currentEnemyGroup[0], gameState.ennemyEffects);
+
+          if (enemyStatus.logMessages.length > 0) {
+            enemyStatus.logMessages.forEach((msg) => ActionLog(msg, "log-status"));
+          }
+
+          if (!enemyStatus.skipTurn) {
+            const eff = getEffectiveStats();
+            const dodgeChance = Math.min(0.5, eff.dexterity / 500);
+
+            if (Math.random() < dodgeChance) {
+              ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");
+              setTimeout(() => combatLoop(sessionId), 500);
+              return;
+            }
+
+            // Enemy attacks the player
+            playerObj.currentHp = runtimeState.playerCurrentHp; // sync before attack
+            performAttack({
+              attackers: runtimeState.currentEnemyGroup,
+              target: playerObj,
+              targetGroup: null,
+              attackerEffects: gameState.ennemyEffects,
+              targetEffects: gameState.playerEffects,
+              stats: null,
+              logPrefix: runtimeState.currentEnemyGroup[0].name,
+              isPlayer: false
+            });
+            runtimeState.playerCurrentHp = playerObj.currentHp; // sync back
+
+            // Shake effect for heavy hits
+            runtimeState.currentEnemyGroup.forEach(enemy => {
+              if (enemy.atk > getHealth(eff.vigor) * 0.15) triggerShake();
+            });
+
+            updateHealthBars();
+            updateUI();
+          }
+
+          if (runtimeState.playerCurrentHp <= 0) {
+            handleDeath();
+          } else {
+            setTimeout(() => combatLoop(sessionId), 500);
+          }
+        }, 800);
+    };
+
+    if (enemyIsDefeated) {
+        setTimeout(continueCombat, 400); // Delay for animation
+    } else {
+        continueCombat();
+    }
 
   }, 800);
 };

@@ -8,7 +8,7 @@ export const MONSTERS = {
     hp: 19,
     atk: 5,
     runes: 40,
-    //onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
   },
   wolf1: {
     name: "Loup Affamé",
@@ -21,7 +21,7 @@ export const MONSTERS = {
       { size: 3, chance: 0.2 },
     ],
   },
-   beastman1: {
+  beastman1: {
     name: "Homme-Bête de Farum Azula",
     hp: 142,
     atk: 18,
@@ -37,13 +37,13 @@ export const MONSTERS = {
     hp: 217,
     atk: 20,
     runes: 500,
-    isBoss : true,
+    isBoss: true,
     hasSecondPhase: true,
     isInSecondPhase: false,
     thresholdForPhase2: 0.5,
     dmgMultPhase2: 2,
     flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
-    },
+  },
   ripper_boar: {
     name: "Sanglier Éventreur",
     hp: 22,
