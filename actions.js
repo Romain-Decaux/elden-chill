@@ -45,11 +45,30 @@ export const upgradeStat = (statName) => {
       gameState.stats[statName] += 1;
     }
     gameState.stats.level++;
+    gameState.stats.runesSpent += cost;
     saveGame();
     updateUI();
   } else {
     alert("Pas assez de runes pour renforcer votre lien avec la Grace !");
   }
+};
+
+export const refundRunes = () => {
+  console.log("Remboursement des runes investies...");
+  console.log("Runes actuelles : ", gameState.runes.banked);
+  console.log("Runes investies : ", gameState.stats.runesSpent);
+  gameState.runes.banked += gameState.stats.runesSpent;
+  console.log("Nouvelles runes : ", gameState.runes.banked);
+  gameState.stats.runesSpent = 0;
+  gameState.stats.level = 0;
+  gameState.stats.vigor = 0;
+  gameState.stats.strength = 0;
+  gameState.stats.dexterity = 0;
+  gameState.stats.intelligence = 0;
+  gameState.stats.critChance = 0.05;
+  gameState.stats.critDamage = 1.5;
+  saveGame();
+  updateUI();
 };
 
 export const equipItem = (itemId) => {
