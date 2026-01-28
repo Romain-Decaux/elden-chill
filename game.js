@@ -3,7 +3,13 @@ import { BIOMES } from "./biome.js";
 import { ITEMS } from "./item.js";
 import { gameState, runtimeState } from "./state.js";
 import { exportSave, importSave, loadGame, saveGame } from "./save.js";
-import { equipAsh, equipItem, resetGame, upgradeStat, refundRunes } from "./actions.js";
+import {
+  equipAsh,
+  equipItem,
+  resetGame,
+  upgradeStat,
+  refundRunes,
+} from "./actions.js";
 import { startExploration } from "./core.js";
 import {
   createFireParticles,
@@ -14,6 +20,7 @@ import {
   toggleView,
   updateUI,
   playCampMusic,
+  toggleRealTimeStats,
 } from "./ui.js";
 import { enqueueDevSpawn } from "./spawn.js";
 
@@ -165,6 +172,7 @@ window.dev = dev;
 window.exportSave = exportSave;
 window.importSave = importSave;
 window.equipAsh = equipAsh;
+window.toggleRealTimeStats = toggleRealTimeStats;
 
 // --- Game Initialization ---
 // Set the onload handler
