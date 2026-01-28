@@ -207,4 +207,16 @@ export const ITEMS = {
       stats.strength = Math.floor(1.2 * stats.strength);
     },
   },
+  piercing_talisman: {
+    name: "Sceau de la Grande Brèche",
+    type: ITEM_TYPES.ACCESSORY,
+    description:
+      "Pénétration fixe +10. Gagnez 10% de pénétration d'armure <em style='color: grey;'>(+3% / Niv)</em>",
+    applyFlat: (stats, itemLevel) => {
+      stats.flatDamagePenetration += 10;
+    },
+    applyMult: (stats, itemLevel) => {
+      stats.percentDamagePenetration += 0.1 + 0.03 * (itemLevel - 1);
+    },
+  },
 };

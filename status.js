@@ -6,14 +6,20 @@ export const STATUS_EFFECTS = {
     name: "Poison",
     color: "#2ecc71",
     onTurnStart: (entity) => {
-      //fait des dégats en fonction de l'intelligence pour le joueur ou un pourcentage de l'attaque si monstre
-      const isPlayer = entity.name === "player";
+      const isPlayer = "currentHp" in entity;
       let damage = 0;
+
       if (isPlayer) {
-        damage = Math.min(3, Math.floor(gameState.stats.intelligence * 0.08));
+        damage = Math.max(2, Math.floor(entity.maxHp * 0.02));
+        entity.currentHp -= damage;
       } else {
-        damage = Math.floor((entity.maxHp || 100) * 0.02);
+        const baseDot = Math.floor((entity.maxHp || 100) * 0.01);
+        const bonusInt = Math.floor(gameState.stats.intelligence * 0.5);
+
+        damage = Math.max(2, Math.floor(baseDot + bonusInt));
+        entity.hp -= damage;
       }
+
       return {
         damage,
         message: `${entity.name} subit ${damage} dégâts de poison !`,
@@ -24,17 +30,27 @@ export const STATUS_EFFECTS = {
     id: "THORNS",
     name: "Épines",
     color: "#148d0b",
-    onBeingHit: (attacker, _, damageTaken) => {
-      const reflectDamage = Math.max(1, Math.floor(damageTaken * 0.15));
-      if (attacker.name && attacker.name === "player") {
-        runtimeState.playerCurrentHp -= reflectDamage;
+    onBeingHit: (attacker, target, damageTaken) => {
+      const isPlayerTarget = "currentHp" in target;
+      let reflectDamage = Math.floor(damageTaken * 0.1);
+
+      if (isPlayerTarget) {
+        reflectDamage += Math.floor(gameState.stats.vigor * 0.5);
+      } else {
+        reflectDamage += 5;
+      }
+
+      reflectDamage = Math.max(1, reflectDamage);
+
+      if ("currentHp" in attacker) {
+        attacker.currentHp -= reflectDamage;
       } else {
         attacker.hp -= reflectDamage;
       }
 
       return {
         damage: reflectDamage,
-        message: `${attacker.name === "player" ? "Vous vous blessez" : attacker.name + " se blesse"} sur les épines ! (-${reflectDamage} PV)`,
+        message: `${attacker.name === "Vôtre héro" ? "Vous vous blessez" : attacker.name + " se blesse"} sur les épines ! (-${reflectDamage} PV)`,
       };
     },
   },

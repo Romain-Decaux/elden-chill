@@ -235,6 +235,11 @@ export function performAttack({
       }
     });
 
+    //Check death
+    if (target.hp <= 0) {
+      return;
+    }
+
     /* ===== ATTACKER ON-HIT EFFECT ===== */
     if (attacker.onHitEffect) {
       const { id, duration, chance } = attacker.onHitEffect;
