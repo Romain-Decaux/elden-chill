@@ -1,5 +1,8 @@
 //import { gameState, getHealth, runtimeState } from "./state.js";
 
+import { gameState, getHealth, runtimeState } from "./state.js";
+import { ActionLog } from "./ui.js";
+
 export const ITEM_TYPES = {
   WEAPON: "Arme",
   ARMOR: "Armure",
@@ -127,11 +130,23 @@ export const ITEMS = {
     name: "Épée Brûlante",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Attaques avec une chance d'infliger Brûlure. +8 Force <em style='color: grey;'>(+4 / Niv)</em>",
+      "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+5 / Niv)</em>. Récupérez 50HP si l'ennemi attaqué est déjà Brûlé.",
     apply: (stats, itemLevel) => {
-      stats.strength += 8 + 4 * (itemLevel - 1);
+      stats.strength += 10 + 5 * (itemLevel - 1);
     },
-    onHitEffect: { id: "BURN", duration: 2, chance: 0.3 },
+    funcOnHit: (stats, targetEffects) => {
+      if (targetEffects.some((eff) => eff.id === "BURN")) {
+        const healAmount = 50;
+        const maxHp = getHealth(stats.vigor);
+
+        runtimeState.playerCurrentHp = Math.min(
+          maxHp,
+          runtimeState.playerCurrentHp + healAmount,
+        );
+        ActionLog("L'Épée Brûlante vous soigne de 50 PV !", "log-heal");
+      }
+    },
+    onHitEffect: { id: "BURN", duration: 3, chance: 0.3 },
   },
   kama: {
     name: "Kama (Faucille)",

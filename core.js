@@ -76,14 +76,6 @@ export const handleDeath = () => {
 };
 
 export const handleVictory = (sessionId) => {
-  const eff = getEffectiveStats();
-  const intBonus = 1 + eff.intelligence / 100;
-  const totalRunes = Math.floor(
-    runtimeState.lastDefeatedEnemy.runes * intBonus,
-  );
-
-  gameState.runes.carried += totalRunes;
-
   const firstEnemy = runtimeState.lastDefeatedEnemy;
 
   if (firstEnemy.isRare && firstEnemy.drops) {
@@ -110,6 +102,9 @@ export const handleVictory = (sessionId) => {
   updateStepper();
 
   if (firstEnemy.isBoss) {
+    gameState.runes.banked += gameState.runes.carried;
+    gameState.runes.carried = 0;
+
     const currentBiome = BIOMES[gameState.world.currentBiome];
     gameState.world.rareSpawnsCount = 0;
     runtimeState.ashUsesLeft = gameState.equippedAsh
@@ -137,9 +132,11 @@ export const handleVictory = (sessionId) => {
     }
 
     const loot = LOOT_TABLES[gameState.world.currentBiome];
-    const rolled = loot[Math.floor(Math.random() * loot.length)];
-    dropItem(rolled.id);
-    saveGame();
+    if (loot) {
+      const rolled = loot[Math.floor(Math.random() * loot.length)];
+      dropItem(rolled.id);
+      saveGame();
+    }
 
     runtimeState.currentLoopCount++;
     gameState.world.progress = 0;

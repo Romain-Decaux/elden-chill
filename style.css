@@ -440,6 +440,12 @@ button:disabled {
   text-transform: uppercase;
 }
 
+.log-heal {
+  color: #2ecc71;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 /* Style pour les récompenses de runes */
 .log-runes {
   color: #d4af37; /* Or dimé */
@@ -698,6 +704,7 @@ button:disabled {
 #slot-ash {
   border-color: #d4af37; /* Or */
   border-style: solid;
+  margin-left: 20px;
 }
 
 /* Style pour le message "Posture de combat !" */
@@ -794,4 +801,21 @@ button:disabled {
   font-family: var(--header-font);
   font-size: 0.9em;
   color: var(--disabled-btn);
+}
+
+/* style.css */
+.inventory-item,
+.slot,
+.ash-item {
+  touch-action: manipulation; /* Optimise les tapotements */
+  user-select: none; /* Empêche de sélectionner le texte en restant appuyé */
+  -webkit-touch-callout: none; /* Désactive le menu contextuel sur iOS */
+  cursor: pointer;
+}
+
+/* Optionnel : un petit effet visuel quand on appuie */
+.inventory-item:active {
+  background-color: var(--active-btn);
+  color: var(--bg-color);
+  scale: 0.95;
 }

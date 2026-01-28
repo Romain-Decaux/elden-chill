@@ -228,9 +228,8 @@ const updateInventoryDisplay = () => {
     const progressText =
       item.level >= 10 ? "MAX" : `(${item.count}/${item.level})`;
     itemDiv.innerHTML = `<strong>${item.name}</strong><br>Niv.${item.level}<br>${progressText}`;
-    itemDiv.onmouseenter = (e) => showTooltip(e, item);
-    itemDiv.onmousemove = (e) => moveTooltip(e);
-    itemDiv.onmouseleave = () => hideTooltip();
+    attachTooltipEvents(itemDiv, item);
+
     itemDiv.onclick = () => equipItem(item.id);
     invGrid.appendChild(itemDiv);
   });
@@ -621,4 +620,23 @@ export const setAudioListener = () => {
       saveGame();
     });
   }
+};
+
+// ui.js
+
+const attachTooltipEvents = (element, itemOrId, isAsh = false) => {
+  // 1. Pour PC : Le hover classique
+  element.onmouseenter = (e) =>
+    isAsh ? showAshTooltip(e, itemOrId) : showTooltip(e, itemOrId);
+  element.onmouseleave = () => hideTooltip();
+  element.onmousemove = (e) => moveTooltip(e);
+
+  // 2. Pour Mobile (et PC au clic) : Appuyer pour afficher, relâcher pour cacher
+  element.onpointerdown = (e) => {
+    // Empêche le clic droit ou les menus contextuels mobiles de gêner
+    isAsh ? showAshTooltip(e, itemOrId) : showTooltip(e, itemOrId);
+  };
+
+  element.onpointerup = () => hideTooltip();
+  element.onpointercancel = () => hideTooltip(); // Si le doigt glisse hors de l'écran
 };

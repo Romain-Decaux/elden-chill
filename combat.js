@@ -100,7 +100,7 @@ export function performAttack({
 
     /* ================= ENEMY DODGE (PLAYER ATTACK ONLY) ================= */
     if (isPlayer && target) {
-      const isStunned = targetEffects?.some(e => e.id === "STUN");
+      const isStunned = targetEffects?.some((e) => e.id === "STUN");
       const dodgeChance = target.dodgeChance ?? 0;
 
       if (!isStunned && dodgeChance > 0 && Math.random() < dodgeChance) {
@@ -108,7 +108,6 @@ export function performAttack({
         return; // cancel this hit completely
       }
     }
-
 
     // --- NEW BLEED LOGIC ---
     const bleedEffect = targetEffects.find((eff) => eff.id === "BLEED");
@@ -259,6 +258,14 @@ export function performAttack({
     if (isPlayer) {
       Object.values(gameState.equipped).forEach((itemId) => {
         const item = ITEMS[itemId];
+        if (!item) return;
+
+        if (typeof item.funcOnHit === "function") {
+          item.funcOnHit(eff, targetEffects, finalDamage);
+          updateHealthBars();
+          updateUI();
+        }
+
         if (item?.onHitEffect) {
           const { id, duration, chance } = item.onHitEffect;
           if (Math.random() < chance) {
