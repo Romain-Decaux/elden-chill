@@ -336,6 +336,42 @@ const updateAshesDisplay = () => {
   });
 };
 
+let showRealTime = false;
+
+export const toggleRealTimeStats = () => {
+  showRealTime = !showRealTime;
+  const panel = document.getElementById("real-time-stats-panel");
+  panel.style.display = showRealTime ? "block" : "none";
+  updateRealTimeStatsDisplay();
+};
+
+export const updateRealTimeStatsDisplay = () => {
+  if (!showRealTime) return;
+
+  const eff = getEffectiveStats();
+  const container = document.getElementById("real-time-content");
+
+  // Calcul des stats spécifiques
+  const dodgeChance = Math.min(0.5, eff.dexterity / 200) * 100;
+  const flatPen = eff.flatDamagePenetration || 0;
+  const percentPen = (eff.percentDamagePenetration || 0) * 100;
+
+  container.innerHTML = `
+    <div class="rt-stat"><span>Force Totale:</span> <b>${eff.strength.toFixed(1)}</b></div>
+    <div class="rt-stat"><span>Vigueur Totale:</span> <b>${eff.vigor.toFixed(1)}</b></div>
+    <div class="rt-stat"><span>Dextérité Totale:</span> <b>${eff.dexterity.toFixed(1)}</b></div>
+    <div class="rt-stat"><span>Int Totale:</span> <b>${eff.intelligence.toFixed(1)}</b></div>
+    <hr>
+    <div class="rt-stat"><span>Taux d'Esquive:</span> <b>${dodgeChance.toFixed(1)}%</b></div>
+    <div class="rt-stat"><span>Pénétration (Fixe):</span> <b>${flatPen.toFixed(1)}</b></div>
+    <div class="rt-stat"><span>Pénétration (%):</span> <b>${percentPen.toFixed(1)}%</b></div>
+    <hr>
+    <div class="rt-stat"><span>Armure:</span> <b>${(eff.flatDamageReduction || 0).toFixed(1)}</b></div>
+    <div class="rt-stat"><span>Attaques / Tour:</span> <b>${eff.attacksPerTurn}</b></div>
+    <div class="rt-stat"><span>Dégâts Zone (Splash):</span> <b>${(eff.splashDamage || 0).toFixed(1)}</b></div>
+  `;
+};
+
 export const updateUI = () => {
   updateRuneDisplay();
   updateStatDisplay();
@@ -346,6 +382,7 @@ export const updateUI = () => {
   updateStatusIcons();
   updateAshButton();
   updateAshesDisplay();
+  updateRealTimeStatsDisplay();
 };
 
 export const toggleView = (view) => {

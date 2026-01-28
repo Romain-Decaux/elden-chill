@@ -819,3 +819,41 @@ button:disabled {
   color: var(--bg-color);
   scale: 0.95;
 }
+
+#real-time-stats-panel {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid var(--hover-btn);
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  display: none; /* Caché par défaut */
+}
+
+.rt-stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  color: #e0e0e0;
+}
+
+.rt-stat b {
+  color: #4dff4d; /* Vert pour bien voir que c'est le résultat final */
+}
+
+#real-time-stats-toggle button {
+  width: 100%;
+  background: none;
+  border: 1px dashed #666;
+  color: #aaa;
+  cursor: pointer;
+  padding: 5px;
+  transition: 0.3s;
+  margin: 10px 0;
+}
+
+#real-time-stats-toggle button:hover {
+  color: white;
+  border-color: var(--hover-btn);
+}
