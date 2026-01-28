@@ -150,7 +150,7 @@ export const MONSTERS = {
     runes: 2400,
     isBoss: true,
     dodgeChance: 0.2,
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.5 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.333 },
   },
   // === LIMGRAVE LAKE===
   noble_sword: {
@@ -158,6 +158,11 @@ export const MONSTERS = {
     hp: 9,
     atk: 5,
     runes: 10,
+    groupCombinations: [
+      { size: 2, chance: 0.5 },
+      { size: 3, chance: 0.4 },
+      { size: 4, chance: 0.1 },
+    ],
   },
   giant_crab: {
     name: "Crabe Géant",
@@ -171,6 +176,7 @@ export const MONSTERS = {
     atk: 7,
     runes: 15,
     isRare: true,
+    companion: ["noble_sword"],
     drops: [
       { id: "astronomer_staff", chance: 0.5 },
       { id: "crimson_amber", chance: 0.5 },

@@ -62,7 +62,7 @@ export const BIOMES = {
   limgrave_lake: {
     name: "Lac de Nécrolimbe",
     rareMonsters: ["noble_mage"],
-    maxRareSpawns: 1,
+    maxRareSpawns: 6,
     monsters: ["noble_sword", "giant_crab"],
     boss: "limgrave_dragon",
     length: 6,
@@ -158,7 +158,7 @@ export const BIOMES = {
     length: 12,
   },
   caelid_west: {
-    name: "Entrée de Caélide",
+    name: "Entrée de Caélid",
     rareMonsters: [""],
     maxRareSpawns: 1,
     monsters: ["rotten_stray", "giant_crow"],

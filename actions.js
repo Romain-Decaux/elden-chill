@@ -59,7 +59,7 @@ export const refundRunes = () => {
       "Êtes-vous sûr de vouloir récuperer vos runes ? Vous en perdrez 10%.",
     )
   ) {
-    gameState.runes.banked += (gameState.stats.runesSpent * 0.9);
+    gameState.runes.banked = Math.floor(gameState.runes.banked + gameState.stats.runesSpent * 0.9);
     gameState.stats.runesSpent = 0;
     gameState.stats.level = 0;
     gameState.stats.vigor = 0;
@@ -68,6 +68,8 @@ export const refundRunes = () => {
     gameState.stats.intelligence = 0;
     gameState.stats.critChance = 0.05;
     gameState.stats.critDamage = 1.5;
+    gameState.equipped = { weapon: null, armor: null, accessory: null, };
+    gameState.order = [null, null, null],
     saveGame();
     updateUI();
   }
@@ -90,16 +92,44 @@ export const equipItem = (itemId) => {
     return;
   }
 
-  // If the item is already in its slot, unequip it. Otherwise, equip it.
-  if (gameState.equipped[slotKey] === itemId) {
+  const currentlyEquipped = gameState.equipped[slotKey];
+
+  /* ================= UNEQUIP ================= */
+  if (currentlyEquipped === itemId) {
+    // remove from slot
     gameState.equipped[slotKey] = null;
-  } else {
+
+    // remove from order
+    gameState.order = gameState.order.filter(id => id !== itemId);
+
+  } 
+  /* ================= EQUIP ================= */
+  else {
+    // If slot already has an item → remove old item from order
+    if (currentlyEquipped) {
+      gameState.order = gameState.order.filter(id => id !== currentlyEquipped);
+    }
+
+    // Remove item from order if it exists elsewhere (safety)
+    gameState.order = gameState.order.filter(id => id !== itemId);
+
+    // Equip item
     gameState.equipped[slotKey] = itemId;
+
+    // Push to order as most recent
+    gameState.order.push(itemId);
   }
+
+  // Normalize order array
+  gameState.order = gameState.order.filter(Boolean); // remove nulls
+  while (gameState.order.length < 3) gameState.order.push(null);
+  if (gameState.order.length > 3) gameState.order = gameState.order.slice(0, 3);
 
   saveGame();
   updateUI();
 };
+
+
 
 export const resetGame = () => {
   if (
