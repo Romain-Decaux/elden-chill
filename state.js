@@ -26,7 +26,6 @@ export let gameState = {
     armor: null,
     accessory: null,
   },
-  order:["fists", null, null],
   inventory: [{ id: "fists", name: "poings", level: 10, count: 0 }],
   world: {
     currentBiome: "limgrave_west",
@@ -60,7 +59,6 @@ export function setGameState(newState) {
   if (newState.runes) Object.assign(gameState.runes, newState.runes);
   if (newState.stats) Object.assign(gameState.stats, newState.stats);
   if (newState.equipped) Object.assign(gameState.equipped, newState.equipped);
-  if (newState.order) Object.assign(gameState.order, newState.order);
   if (newState.playerEffects)
     Object.assign(gameState.playerEffects, newState.playerEffects);
   if (newState.ennemyEffects)
@@ -88,29 +86,30 @@ export function setGameState(newState) {
 }
 
 export function getEffectiveStats() {
-  console.log(gameState.order);
-  console.log(gameState.equipped);
-  // Start from base player stats
   let effStats = { ...gameState.stats, attacksPerTurn: 1 };
 
-  // Apply items in equip order
-  gameState.order.forEach((itemId) => {
-    if (!itemId) return;
+  const applyItemBonus = (type) => {
+    Object.keys(gameState.equipped).forEach((slotType) => {
+      const itemId = gameState.equipped[slotType];
+      const itemData = ITEMS[itemId];
 
-    const itemInInv = gameState.inventory.find((i) => i.id === itemId);
-    if (!itemInInv) return;
+      if (itemData && itemData[type]) {
+        const invItem = gameState.inventory.find((i) => i.id === itemId);
+        const level = invItem ? invItem.level : 1;
 
-    const itemDef = ITEMS[itemId];
-    if (!itemDef || typeof itemDef.apply !== "function") return;
+        itemData[type](effStats, level);
+      }
+    });
+  };
 
-    // IMPORTANT: apply mutates effStats directly
-    // so next item sees updated stats
-    itemDef.apply(effStats, itemInInv.level);
-  });
+  // Premier passage : Les bonus "Flat" (additions)
+  applyItemBonus("applyFlat");
+
+  // Second passage : Les bonus "Mult" (multiplications)
+  applyItemBonus("applyMult");
 
   return effStats;
 }
-
 
 export function getHealth(vigor) {
   return Math.floor(
