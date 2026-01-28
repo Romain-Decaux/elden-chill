@@ -6,11 +6,13 @@ export const STATUS_EFFECTS = {
     name: "Poison",
     color: "#2ecc71",
     onTurnStart: (entity) => {
-      const damage = Math.max(1, Math.floor((entity.maxHp || 100) * 0.03));
-      if (entity.hasOwnProperty("currentHp")) {
-        entity.currentHp -= damage;
+      //fait des dégats en fonction de l'intelligence pour le joueur ou un pourcentage de l'attaque si monstre
+      const isPlayer = entity.name === "player";
+      let damage = 0;
+      if (isPlayer) {
+        damage = Math.min(3, Math.floor(gameState.stats.intelligence * 0.08));
       } else {
-        entity.hp -= damage;
+        damage = Math.floor((entity.maxHp || 100) * 0.02);
       }
       return {
         damage,

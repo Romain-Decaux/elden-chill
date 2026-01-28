@@ -37,14 +37,13 @@ const dropItem = (itemId) => {
   } else {
     if (inventoryItem.level >= 10) {
       ActionLog(`${itemTemplate.name} est déjà au niveau maximum (10) !`);
-      gameState.runes.banked +=
-        100 * BIOMES[gameState.world.currentBiome].length;
+      const compensation = 7 * gameState.stats.level;
+      gameState.runes.banked += compensation;
       ActionLog(
-        `Vous recevez ${formatNumber(
-          100 * BIOMES[gameState.world.currentBiome].length,
-        )} runes en compensation.`,
+        `Vous recevez ${formatNumber(compensation)} runes en compensation.`,
       );
       saveGame();
+      return;
     }
 
     inventoryItem.count++;

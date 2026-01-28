@@ -143,7 +143,9 @@ const updateStatDisplay = () => {
 const updateEquipmentDisplay = () => {
   Object.keys(gameState.equipped).forEach((slotType) => {
     const itemId = gameState.equipped[slotType];
+    console.log(itemId);
     const slot = document.getElementById(`slot-${slotType}`);
+    if (!slot) return;
     if (itemId) {
       const itemInInv = gameState.inventory.find((i) => i.id === itemId);
       if (itemInInv) {
@@ -201,28 +203,48 @@ const updateInventoryDisplay = () => {
     return;
   }
 
+  // 1. Définir l'ordre de tri (Arme > Armure > Accessoire)
+  const typeOrder = {
+    Arme: 1,
+    Armure: 2,
+    Accessoire: 3,
+  };
+
+  // 2. Trier une copie de l'inventaire
+  const sortedInventory = [...gameState.inventory].sort((a, b) => {
+    const typeA = ITEMS[a.id].type; // On récupère le type via l'ID
+    const typeB = ITEMS[b.id].type;
+
+    // Tri par type selon l'ordre défini
+    if (typeOrder[typeA] !== typeOrder[typeB]) {
+      return typeOrder[typeA] - typeOrder[typeB];
+    }
+
+    // Optionnel : trier par niveau si les types sont identiques
+    return b.level - a.level;
+  });
+
   const typeToSlotKey = {
     Arme: "weapon",
     Armure: "armor",
     Accessoire: "accessory",
   };
 
-  gameState.inventory.forEach((item) => {
+  // 3. On utilise sortedInventory au lieu de gameState.inventory pour l'affichage
+  sortedInventory.forEach((item) => {
     const itemDiv = document.createElement("div");
     itemDiv.className = "inventory-item";
 
     const itemData = ITEMS[item.id];
     const slotKey = typeToSlotKey[itemData.type];
 
-    // Add class for the item's type for coloring
     if (slotKey) {
       itemDiv.classList.add(`item-type-${slotKey}`);
     }
 
-    // Add a class if there's a type conflict
     const currentlyEquippedId = gameState.equipped[slotKey];
-    if (currentlyEquippedId && currentlyEquippedId !== item.id) {
-      itemDiv.classList.add("item-type-conflict");
+    if (currentlyEquippedId && currentlyEquippedId === item.id) {
+      itemDiv.classList.add("equipped-highlight"); // Ajoute un style pour l'objet équipé
     }
 
     const progressText =
@@ -418,7 +440,10 @@ export const showTooltip = (e, item) => {
 
   // 2. Deep copy pour simuler l'application de l'item sans modifier ton vrai perso
   const modified = JSON.parse(JSON.stringify(base));
-  itemData.apply(modified, item.level);
+  if (itemData.applyFlat) {
+    itemData.applyFlat(modified, item.level);
+  }
+  if (itemData.applyMult) itemData.applyMult(modified, item.level);
 
   let statBonus = "";
   // Liste des stats à comparer
