@@ -1,12 +1,18 @@
-import { gameState, getEffectiveStats, runtimeState } from "./state.js";
+import {
+  gameState,
+  getEffectiveStats,
+  getHealth,
+  runtimeState,
+} from "./state.js";
 
 export const ASHES_OF_WAR = {
   beginer_tarnished_heal: {
     name: "Soin du Sans-Éclat",
-    description: "Restaure 150PV. +1 utilisation si vous avez battu un troll",
-    maxUses: gameState.world.unlockedBiomes.includes("limgrave_west") ? 3 : 2,
+    description:
+      "Restaure 50PV +10PV par niveau. +1 utilisation si vous avez battu un troll",
+    maxUses: gameState.world.unlockedBiomes.length > 1 ? 3 : 2,
     effect: (stats, enemy) => {
-      const healAmount = 150;
+      const healAmount = 50 + gameState.stats.level * 10;
       const maxHp = getHealth(getEffectiveStats().vigor);
 
       runtimeState.playerCurrentHp = Math.min(

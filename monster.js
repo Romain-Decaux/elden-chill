@@ -30,7 +30,7 @@ export const MONSTERS = {
     isRare: true,
     drops: [
       { id: "iron_sword", chance: 0.95 },
-      { ashId: "storm_stomp", chance: 0.05, unique: true },
+      { ashId: "beginer_tarnished_heal", chance: 0.8, unique: true },
     ],
   },
   troll1_boss: {
@@ -85,6 +85,7 @@ export const MONSTERS = {
     groupCombinations: [
       { size: 1, chance: 0.9 },
       { size: 2, chance: 0.1 },
+      { ashId: "bloody_slash", chance: 0.05, unique: true },
     ],
     drops: [
       { id: "styptic_boluses", chance: 0.2 },
@@ -129,10 +130,7 @@ export const MONSTERS = {
     runes: 600,
     isRare: true,
     onHitEffect: { id: "BLEED", duration: 1, chance: 1.0 },
-    drops: [
-      { id: "knight_greatsword", chance: 0.95 },
-      { ashId: "bloody_slash", chance: 0.05, unique: true },
-    ],
+    drops: [{ id: "knight_greatsword", chance: 0.95 }],
   },
   crucible_knight1: {
     name: "Chevalier du Creuset",

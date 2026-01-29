@@ -85,7 +85,7 @@ export const handleVictory = (sessionId) => {
         ) {
           gameState.ashesOfWarOwned.push(loot.ashId);
           ActionLog(
-            `OBJET UNIQUE OBTENU : Cendre de Guerre - ${loot.ashId} !`,
+            `OBJET UNIQUE OBTENU : Cendre de Guerre - ${ASHES_OF_WAR[loot.ashId].name} !`,
             "log-crit",
           );
         }
