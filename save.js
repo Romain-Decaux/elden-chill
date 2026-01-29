@@ -61,6 +61,11 @@ export const loadGame = () => {
   updateUI();
 };
 
+export const resetGameState = () => {
+  setGameState(DEFAULT_GAME_STATE);
+  saveGame();
+};
+
 export const exportSave = () => {
   const saveData = localStorage.getItem(SAVE_NAME);
   if (saveData) {

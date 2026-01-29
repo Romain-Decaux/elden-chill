@@ -2,7 +2,13 @@
 import { BIOMES } from "./biome.js";
 import { ITEMS } from "./item.js";
 import { gameState, runtimeState } from "./state.js";
-import { exportSave, importSave, loadGame, saveGame } from "./save.js";
+import {
+  exportSave,
+  importSave,
+  loadGame,
+  resetGameState,
+  saveGame,
+} from "./save.js";
 import {
   equipAsh,
   equipItem,
@@ -175,8 +181,43 @@ window.equipAsh = equipAsh;
 window.toggleRealTimeStats = toggleRealTimeStats;
 
 // --- Game Initialization ---
+
+const CHECK_REFRESH_KEY = "last_hard_refresh_timestamp";
+const FORCE_VERSION_KEY = "app_version_code";
+const CURRENT_VERSION = "1.0.2"; // Change ceci pour forcer un refresh immédiat de TOUT LE MONDE
+
+const handleAutoRefresh = () => {
+  const now = Date.now();
+  const lastRefresh = localStorage.getItem(CHECK_REFRESH_KEY);
+  const lastVersion = localStorage.getItem(FORCE_VERSION_KEY);
+
+  const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+  // Condition 1 : Est-ce que la version a changé ? (Force le déploiement de tes fixes)
+  // Condition 2 : Est-ce que ça fait plus de 24h ?
+  if (
+    lastVersion !== CURRENT_VERSION ||
+    !lastRefresh ||
+    now - parseInt(lastRefresh) > ONE_DAY_MS
+  ) {
+    localStorage.setItem(CHECK_REFRESH_KEY, now.toString());
+    localStorage.setItem(FORCE_VERSION_KEY, CURRENT_VERSION);
+
+    console.log(
+      "🔄 Nouvelle version ou délai dépassé. Hard refresh en cours...",
+    );
+
+    // Le true est techniquement déprécié mais aide encore certains navigateurs
+    // à ignorer le cache. Une alternative est de changer l'URL.
+    window.location.reload(true);
+    return true; // On indique qu'un reload est demandé
+  }
+  return false;
+};
 // Set the onload handler
 window.onload = () => {
+  if (handleAutoRefresh()) return;
+
   loadGame();
   createFireParticles();
   const startAudioOnInteraction = () => {

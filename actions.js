@@ -1,7 +1,6 @@
 import { gameState } from "./state.js";
 import { saveGame, SAVE_NAME } from "./save.js";
 import { updateUI } from "./ui.js";
-import { ASHES_OF_WAR } from "./ashes.js";
 import { ITEMS } from "./item.js";
 
 const upgradeCosts = {
@@ -9,8 +8,8 @@ const upgradeCosts = {
   strength: 1,
   dexterity: 1,
   intelligence: 1,
-  critChance: 1.5,
-  critDamage: 2.2,
+  critChance: 2,
+  critDamage: 2.5,
 };
 
 export const equipAsh = (ashId) => {
