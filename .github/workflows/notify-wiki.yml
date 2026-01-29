@@ -1,0 +1,18 @@
+name: Notify Wiki Sync
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.WIKI_SYNC_TOKEN }}
+          repository: ClemNTTS/elden-chill-wiki
+          event-type: game_updated
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
