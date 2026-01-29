@@ -262,11 +262,15 @@ export function performAttack({
     /* ===== PLAYER ITEMS ===== */
     if (isPlayer) {
       Object.values(gameState.equipped).forEach((itemId) => {
+        //level de l'item
+        const itemLevel = gameState.inventory.find(
+          (i) => i.id === itemId,
+        )?.level;
         const item = ITEMS[itemId];
         if (!item) return;
 
         if (typeof item.funcOnHit === "function") {
-          item.funcOnHit(eff, targetEffects, finalDamage);
+          item.funcOnHit(eff, targetEffects, itemLevel);
           updateHealthBars();
           updateUI();
         }

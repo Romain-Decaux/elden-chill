@@ -25,7 +25,7 @@ export const LOOT_TABLES = {
     { id: "margit_hammer", chance: 0.005 },
   ],
   limgrave_lake: [
-    { id: "twin_blade", chance: 0.5 },
+    { id: "burned_dragon_hearth", chance: 0.15 },
     { id: "burn_sword", chance: 0.5 },
   ],
   caelid_west: [
@@ -33,6 +33,9 @@ export const LOOT_TABLES = {
     { id: "keen_dagger", chance: 0.6 },
     { id: "leather_boots", chance: 0.3 },
   ],
+  /*===========================
+    Tier 3
+  ============================*/
   liurnia_south: [
     { id: "twin_blade", chance: 0.2 },
     { id: "scavenger_mask", chance: 0.8 },
@@ -67,7 +70,7 @@ export const BIOMES = {
     boss: "margit",
     length: 12,
     unlocks: null,
-    //unlocks: ["stormwind_castle", "caelid_west", "liurnia_south"],
+    //unlocks: ["enter_stormwind_castle", "liurnia_south"],
   },
   limgrave_lake: {
     name: "Lac de Nécrolimbe",
@@ -78,8 +81,12 @@ export const BIOMES = {
     length: 6,
     unlocks: null,
   },
+
+  /*===========================
+    Tier 3
+  ============================*/
   weeping_peninsula: {
-    name: "WIP Péninsule larmoyante",
+    name: "Péninsule larmoyante",
     rareMonsters: [""],
     maxRareSpawns: 1,
     monsters: ["", ""],
@@ -88,7 +95,7 @@ export const BIOMES = {
     unlocks: ["morne_castle"],
   },
   morne_castle: {
-    name: "WIP Château de Vent-Hurlant",
+    name: "Château de Vent-Hurlant",
     rareMonsters: [""],
     maxRareSpawns: 1,
     monsters: ["", ""],
@@ -96,8 +103,17 @@ export const BIOMES = {
     length: 12,
     unlocks: null,
   },
+  enter_stormwind_castle: {
+    name: "Entrée de Voile Orage",
+    rareMonsters: [""],
+    maxRareSpawns: 1,
+    monsters: ["", ""],
+    boss: "",
+    length: 12,
+    unlocks: ["stormwind_castle"],
+  },
   stormwind_castle: {
-    name: "WIP Château de Voile Orage",
+    name: "Château de Voile Orage",
     rareMonsters: [""],
     maxRareSpawns: 1,
     monsters: ["", ""],
@@ -105,6 +121,9 @@ export const BIOMES = {
     length: 12,
     unlocks: null,
   },
+  /*===========================
+    Tier 4
+  ============================*/
   liurnia_south: {
     name: "WIP Liurnia des Lacs - Sud",
     rareMonsters: [""],
@@ -167,6 +186,7 @@ export const BIOMES = {
     boss: "",
     length: 12,
   },
+  //Quand débloqué tu as accés mais tu te fais péter la gueule
   caelid_west: {
     name: "Entrée de Caélid",
     rareMonsters: [""],

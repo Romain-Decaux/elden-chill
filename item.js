@@ -1,10 +1,5 @@
-import {
-  gameState,
-  getEffectiveStats,
-  getHealth,
-  runtimeState,
-} from "./state.js";
-import { ActionLog } from "./ui.js";
+import { gameState, getHealth, runtimeState } from "./state.js";
+import { ActionLog, formatNumber } from "./ui.js";
 
 export const ITEM_TYPES = {
   WEAPON: "Arme",
@@ -183,11 +178,12 @@ export const ITEMS = {
     name: "Marteau de Margit",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Requiert 20 Dextérité de base pour être utilisé. Donne 20% de Force  (+1% / Niveau), Convertit +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
+      "Requiert 20 Dextérité de base pour être utilisé. Donne 20% de Force  (+1% / Niveau), Convertit +100% de la Dextérité en Dégats de zone. Converit 50% de la Dextérité en Force. <em style='color: grey;'>(+5% de chance d'étourdir l'ennemi pendant 2 tours.</em>",
     applyFlat: (stats, itemLevel) => {
       const baseDex = gameState.stats.dexterity || 0;
       if (baseDex >= 20) {
         stats.splashDamage += Math.floor(stats.dexterity);
+        stats.strength += Math.floor(0.5 * stats.dexterity);
       }
     },
     applyMult: (stats, itemLevel) => {
@@ -199,49 +195,39 @@ export const ITEMS = {
     onHitEffect: { id: "STUN", duration: 2, chance: 0.05 },
   },
 
-  scavenger_mask: {
-    name: "Masque de Pillard",
+  burned_dragon_hearth: {
+    name: "Cœur de Dragon Brûlé",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "Dégâts Crit x2 mais Vigueur -40% <em style='color: grey;'>(+4% Vigueur par Niv)</em>",
-    applyMult: (stats, itemLevel) => {
-      stats.critDamage *= 2;
-      stats.vigor = Math.floor(stats.vigor * (0.4 + 0.04 * (itemLevel - 1)));
-    },
-  },
-
-  twin_blade: {
-    name: "Lames Jumelles",
-    type: ITEM_TYPES.WEAPON,
-    description:
-      "Attaque 2 fois, 35% de chance d'appliquer 3 saignements mais réduit la Force de 60%. <em style='color: grey;'>(Malus réduit de 3% par Niv)</em>",
-    applyMult: (stats, itemLevel) => {
-      stats.attacksPerTurn = 2;
-      const penaltyReduction = 0.03 * (itemLevel - 1);
-      stats.strength *= 0.4 + penaltyReduction;
-    },
-    onHitEffect: { id: "BLEED", duration: 3, chance: 0.35 },
-  },
-
-  burn_sword: {
-    name: "Épée Brûlante",
-    type: ITEM_TYPES.WEAPON,
-    description:
-      "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+3 / Niv)</em>. Récupérez 50HP si l'ennemi attaqué est déjà Brûlé.",
+      "Le coeur de dragon pompe votre vigueur -0.8 / Niveau. Si vous touchez un ennemi brulé, vous vous soignez de 10PV / Niveau",
     applyFlat: (stats, itemLevel) => {
-      stats.strength += 10 + 3 * (itemLevel - 1);
+      stats.vigor -= Math.round(0.8 * itemLevel);
     },
-    funcOnHit: (stats, targetEffects) => {
+    funcOnHit: (stats, targetEffects, itemLevel) => {
+      if (!itemLevel) {
+        console.log(itemLevel);
+        return;
+      }
       if (targetEffects.some((eff) => eff.id === "BURN")) {
-        const healAmount = 50;
+        const healAmount = 10 * itemLevel;
         const maxHp = getHealth(stats.vigor);
 
         runtimeState.playerCurrentHp = Math.min(
           maxHp,
           runtimeState.playerCurrentHp + healAmount,
         );
-        ActionLog("L'Épée Brûlante vous soigne de 50 PV !", "log-heal");
+        ActionLog(`Vous vous soignez de ${healAmount} PV.`, "log-heal");
       }
+    },
+  },
+
+  burn_sword: {
+    name: "Épée Brûlante",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+3 / Niv)</em>.",
+    applyFlat: (stats, itemLevel) => {
+      stats.strength += 10 + 3 * (itemLevel - 1);
     },
     onHitEffect: { id: "BURN", duration: 3, chance: 0.3 },
   },
@@ -258,6 +244,33 @@ export const ITEMS = {
     },
   },
 
+  queen_staff: {
+    name: "Bâton de la Reine",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Vous convertissez 75% de votre inteligence en force bonus. +15 d'intelligence <em style='color: grey;'>(+5 / Niv)</em>",
+    applyFlat: (stats, itemLevel) => {
+      stats.intelligence += 15 + 5 * (itemLevel - 1);
+    },
+    applyMult: (stats, itemLevel) => {
+      const conversion = Math.floor(0.75 * stats.intelligence);
+      stats.strength += conversion;
+    },
+  },
+
+  twin_blade: {
+    name: "Lames Jumelles",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Attaque 2 fois, 35% de chance d'appliquer 3 saignements mais réduit la Force de 60%. <em style='color: grey;'>(Malus réduit de 3% par Niv)</em>",
+    applyMult: (stats, itemLevel) => {
+      stats.attacksPerTurn = 2;
+      const penaltyReduction = 0.03 * (itemLevel - 1);
+      stats.strength *= 0.4 + penaltyReduction;
+    },
+    onHitEffect: { id: "BLEED", duration: 3, chance: 0.35 },
+  },
+
   //========== TIER CAELID
   great_shield: {
     name: "Pavois du Chevalier",
@@ -271,6 +284,17 @@ export const ITEMS = {
 
       const conversionRatio = 0.15 + 0.03 * (itemLevel - 1);
       stats.strength += Math.floor(stats.vigor * conversionRatio);
+    },
+  },
+
+  scavenger_mask: {
+    name: "Masque de Pillard",
+    type: ITEM_TYPES.ACCESSORY,
+    description:
+      "Dégâts Crit x2 mais Vigueur -40% <em style='color: grey;'>(+4% Vigueur par Niv)</em>",
+    applyMult: (stats, itemLevel) => {
+      stats.critDamage *= 2;
+      stats.vigor = Math.floor(stats.vigor * (0.4 + 0.04 * (itemLevel - 1)));
     },
   },
 };
