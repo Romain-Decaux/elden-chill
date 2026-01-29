@@ -404,9 +404,17 @@ export const combatLoop = (sessionId) => {
       }
 
       for (let i = 0; i < stats.attacksPerTurn; i++) {
+        // Find first alive enemy
+        const currentTarget = runtimeState.currentEnemyGroup.find(
+          (e) => e.hp > 0,
+        );
+
+        // No alive enemies left
+        if (!currentTarget) break;
+
         performAttack({
           attackers: [{ atk: stats.strength }],
-          target: runtimeState.currentEnemyGroup[0],
+          target: currentTarget,
           targetGroup: runtimeState.currentEnemyGroup,
           stats,
           targetEffects: gameState.ennemyEffects,
