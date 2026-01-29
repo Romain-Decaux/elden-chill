@@ -45,7 +45,7 @@ export const upgradeStat = (statName) => {
       gameState.stats[statName] += 1;
     }
     gameState.stats.level++;
-    gameState.stats.runesSpent += cost;
+    gameState.stats.runesSpent = Math.floor(gameState.stats.runesSpent + cost);
     saveGame();
     updateUI();
   } else {
