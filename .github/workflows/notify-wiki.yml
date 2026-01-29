@@ -13,6 +13,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.WIKI_SYNC_SECRET }}
-          repository: ClemNTTS/elden-chill-wiki
+          repository: ClemNTTS/wiki-elden-chill
           event-type: game_updated
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
