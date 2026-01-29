@@ -1,3 +1,13 @@
+// ui.js
+const wikiBtn = document.getElementById("btn-wiki");
+
+if (wikiBtn) {
+  wikiBtn.addEventListener("click", () => {
+    // Ouvre ton wiki dans un nouvel onglet pour ne pas couper la session de jeu
+    window.open("https://cnuttens.me/wiki-elden-chill/", "_blank");
+  });
+}
+
 // Audio management
 const campSongs = ["./assets/camp_song_1.mp3", "./assets/camp_song_2.mp3"];
 const dungeonSongs = [
@@ -143,7 +153,6 @@ const updateStatDisplay = () => {
 const updateEquipmentDisplay = () => {
   Object.keys(gameState.equipped).forEach((slotType) => {
     const itemId = gameState.equipped[slotType];
-    console.log(itemId);
     const slot = document.getElementById(`slot-${slotType}`);
     if (!slot) return;
     if (itemId) {

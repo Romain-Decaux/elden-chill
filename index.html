@@ -214,6 +214,12 @@
             >
             <h2>Paramètres du Monde</h2>
 
+            <div id="game-menu">
+              <button id="btn-wiki" class="menu-button">
+                Consulter le Wiki
+              </button>
+            </div>
+
             <div class="options-container">
               <h3>Audio</h3>
               <div class="option-row">
@@ -231,12 +237,14 @@
 
             <hr />
             <h3>Zone de sans retour</h3>
-            <button class="reset-btn" onclick="resetGame()">
-              Réinitialiser la Sauvegarde
-            </button>
-            <button class="reset-btn" onclick="refundRunes()">
-              Rembourse les runes investies
-            </button>
+            <div class="options-container" id="danger-option-zone">
+              <button class="reset-btn" onclick="resetGame()">
+                Réinitialiser la Sauvegarde
+              </button>
+              <button class="reset-btn" onclick="refundRunes()">
+                Rembourse les runes investies
+              </button>
+            </div>
 
             <div class="options-container">
               <h3>Gestion de Sauvegarde</h3>
