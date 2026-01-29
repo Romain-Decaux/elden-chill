@@ -1,4 +1,9 @@
-import { gameState, getHealth, runtimeState } from "./state.js";
+import {
+  gameState,
+  getEffectiveStats,
+  getHealth,
+  runtimeState,
+} from "./state.js";
 import { ActionLog } from "./ui.js";
 
 export const ITEM_TYPES = {
@@ -78,6 +83,7 @@ export const ITEMS = {
     description:
       "Une faucille rapide qui inflige 2 Poison. +5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
     applyFlat: (stats, itemLevel) => {
+      stats.strength += 5;
       stats.intelligence += 5 + 2 * (itemLevel - 1);
     },
     onHitEffect: { id: "POISON", duration: 2, chance: 1 },
@@ -177,7 +183,7 @@ export const ITEMS = {
     name: "Marteau de Margit",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Requiert 20 Dextérité de base pour être utilisé. Donne 3% de Force par Niveau, +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
+      "Requiert 20 Dextérité de base pour être utilisé. Donne 20% de Force par +1% / Niveau, +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
     applyFlat: (stats, itemLevel) => {
       const baseDex = gameState.stats.dexterity || 0;
       const eff = getEffectiveStats();
@@ -188,7 +194,7 @@ export const ITEMS = {
     applyMult: (stats, itemLevel) => {
       const baseDex = gameState.stats.dexterity || 0;
       if (baseDex >= 20) {
-        stats.strength = Math.floor(1.03 * stats.strength);
+        stats.strength = Math.floor((1.2 + 0.01 * itemLevel) * stats.strength);
       }
     },
     onHitEffect: { id: "STUN", duration: 2, chance: 0.05 },
