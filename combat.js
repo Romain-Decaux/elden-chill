@@ -107,7 +107,9 @@ export function performAttack({
         ActionLog(`ESQUIVE ! ${target.name} évite l'attaque.`, "log-dodge");
         return; // cancel this hit completely
       }
-    } else { logPrefix = attacker.name; }
+    } else {
+      logPrefix = attacker.name;
+    }
     // --- NEW BLEED LOGIC ---
     const bleedEffect = targetEffects.find((eff) => eff.id === "BLEED");
     if (bleedEffect && bleedEffect.stacks > 0) {
@@ -214,8 +216,10 @@ export function performAttack({
     }
 
     /* ===== SPLASH ===== */
-    const splash = stats?.splashDamage ?? 0;
-    if (isCrit) {splash *= critDamage;}
+    let splash = stats?.splashDamage ?? 0;
+    if (isCrit) {
+      splash *= critDamage;
+    }
     if (splash > 0 && targetGroup?.length > 1) {
       for (let i = 1; i < targetGroup.length; i++) {
         targetGroup[i].hp -= splash;

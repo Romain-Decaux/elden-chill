@@ -105,7 +105,7 @@ export const ITEMS = {
     applyMult: (stats, itemLevel) => {
       stats.attacksPerTurn = 2;
       const penaltyReduction = 0.03 * (itemLevel - 1);
-      stats.strength *= 0.4 + penaltyReduction;
+      stats.strength = Math.floor(stats.strength * (0.4 + penaltyReduction));
     },
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.35 },
   },
