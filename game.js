@@ -162,6 +162,11 @@ const dev = {
   },
 };
 
+const joinDiscord = () => {
+  const invitLink = "https://discord.gg/rdnythxSXd";
+  window.open(invitLink, "_blank");
+};
+
 // --- Global Function Assignments ---
 // Assign all functions that are called from the HTML (onclick) to the window object
 window.upgradeStat = upgradeStat;
@@ -174,11 +179,12 @@ window.toggleOptions = toggleOptions;
 window.showStatTooltip = showStatTooltip;
 window.moveTooltip = moveTooltip;
 window.hideTooltip = hideTooltip;
-//window.dev = dev;
+window.dev = dev;
 window.exportSave = exportSave;
 window.importSave = importSave;
 window.equipAsh = equipAsh;
 window.toggleRealTimeStats = toggleRealTimeStats;
+window.joinDiscord = joinDiscord;
 
 // --- Game Initialization ---
 

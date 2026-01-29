@@ -192,6 +192,8 @@ const updateBiomeDisplay = () => {
   list.innerHTML = "";
 
   Object.keys(BIOMES).forEach((id) => {
+    if (!gameState.world.unlockedBiomes.includes(id)) return;
+
     const btn = document.createElement("button");
     btn.innerText = BIOMES[id].name;
     btn.disabled =

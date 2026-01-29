@@ -38,9 +38,9 @@ export const ITEMS = {
   crimson_amber: {
     name: "Médaillon d'Ambre",
     type: ITEM_TYPES.ACCESSORY,
-    description: "Vigueur +6% <em style='color: grey;'>( plus 3% par Niv)</em>",
-    applyMult: (stats, itemLevel) => {
-      stats.vigor = Math.floor(stats.vigor * (1.06 + 0.03 * (itemLevel - 1)));
+    description: "Vigueur +5 <em style='color: grey;'>( +1 par Niv)</em>",
+    applyFlat: (stats, itemLevel) => {
+      stats.vigor += 5 + itemLevel;
     },
   },
   leather_vest: {
@@ -78,7 +78,7 @@ export const ITEMS = {
     },
   },
   kama: {
-    name: "Kama (Faucille)",
+    name: "Faucille",
     type: ITEM_TYPES.WEAPON,
     description:
       "Une faucille rapide qui inflige 2 Poison. +5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
@@ -183,7 +183,7 @@ export const ITEMS = {
     name: "Marteau de Margit",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Requiert 20 Dextérité de base pour être utilisé. Donne 20% de Force par +1% / Niveau, +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
+      "Requiert 20 Dextérité de base pour être utilisé. Donne 20% de Force  (+1% / Niveau), Convertit +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
     applyFlat: (stats, itemLevel) => {
       const baseDex = gameState.stats.dexterity || 0;
       if (baseDex >= 20) {

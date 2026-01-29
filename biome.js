@@ -22,7 +22,7 @@ export const LOOT_TABLES = {
     { id: "margit_shackle", chance: 0.2 },
     { id: "knight_greatsword", chance: 0.2 },
     { id: "briar_armor", chance: 0.4 },
-    { id: "margit_hammer", chance: 0.01 },
+    { id: "margit_hammer", chance: 0.005 },
   ],
   limgrave_lake: [
     { id: "twin_blade", chance: 0.5 },

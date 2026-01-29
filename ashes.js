@@ -10,7 +10,9 @@ export const ASHES_OF_WAR = {
     name: "Soin du Sans-Éclat",
     description:
       "Restaure 50PV +10PV par niveau. +1 utilisation si vous avez battu un troll",
-    maxUses: gameState.world.unlockedBiomes.length > 1 ? 3 : 2,
+    get maxUses() {
+      return gameState.world.unlockedBiomes.length > 1 ? 3 : 2;
+    },
     effect: (stats, enemy) => {
       const healAmount = 50 + gameState.stats.level * 10;
       const maxHp = getHealth(getEffectiveStats().vigor);
@@ -21,7 +23,7 @@ export const ASHES_OF_WAR = {
       );
 
       return {
-        msg: "Vous récupérez 150PV",
+        msg: `Vous récupérez ${healAmount} PV !`,
       };
     },
   },
