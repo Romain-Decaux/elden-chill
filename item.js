@@ -1,4 +1,3 @@
-import { apply } from "core-js/fn/reflect";
 import { gameState, getHealth, runtimeState } from "./state.js";
 import { ActionLog } from "./ui.js";
 
