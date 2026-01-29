@@ -89,7 +89,10 @@ export const ITEMS = {
     name: "Croc de Limier",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Convertit 20% de la Dextérité en force bonus. 35% chance d'appliquer 3 saignements.<em style='color: grey;'>(+5% dext scaling par Niv)</em>",
+      "+2 Dextérité <em style='color: grey;'>(+2 / Niv)</em>. Convertit 20% de la Dextérité en force bonus. 35% chance d'appliquer 3 saignements.<em style='color: grey;'>(+5% dext scaling par Niv)</em>",
+    applyFlat: (stats, itemLevel) => {
+      stats.dexterity += 2 * itemLevel;
+    },
     applyMult: (stats, itemLevel) => {
       const conversionRatio = 0.2 + 0.05 * (itemLevel - 1);
       stats.strength += Math.floor(stats.dexterity * conversionRatio);
@@ -100,9 +103,10 @@ export const ITEMS = {
   briar_armor: {
     name: "Armure de Ronce",
     type: ITEM_TYPES.ARMOR,
-    description: "+2 Vigueur /Niv, Votre armure vous done épine constament.",
+    description:
+      "+5  Vigueur  + 1/Niv, Votre armure vous done épine constament.",
     applyFlat: (stats, itemLevel) => {
-      stats.vigor += 2 * itemLevel;
+      stats.vigor += 5 + 1 * (itemLevel - 1);
     },
     passiveStatus: "THORNS",
   },
@@ -110,7 +114,10 @@ export const ITEMS = {
     name: "Bâton de l'Astronome",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Convertit 20% de l'Intelligence en Force et en Dégâts de zone bonus. <em style='color: grey;'>(+5% par Niv)</em>",
+      "Convertit 20% de l'Intelligence en Force et en Dégâts de zone bonus. <em style='color: grey;'>(+5% par Niv)</em>. +7 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
+    applyFlat: (stats, itemLevel) => {
+      stats.intelligence += 7 + 2 * (itemLevel - 1);
+    },
     applyMult: (stats, itemLevel) => {
       const conversionRatio = 0.2 + 0.05 * (itemLevel - 1);
       stats.strength += Math.floor(stats.intelligence * conversionRatio);
@@ -132,9 +139,12 @@ export const ITEMS = {
     name: "Pendentif de Troll",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "+30% de chance d'appliquer 4 poisons. +1% Crit Chance <em style='color: grey;'>(+1% par Niv)",
-    applyMult: (stats, itemLevel) => {
-      stats.critChance += 0.01 + 0.01 * (itemLevel - 1);
+      "+30% de chance d'appliquer 4 poisons. BONUS : Si vous avez 20 Intelligence de base, +2% Crit Chance par Niveau",
+    applyFlat: (stats, itemLevel) => {
+      const baseInt = gameState.stats.intelligence || 0;
+      if (baseInt >= 20) {
+        stats.critChance += 0.02 * itemLevel;
+      }
     },
     onHitEffect: { id: "POISON", duration: 4, chance: 0.3 },
   },
@@ -183,9 +193,9 @@ export const ITEMS = {
     name: "Épée Brûlante",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+5 / Niv)</em>. Récupérez 50HP si l'ennemi attaqué est déjà Brûlé.",
+      "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+3 / Niv)</em>. Récupérez 50HP si l'ennemi attaqué est déjà Brûlé.",
     applyFlat: (stats, itemLevel) => {
-      stats.strength += 10 + 5 * (itemLevel - 1);
+      stats.strength += 10 + 3 * (itemLevel - 1);
     },
     funcOnHit: (stats, targetEffects) => {
       if (targetEffects.some((eff) => eff.id === "BURN")) {
