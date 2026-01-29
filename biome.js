@@ -56,7 +56,8 @@ export const BIOMES = {
     monsters: ["kaiden_sellsword", "godrick_knight1"],
     boss: "bloodhound_knight_darriwil",
     length: 12,
-    unlocks: ["weeping_peninsula", "caelid_west"],
+    unlocks: null,
+    //unlocks: ["weeping_peninsula", "caelid_west"],
   },
   limgrave_north: {
     name: "Valorage",
@@ -65,7 +66,8 @@ export const BIOMES = {
     monsters: ["white_wolf", "kaiden_sellsword", "godrick_knight1"],
     boss: "margit",
     length: 12,
-    unlocks: ["stormwind_castle", "caelid_west", "liurnia_south"],
+    unlocks: null,
+    //unlocks: ["stormwind_castle", "caelid_west", "liurnia_south"],
   },
   limgrave_lake: {
     name: "Lac de Nécrolimbe",
