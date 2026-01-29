@@ -12,7 +12,7 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.WIKI_SYNC_TOKEN }}
+          token: ${{ secrets.WIKI_SYNC_SECRET }}
           repository: ClemNTTS/elden-chill-wiki
           event-type: game_updated
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
