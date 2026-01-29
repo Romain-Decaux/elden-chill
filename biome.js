@@ -19,9 +19,10 @@ export const LOOT_TABLES = {
     { id: "scholars_ring", chance: 0.1 },
   ],
   limgrave_north: [
-    { id: "scholars_ring", chance: 0.4 },
+    { id: "margit_shackle", chance: 0.2 },
     { id: "knight_greatsword", chance: 0.2 },
-    { id: "leather_boots", chance: 0.4 },
+    { id: "briar_armor", chance: 0.4 },
+    { id: "margit_hammer", chance: 0.01 },
   ],
   limgrave_lake: [
     { id: "twin_blade", chance: 0.5 },
@@ -46,7 +47,7 @@ export const BIOMES = {
     monsters: ["soldier1", "wolf1"],
     boss: "troll1_boss",
     length: 10,
-    unlocks: ["limgrave_north","limgrave_east", "limgrave_lake"],
+    unlocks: ["limgrave_north", "limgrave_east", "limgrave_lake"],
   },
   limgrave_east: {
     name: "Nécrolimbe Est",
@@ -59,7 +60,7 @@ export const BIOMES = {
   },
   limgrave_north: {
     name: "Valorage",
-    rareMonsters: ["bell_bearing_hunter1","crucible_knight1"],
+    rareMonsters: ["bell_bearing_hunter1", "crucible_knight1"],
     maxRareSpawns: 1,
     monsters: ["white_wolf", "kaiden_sellsword", "godrick_knight1"],
     boss: "margit",
@@ -84,7 +85,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["morne_castle"],
   },
-  morne_castle:{
+  morne_castle: {
     name: "WIP Château de Vent-Hurlant",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -93,7 +94,7 @@ export const BIOMES = {
     length: 12,
     unlocks: null,
   },
-  stormwind_castle:{
+  stormwind_castle: {
     name: "WIP Château de Voile Orage",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -111,7 +112,7 @@ export const BIOMES = {
     length: 18,
     unlocks: ["liurnia_east", "liurnia_west"],
   },
-  liurnia_east:{
+  liurnia_east: {
     name: "WIP Liurnia des Lacs - Est",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -120,7 +121,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["ainsel_river"],
   },
-  ainsel_river:{
+  ainsel_river: {
     name: "WIP Rivière Ainsel",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -129,7 +130,7 @@ export const BIOMES = {
     length: 12,
     unlocks: null,
   },
-  liurnia_west:{
+  liurnia_west: {
     name: "WIP Liurnia des Lacs - Ouest",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -138,7 +139,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["caria_mansion", "raya_lucaria_academy"],
   },
-  caria_mansion:{
+  caria_mansion: {
     name: "WIP Manoir de Caria",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -147,7 +148,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["siofra_river"],
   },
-  raya_lucaria_academy:{
+  raya_lucaria_academy: {
     name: "WIP Académie de Raya Lucaria",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -156,7 +157,7 @@ export const BIOMES = {
     length: 18,
     unlocks: null,
   },
-  siofra_river:{
+  siofra_river: {
     name: "WIP Rivière Siofra",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -180,7 +181,7 @@ export const BIOMES = {
     length: 15,
     unlocks: ["nokron"],
   },
-  nokron:{
+  nokron: {
     name: "WIP Nokron, Cité Éternelle",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -189,7 +190,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["deeproot_depths"],
   },
-  deeproot_depths:{
+  deeproot_depths: {
     name: "WIP Profondeurs de la Souche",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -198,7 +199,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["rotlake"],
   },
-  rotlake:{
+  rotlake: {
     name: "WIP Lac de la Putréfaction",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -207,7 +208,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["altus_plateau"],
   },
-  altus_plateau:{
+  altus_plateau: {
     name: "WIP Plateau d'Altus",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -216,7 +217,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["mount_gelmir"],
   },
-  mount_gelmir:{
+  mount_gelmir: {
     name: "WIP Mont Gelmir",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -225,7 +226,7 @@ export const BIOMES = {
     length: 12,
     unlocks: null,
   },
-  leyndell_royal:{
+  leyndell_royal: {
     name: "WIP Leyndell, Cité Royale",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -234,7 +235,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["forbidden_land"],
   },
-  forbidden_land:{
+  forbidden_land: {
     name: "WIP Terre Interdite",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -243,7 +244,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["mountaintops"],
   },
-  mountaintops:{
+  mountaintops: {
     name: "WIP Sommets des Géants",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -252,7 +253,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["consecrated_snowfield"],
   },
-  consecrated_snowfield:{
+  consecrated_snowfield: {
     name: "WIP Plaine Enneigée Consacrée",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -261,7 +262,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["mohgwyn_palace"],
   },
-  mohgwyn_palace:{
+  mohgwyn_palace: {
     name: "WIP Palais de Mohgwyn",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -270,7 +271,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["miquella_haligtree"],
   },
-  miquella_haligtree:{
+  miquella_haligtree: {
     name: "WIP Arbre Sacré de Miquella",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -279,7 +280,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["crumbling_farum_azula"],
   },
-  crumbling_farum_azula:{
+  crumbling_farum_azula: {
     name: "WIP Farum Azula en Ruines",
     rareMonsters: [""],
     maxRareSpawns: 1,
@@ -297,7 +298,7 @@ export const BIOMES = {
     length: 12,
     unlocks: ["erdTree"],
   },
-  erdTree:{
+  erdTree: {
     name: "WIP Arbre-Monde",
     rareMonsters: [""],
     maxRareSpawns: 1,

@@ -30,7 +30,7 @@ const dropItem = (itemId) => {
     gameState.inventory.push({
       id: itemId,
       name: itemTemplate.name,
-      level: 1,
+      level: itemTemplate?.isAlwaysMax ? 10 : 1,
       count: 0,
     });
     ActionLog(`Vous avez trouvé : ${itemTemplate.name} !`);

@@ -70,7 +70,10 @@ export const MONSTERS = {
     dmgMultPhase2: 2,
     flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
     groupCombinations: [{ size: 2, chance: 1.0 }],
-    drops: [{ id: "troll_necklace", chance: 0.8 }],
+    drops: [
+      { id: "troll_necklace", chance: 0.8 },
+      { id: "leather_boots", chance: 0.2 },
+    ],
   },
   runeBear1: {
     name: "Ours Runique",
@@ -139,7 +142,8 @@ export const MONSTERS = {
     dodgeChance: 0.333,
     isRare: true,
     drops: [
-      { id: "briar_armor", chance: 0.95 },
+      { id: "briar_armor", chance: 0.15 },
+      { id: "styptic_boluses", chance: 0.8 },
       { ashId: "storm_stomp", chance: 0.05, unique: true },
     ],
   },
@@ -179,7 +183,7 @@ export const MONSTERS = {
     companion: ["noble_sword"],
     drops: [
       { id: "astronomer_staff", chance: 0.5 },
-      { id: "crimson_amber", chance: 0.5 },
+      { id: "scholars_ring", chance: 0.5 },
     ],
   },
   limgrave_dragon: {

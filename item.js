@@ -1,3 +1,4 @@
+import { apply } from "core-js/fn/reflect";
 import { gameState, getHealth, runtimeState } from "./state.js";
 import { ActionLog } from "./ui.js";
 
@@ -100,6 +101,14 @@ export const ITEMS = {
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.35 },
   },
 
+  margit_shackle: {
+    name: "Entraves de Margit",
+    type: ITEM_TYPES.ACCESSORY,
+    isAlwaysMax: true,
+    description: "Vous gagnez 8% de chance d'étourdir l'ennemi",
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.08 },
+  },
+
   briar_armor: {
     name: "Armure de Ronce",
     type: ITEM_TYPES.ARMOR,
@@ -165,6 +174,27 @@ export const ITEMS = {
   /*===========================
             TIER 3
   ============================*/
+  margit_hammer: {
+    name: "Marteau de Margit",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Requiert 20 Dextérité de base pour être utilisé. Donne 3% de Force par Niveau, +100% de la Dextérité en Dégats de zone, et 5% de chance d'étourdir l'ennemi pendant 2 tours.",
+    applyFlat: (stats, itemLevel) => {
+      const baseDex = gameState.stats.dexterity || 0;
+      const eff = getEffectiveStats();
+      if (baseDex >= 20) {
+        stats.splashDamage += Math.floor(eff.dexterity);
+      }
+    },
+    applyMult: (stats, itemLevel) => {
+      const baseDex = gameState.stats.dexterity || 0;
+      if (baseDex >= 20) {
+        stats.strength = Math.floor(1.03 * stats.strength);
+      }
+    },
+    onHitEffect: { id: "STUN", duration: 2, chance: 0.05 },
+  },
+
   scavenger_mask: {
     name: "Masque de Pillard",
     type: ITEM_TYPES.ACCESSORY,
