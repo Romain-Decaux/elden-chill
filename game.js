@@ -184,7 +184,31 @@ window.toggleRealTimeStats = toggleRealTimeStats;
 
 const CHECK_REFRESH_KEY = "last_hard_refresh_timestamp";
 const FORCE_VERSION_KEY = "app_version_code";
-const CURRENT_VERSION = "1.0.2"; // Change ceci pour forcer un refresh immédiat de TOUT LE MONDE
+const CURRENT_VERSION = "1.0.3"; // Change ceci pour forcer un refresh immédiat de TOUT LE MONDE
+
+const checkScheduledReset = () => {
+  // Date cible : 30 Janvier 2026 à 00:00:00
+  const TARGET_DATE = new Date("2026-01-30T00:00:00").getTime();
+  const RESET_FLAG = "wipe_jan_30_done";
+
+  // Si on est le 30 (ou après) et que ce reset n'a pas encore été fait localement
+  if (Date.now() >= TARGET_DATE && !localStorage.getItem(RESET_FLAG)) {
+    console.warn("Événement de reset global : Nettoyage de la progression...");
+
+    // On marque le reset comme effectué pour ce joueur
+    localStorage.setItem(RESET_FLAG, "true");
+
+    // On utilise ta fonction existante pour remettre l'état à zéro
+    resetGameState();
+
+    alert(
+      "Une nouvelle ère commence sur Elden Chill ! Votre progression a été réinitialisée pour la mise à jour du 30 janvier.",
+    );
+
+    // On force un reload pour repartir sur un gameState propre
+    window.location.reload();
+  }
+};
 
 const handleAutoRefresh = () => {
   const now = Date.now();
@@ -217,6 +241,8 @@ const handleAutoRefresh = () => {
 // Set the onload handler
 window.onload = () => {
   if (handleAutoRefresh()) return;
+
+  checkScheduledReset();
 
   loadGame();
   createFireParticles();
