@@ -28,7 +28,7 @@ import {
   playCampMusic,
   toggleRealTimeStats,
 } from "./ui.js";
-import { enqueueDevSpawn } from "./spawn.js";
+import { enqueueDevSpawn, emptyDevSpawn } from "./spawn.js";
 
 // Dev tools
 const dev = {
@@ -137,6 +137,9 @@ const dev = {
         console.log(`🔧 DEV : ${monsterId} ajouté à la file de spawn.`);
       }
     }
+  },
+  resetDevSpawn: () => {
+    emptyDevSpawn();
   },
   toggleCombat: () => {
     runtimeState.combatFrozen = !runtimeState.combatFrozen;

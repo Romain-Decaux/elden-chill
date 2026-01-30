@@ -145,8 +145,8 @@ export function performAttack({
     }
 
     let isCrit = false;
-    const critChance = stats?.critChance ?? 0;
-    const critDamage = stats?.critDamage ?? 1.5;
+    const critChance = stats?.critChance ?? attacker.critChance ?? 0;
+    const critDamage = stats?.critDamage ?? attacker.critDamage ?? 1.5;
     if (critChance && Math.random() < critChance) {
       isCrit = true;
       damage *= critDamage;
@@ -215,6 +215,7 @@ export function performAttack({
     if (isCrit) {
       splash *= critDamage;
     }
+    splash = Math.floor(splash);
     if (splash > 0 && targetGroup?.length > 1) {
       for (let i = 1; i < targetGroup.length; i++) {
         targetGroup[i].hp -= splash;

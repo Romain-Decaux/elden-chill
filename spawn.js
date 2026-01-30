@@ -26,6 +26,10 @@ export const getDevSpawn = () => {
   return devSpawnQueue.length > 0 ? devSpawnQueue.shift() : null;
 };
 
+export const emptyDevSpawn = () => {
+  devSpawnQueue.length = 0;
+};
+
 /* ============================
    GROUP / COMPANION SYSTEM
 ============================ */

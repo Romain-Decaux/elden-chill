@@ -235,6 +235,30 @@ export const MONSTERS = {
       },
     ],
   },
+  /*=== MORNE CASTLE ===*/
+  misbegotten: {
+    name: "Chimère Dévoyée",
+    hp: 158,
+    atk: 22,
+    runes: 140,
+    groupCombinations: [
+      { size: 1, chance: 0.4 },
+      { size: 2, chance: 0.3 },
+      { size: 3, chance: 0.3 },
+    ],
+    onHitEffect: { id: "BLEED", duration: 2, chance: 0.3 },
+  },
+
+  leonine_misbegotten: {
+    name: "Chimère Leonine",
+    hp: 1100,
+    atk: 100,
+    flatDamagePenetration: 50,
+    critChance: 1,
+    critDamage: 2,
+    runes: 3800,
+    isBoss: true,
+  },
 
   // === CAELID WEST===
   rotten_stray: {
