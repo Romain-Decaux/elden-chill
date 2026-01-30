@@ -261,10 +261,10 @@ export const MONSTERS = {
 
   nighth_cavalery: {
     name: "Cavalier de la Nuit",
-    hp: 100,
+    hp: 1000,
     atk: 75,
     runes: 1200,
-    isBoss: true,
+    isRare: true,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.5 },
     drops: [
       { id: "night_cavalry_armor", chance: 0.75 },

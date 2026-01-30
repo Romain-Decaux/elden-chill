@@ -96,7 +96,8 @@ export const BIOMES = {
     monsters: ["servant_poison", "bats"],
     boss: "phantom_nighth_cavalery",
     length: 15,
-    unlocks: ["morne_castle"],
+    unlocks: null,
+    //unlocks: ["morne_castle"],
   },
   morne_castle: {
     name: "Château de Vent-Hurlant",
