@@ -53,7 +53,7 @@ export const ITEMS = {
     type: ITEM_TYPES.WEAPON,
     description: "+5% Chance Crit. <em style='color: grey;'>(+2% par Niv)</em>",
     applyMult: (stats, itemLevel) => {
-      stats.critChance += 0.5 + 0.02 * (itemLevel - 1);
+      stats.critChance += 0.05 + 0.02 * (itemLevel - 1);
     },
   },
   scholars_ring: {
