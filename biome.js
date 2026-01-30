@@ -94,8 +94,8 @@ export const BIOMES = {
     rareMonsters: ["nighth_cavalery", "half_human_queen"],
     maxRareSpawns: 3,
     monsters: ["servant_poison", "bats"],
-    boss: "phantom_nighth_cavalery",
-    length: 15,
+    boss: "phantom_night_cavalery",
+    length: 13,
     unlocks: ["morne_castle"],
   },
   morne_castle: {
