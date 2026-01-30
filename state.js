@@ -109,7 +109,7 @@ export function getEffectiveStats() {
   console.log(effStats.armor);
   // Second passage : Les bonus "Mult" (multiplications)
   applyItemBonus("applyMult");
-  
+
   return effStats;
 }
 
@@ -117,7 +117,7 @@ export function getHealth(vigor) {
   let hp = 300;
 
   if (vigor <= 40) {
-    hp += vigor * 50;
+    hp += vigor * 45;
   } else if (vigor <= 60) {
     hp += 2200 + (vigor - 40) * 35;
   } else {

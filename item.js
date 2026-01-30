@@ -33,9 +33,9 @@ export const ITEMS = {
   crimson_amber: {
     name: "Médaillon d'Ambre",
     type: ITEM_TYPES.ACCESSORY,
-    description: "Vigueur +5 <em style='color: grey;'>( +1 par Niv)</em>",
+    description: "Vigueur  +1 par Niv",
     applyFlat: (stats, itemLevel) => {
-      stats.vigor += 5 + itemLevel;
+      stats.vigor += itemLevel;
     },
   },
   leather_vest: {
