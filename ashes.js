@@ -11,7 +11,7 @@ export const ASHES_OF_WAR = {
     description:
       "Restaure 50PV +10PV par niveau. +1 utilisation si vous avez battu un troll",
     get maxUses() {
-      return gameState.world.unlockedBiomes.length > 1 ? 3 : 2;
+      return gameState.world.unlockedBiomes.length > 1 ? 2 : 1;
     },
     effect: (stats, enemy) => {
       const healAmount = 50 + gameState.stats.level * 10;
