@@ -62,6 +62,17 @@ const dropItem = (itemId) => {
   updateUI();
 };
 
+const getWeightedDrop = (lootTable) => {
+  const totalWeight = lootTable.reduce((sum, item) => sum + item.chance, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const item of lootTable) {
+    if (random < item.chance) return item;
+    random -= item.chance;
+  }
+  return lootTable[0];
+};
+
 export const handleDeath = () => {
   ActionLog(`Vous êtes mort. Les runes portées sont perdues ...`);
   gameState.runes.carried = 0;
@@ -131,7 +142,7 @@ export const handleVictory = (sessionId) => {
 
     const loot = LOOT_TABLES[gameState.world.currentBiome];
     if (loot) {
-      const rolled = loot[Math.floor(Math.random() * loot.length)];
+      const rolled = getWeightedDrop(loot);
       dropItem(rolled.id);
       saveGame();
     }
