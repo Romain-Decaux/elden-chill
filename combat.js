@@ -42,8 +42,8 @@ function clamp(v, min = 0) {
 
 export const applyEffect = (targetEffects, effectId, value) => {
   if (!targetEffects.__owner) {
-  targetEffects.__owner = true;
-}
+    targetEffects.__owner = true;
+  }
   // value can be duration or stacks
   const existing = targetEffects.find((e) => e.id === effectId);
   if (effectId === "BLEED" || effectId === "FROSTBITE") {
@@ -138,15 +138,19 @@ export function performAttack({
 
     let frostEffect = targetEffects.find((eff) => eff.id === "FROSTBITE");
     if (frostEffect && frostEffect.stacks >= 10) {
-      let frostDamage = Math.floor(target.maxHp * 0.10) + 30;
+      let frostDamage = Math.floor(target.maxHp * 0.1) + 30;
       if (target.isBoss) {
         frostDamage = Math.floor(frostDamage * 0.7);
       }
       damage += frostDamage;
-      if (typeof target.armor === "number") { 
-        target.armor -= 20;
+      if (!isPlayer) {
+        runtimeState.playerArmorDebuff += 20;
       } else {
-        target.armor = 80;
+        if (typeof target.armor === "number") {
+          target.armor -= 20;
+        } else {
+          target.armor = 80;
+        }
       }
       ActionLog(
         `❄️ GELURE ! ${target.name} subit ${frostDamage} dégâts, perd 20 d'armure et est brisé par le froid !`,
@@ -191,7 +195,7 @@ export function performAttack({
       armor -= playerFlatPen;
     } else {
       /* MONSTER ATTACKING PLAYER */
-      armor = eff.armor ?? 100;
+      armor = (eff.armor ?? 100) - runtimeState.playerArmorDebuff;
       const monsterPercentPen = attacker.percentDamagePenetration ?? 0;
       const monsterFlatPen = attacker.flatDamagePenetration ?? 0;
       armor *= 1 - monsterPercentPen;

@@ -56,6 +56,7 @@ export const runtimeState = {
   ashUsesLeft: 0,
   ashIsPrimed: false,
   combatFrozen: false,
+  playerArmorDebuff: 0,
 };
 
 export function setGameState(newState) {

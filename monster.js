@@ -283,7 +283,7 @@ export const MONSTERS = {
     effectsPhase2: { id: "FROSTBITE", duration: 5, chance: 0.5 },
     hasSecondPhase: true,
     isInSecondPhase: false,
-    thresholdForPhase2: 0.57,
+    thresholdForPhase2: 0.7,
     flavorTextPhase2: "La lame du Hero de Zamor se refroidit!",
   },
 

@@ -80,6 +80,7 @@ export const handleDeath = () => {
   gameState.playerEffects = [];
   gameState.ennemyEffects = [];
   gameState.ashesOfWaruses = {};
+  runtimeState.playerArmorDebuff = 0;
   saveGame();
   setTimeout(() => toggleView("camp"), 3000);
 };
@@ -107,6 +108,7 @@ export const handleVictory = (sessionId) => {
   }
 
   gameState.ennemyEffects = [];
+  runtimeState.playerArmorDebuff = 0;
   gameState.world.progress++;
   updateStepper();
 
