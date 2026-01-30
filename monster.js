@@ -186,7 +186,7 @@ export const MONSTERS = {
       { size: 2, chance: 0.5 },
     ],
     drops: [
-      { id: "astronomer_staff", chance: 0.5 },
+      { id: "astronomer_staff", chance: 0.65 },
       { id: "scholars_ring", chance: 0.5 },
     ],
   },
