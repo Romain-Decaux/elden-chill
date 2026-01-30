@@ -545,7 +545,11 @@ export const combatLoop = (sessionId) => {
           const eff = getEffectiveStats();
           const dodgeChance = Math.min(0.5, eff.dexterity / 400);
 
-          if (Math.random() < dodgeChance) {
+          const playerIsStunned = gameState.playerEffects.some(
+            (e) => e.id === "STUN",
+          );
+
+          if (Math.random() < dodgeChance && !playerIsStunned) {
             ActionLog("ESQUIVE ! Vous évitez le coup.", "log-dodge");
             setTimeout(() => combatLoop(sessionId), 500);
             return;

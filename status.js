@@ -15,7 +15,7 @@ export const STATUS_EFFECTS = {
       let damage = 0;
 
       if (isPlayer) {
-        damage = Math.floor((entity.maxHp || 100) * 0.02);
+        damage = Math.floor((entity.maxHp || 100) * 0.06);
         entity.currentHp -= damage;
       } else {
         const eff = getEffectiveStats();
@@ -120,8 +120,8 @@ export const STATUS_EFFECTS = {
     },
   },
   FROSTBITE: {
-  id: "FROSTBITE",
-  name: "Gelure",
-  color: "#3dd6c9",
+    id: "FROSTBITE",
+    name: "Gelure",
+    color: "#3dd6c9",
   },
 };
