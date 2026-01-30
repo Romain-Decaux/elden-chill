@@ -387,6 +387,8 @@ export const updateRealTimeStatsDisplay = () => {
   const percentPen = (eff.percentDamagePenetration || 0) * 100;
 
   container.innerHTML = `
+    <div class="rt-stat"><span>Niveau:</span> <b>${eff.level || 0}</b></div>
+    <hr>
     <div class="rt-stat"><span>Force Totale:</span> <b>${eff.strength.toFixed(1)}</b></div>
     <div class="rt-stat"><span>Vigueur Totale:</span> <b>${eff.vigor.toFixed(1)}</b></div>
     <div class="rt-stat"><span>Dextérité Totale:</span> <b>${eff.dexterity.toFixed(1)}</b></div>
