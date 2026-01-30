@@ -54,4 +54,15 @@ export const ASHES_OF_WAR = {
       };
     },
   },
+  great_shield: {
+    name: "Rempart Inébranlable",
+    description: "Vous procure 25 d'armure pour le combat.(cumulable)",
+    maxUses: 4,
+    effect: (stats, enemy) => {
+      runtimeState.playerArmorDebuff -= 25;
+      return {
+        msg: "Vous vous protégez derrière votre bouclier !",
+      };
+    },
+  },
 };

@@ -268,7 +268,7 @@ export const MONSTERS = {
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.5 },
     drops: [
       { id: "night_cavalry_armor", chance: 0.75 },
-      // { ashId: "blood_blade", chance: 0.1, unique: true },
+      { ashId: "great_shield", chance: 0.03, unique: true },
     ],
   },
 

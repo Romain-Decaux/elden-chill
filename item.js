@@ -246,12 +246,12 @@ export const ITEMS = {
     name: "Sceau de la Grande Brèche",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "Pénétration fixe +10. Gagnez 10% de pénétration d'armure <em style='color: grey;'>(+3% / Niv)</em>",
+      "Pénétration fixe +10. Gagnez 5% de pénétration d'armure <em style='color: grey;'>(+1% / Niv)</em>",
     applyFlat: (stats, itemLevel) => {
-      stats.flatDamagePenetration += 10;
+      stats.flatDamagePenetration += 5;
     },
     applyMult: (stats, itemLevel) => {
-      stats.percentDamagePenetration += 0.1 + 0.03 * (itemLevel - 1);
+      stats.percentDamagePenetration += 0.1 + 0.01 * (itemLevel - 1);
     },
   },
 
@@ -308,10 +308,10 @@ export const ITEMS = {
     name: "Armure de Cavalier de la Nuit",
     type: ITEM_TYPES.ARMOR,
     description:
-      "Requiert 30 de vigueur de base pour être utilisé. Une armure sombre qui augmente la Force de 10 (+3 / Niv) et réduit les dégâts subis en augmentant l'Armure de 15 (+5 / Niv). Et donne 15% de chance d'appliquer 2 saignements",
+      "Requiert 40 de vigueur de base pour être utilisé. Une armure sombre qui augmente la Force de 10 (+3 / Niv) et réduit les dégâts subis en augmentant l'Armure de 15 (+5 / Niv). Et donne 15% de chance d'appliquer 2 saignements",
     applyFlat: (stats, itemLevel) => {
       const baseVigor = gameState.stats.vigor || 0;
-      if (baseVigor >= 30) {
+      if (baseVigor >= 40) {
         stats.strength += 10 + 3 * (itemLevel - 1);
         stats.armor += 15 + 5 * (itemLevel - 1);
       }
