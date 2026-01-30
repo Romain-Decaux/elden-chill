@@ -15,7 +15,7 @@ export const STATUS_EFFECTS = {
       let damage = 0;
 
       if (isPlayer) {
-        damage = Math.floor((entity.maxHp || 100) * 0.06);
+        damage = Math.floor((entity.maxHp || 100) * 0.04);
         entity.currentHp -= damage;
       } else {
         const eff = getEffectiveStats();
