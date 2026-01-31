@@ -118,6 +118,18 @@ export function getEffectiveStats() {
   // Second passage : Les bonus "Mult" (multiplications)
   applyItemBonus("applyMult");
 
+  //floor toutes les stats
+  Object.keys(effStats).forEach((key) => {
+    if (
+      key === "strength" ||
+      key === "vigor" ||
+      key === "dexterity" ||
+      key === "intelligence"
+    ) {
+      effStats[key] = Math.floor(effStats[key]);
+    }
+  });
+
   return effStats;
 }
 

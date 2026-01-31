@@ -15,8 +15,8 @@ export const STATUS_EFFECTS = {
       let damage = 0;
 
       if (isPlayer) {
-        damage = gameState.stats.level;
-        entity.currentHp -= damage;
+        damage = Math.floor(gameState.stats.level * 0.7);
+        entity.currentHp -= Math.min(damage, 1);
       } else {
         const eff = getEffectiveStats();
         const baseDot = Math.floor((entity.maxHp || 100) * 0.01);
