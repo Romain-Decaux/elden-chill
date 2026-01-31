@@ -544,7 +544,7 @@ export const combatLoop = (sessionId) => {
 
         if (!enemyStatus.skipTurn) {
           const eff = getEffectiveStats();
-          const dodgeChance = Math.min(0.5, eff.dexterity / 400);
+          const dodgeChance = Math.min(0.5, gameState.stats.dexterity / 400);
 
           const playerIsStunned = gameState.playerEffects.some(
             (e) => e.id === "STUN",

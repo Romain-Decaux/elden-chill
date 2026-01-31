@@ -383,7 +383,9 @@ export const updateRealTimeStatsDisplay = () => {
   const container = document.getElementById("real-time-content");
 
   // Calcul des stats spécifiques
-  const dodgeChance = Math.floor(Math.min(0.5, eff.dexterity / 400) * 100);
+  const dodgeChance = Math.floor(
+    Math.min(0.5, gameState.stats.dexterity / 400) * 100,
+  );
   const flatPen = eff.flatDamagePenetration || 0;
   const percentPen = (eff.percentDamagePenetration || 0) * 100;
 
@@ -584,7 +586,7 @@ export const showStatTooltip = (e, statType) => {
     },
     dexterity: {
       title: "Dextérité",
-      text: "Améliore votre agilité au combat.<br><strong>4 points = 1% d'Esquive.</strong><br><small>(Maximum 50%)</small>. Et 4 points = +0.5 d'Armure. 4 points en dextérité = 1 force. ",
+      text: "Améliore votre agilité au combat.<br><strong>4 points = 1% d'Esquive.</strong><br><small>(Maximum 50%)</small>. Et 4 points = +0.5 d'Armure. 4 points en dextérité = 1 force. <small>(Les bonus sont attribués par rapport aux stats de BASE) </small>",
     },
     intelligence: {
       title: "Intelligence",

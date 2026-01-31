@@ -43,10 +43,10 @@ export const ASHES_OF_WAR = {
   bloody_slash: {
     name: "Entaille Sanglante",
     description:
-      "Sacrifie 100 PV pour infliger d'énormes dégâts (x2.5) et 3 saignements.",
+      "Sacrifie 5% de vos PV max pour infliger d'énormes dégâts (x2.5) et 3 saignements.",
     maxUses: 3,
     effect: (stats, enemy) => {
-      runtimeState.playerCurrentHp -= 100;
+      runtimeState.playerCurrentHp -= getHealth(getEffectiveStats().vigor);
       return {
         damageMult: 2.5,
         status: { id: "BLEED", duration: 3 },

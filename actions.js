@@ -55,11 +55,11 @@ export const upgradeStat = (statName) => {
 export const refundRunes = () => {
   if (
     confirm(
-      "Êtes-vous sûr de vouloir récuperer vos runes ? Vous en perdrez 10%.",
+      "Êtes-vous sûr de vouloir récuperer vos runes ? Vous en perdrez 20%.",
     )
   ) {
     gameState.runes.banked = Math.floor(
-      gameState.runes.banked + gameState.stats.runesSpent * 0.9,
+      gameState.runes.banked + gameState.stats.runesSpent * 0.8,
     );
     gameState.stats.runesSpent = 0;
     gameState.stats.level = 0;
