@@ -24,7 +24,7 @@ export const MONSTERS = {
   },
   beastman1: {
     name: "Homme-Bête de Farum Azula",
-    hp: 142,
+    hp: 84,
     atk: 16,
     runes: 333,
     isRare: true,
@@ -35,7 +35,7 @@ export const MONSTERS = {
   },
   troll1_boss: {
     name: "Troll des Collines",
-    hp: 217,
+    hp: 147,
     atk: 20,
     runes: 500,
     isBoss: true,
@@ -48,20 +48,20 @@ export const MONSTERS = {
   // === LIMGRAVE EAST===
   godrick_knight1: {
     name: "Chevalier de Godrick",
-    hp: 75,
+    hp: 49,
     atk: 10,
     runes: 170,
   },
   kaiden_sellsword: {
     name: "Mercenaire de Kaiden",
-    hp: 35,
+    hp: 30,
     atk: 28,
     runes: 155,
   },
   troll1_duo: {
     name: "Troll des Collines",
-    hp: 150,
-    atk: 20,
+    hp: 130,
+    atk: 15,
     runes: 450,
     isRare: true,
     hasSecondPhase: true,
@@ -77,11 +77,11 @@ export const MONSTERS = {
   },
   runeBear1: {
     name: "Ours Runique",
-    hp: 294,
-    atk: 30,
+    hp: 210,
+    atk: 22,
     runes: 850,
     isRare: true,
-    onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
+    onHitEffect: { id: "BLEED", duration: 3, chance: 0.3 },
     groupCombinations: [
       { size: 1, chance: 0.9 },
       { size: 2, chance: 0.1 },
@@ -94,8 +94,8 @@ export const MONSTERS = {
   },
   bloodhound_knight_darriwil: {
     name: "Chevalier Limier Darriwil",
-    hp: 300, //2x health compared to ingame
-    atk: 40,
+    hp: 225, //2x health compared to ingame
+    atk: 30,
     runes: 975,
     isBoss: true,
     onHitEffect: { id: "BLEED", duration: 5, chance: 0.8 },
@@ -103,8 +103,8 @@ export const MONSTERS = {
   // === LIMGRAVE NORTH===
   white_wolf: {
     name: "Loup Blanc",
-    hp: 40,
-    atk: 30,
+    hp: 30,
+    atk: 24,
     runes: 100,
     groupCombinations: [
       { size: 1, chance: 0.7 },
@@ -125,8 +125,8 @@ export const MONSTERS = {
   },
   bell_bearing_hunter1: {
     name: "Chasseur de Clochettes",
-    hp: 405,
-    atk: 80,
+    hp: 305,
+    atk: 35,
     runes: 600,
     isRare: true,
     onHitEffect: { id: "BLEED", duration: 1, chance: 1.0 },
@@ -138,7 +138,7 @@ export const MONSTERS = {
   crucible_knight1: {
     name: "Chevalier du Creuset",
     hp: 280,
-    atk: 40,
+    atk: 30,
     runes: 440,
     dodgeChance: 0.333,
     isRare: true,
@@ -149,8 +149,8 @@ export const MONSTERS = {
   },
   margit: {
     name: "Margit le Déchu",
-    hp: 420,
-    atk: 60,
+    hp: 350,
+    atk: 45,
     runes: 2400,
     isBoss: true,
     dodgeChance: 0.2,
@@ -192,8 +192,8 @@ export const MONSTERS = {
   },
   limgrave_dragon: {
     name: "Dragon volant Agheel",
-    hp: 1600,
-    atk: 90,
+    hp: 980,
+    atk: 60,
     runes: 2500,
     isBoss: true,
     onHitEffect: { id: "BURN", duration: 2, chance: 0.5 },
@@ -201,8 +201,8 @@ export const MONSTERS = {
   // === WEEPING PENINSULA ===
   servant_poison: {
     name: "Servante empoisonée",
-    hp: 122,
-    atk: 25,
+    hp: 95,
+    atk: 20,
     onHitEffect: { id: "POISON", duration: 2, chance: 0.8 },
     runes: 153,
     groupCombinations: [
@@ -233,7 +233,7 @@ export const MONSTERS = {
 
   servant_poison_companion: {
     name: "Servante empoisonée",
-    runes: 113,
+    runes: 70,
     hp: 50,
     atk: 13,
     onHitEffect: { id: "POISON", duration: 2, chance: 0.8 },
@@ -245,8 +245,8 @@ export const MONSTERS = {
 
   half_human_queen: {
     name: "Reine Demi-Humaine",
-    hp: 824,
-    atk: 45,
+    hp: 524,
+    atk: 35,
     runes: 1605,
     isRare: true,
     companion: ["servant_poison_companion"],
@@ -261,8 +261,8 @@ export const MONSTERS = {
 
   nighth_cavalery: {
     name: "Cavalier de la Nuit",
-    hp: 1050,
-    atk: 75,
+    hp: 580,
+    atk: 55,
     runes: 1200,
     isRare: true,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.5 },
@@ -275,8 +275,8 @@ export const MONSTERS = {
   hero_of_zamor: {
     name: "Héros de Zamor",
     isBoss: true,
-    hp: 1450,
-    atk: 105,
+    hp: 950,
+    atk: 75,
     armor: 125,
     runes: 3000,
     dodgeChance: 0.22,
