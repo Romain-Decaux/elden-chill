@@ -86,7 +86,7 @@ export const ITEMS = {
     name: "Faucille",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Une faucille rapide qui inflige 2 Poison. +5 Intelligence, +1% d'intelligence par niveau",
+      "Une faucille rapide qui inflige 2 Poison <small>dégats du poison = 1% PV max de la cible + 50% Int</small>. +5 Intelligence, +1% d'intelligence par niveau",
     applyFlat: (stats, itemLevel) => {
       stats.intelligence += 5;
     },
@@ -102,15 +102,15 @@ export const ITEMS = {
     name: "Croc de Limier",
     type: ITEM_TYPES.WEAPON,
     description:
-      "+1 Dextérité par Niveau. Convertit 20% (+1% / Niveau) de la Dextérité en force bonus. 30% chance d'appliquer 3 saignements",
+      "+1 Dextérité par Niveau. Convertit 25% (+1% / Niveau) de la Dextérité en force bonus. 40% chance d'appliquer 3 saignements",
     applyFlat: (stats, itemLevel) => {
       stats.dexterity += 1 * itemLevel;
     },
     applyMult: (stats, itemLevel) => {
-      const conversionRatio = 0.2 + 0.01 * (itemLevel - 1);
+      const conversionRatio = 0.25 + 0.01 * (itemLevel - 1);
       stats.strength += Math.floor(stats.dexterity * conversionRatio);
     },
-    onHitEffect: { id: "BLEED", duration: 3, chance: 0.3 },
+    onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
   },
 
   margit_shackle: {
