@@ -162,10 +162,40 @@ button:disabled {
 
 #biome-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  padding: 10px 0;
+  gap: 12px;
+
+  overflow-x: auto;
+  padding: 8px 4px 12px;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  /* Optional polish */
+  scrollbar-width: thin;
+}
+
+#biome-list button {
+  flex: 0 0 auto;
+  min-width: 220px;
+
+  scroll-snap-align: start;
+
+  white-space: nowrap;
+}
+
+#biome-selection {
+  position: relative;
+}
+
+#biome-selection::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 40px;
+  bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, #0e0e0e);
 }
 
 /* Style du Biome / Log de combat */
@@ -221,21 +251,62 @@ button:disabled {
   transition: width 0.3s ease-out;
 }
 
-#inventory-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+/* ---------- Tabs ---------- */
+
+.inventory-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.inventory-item {
-  background: var(--card-bg);
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid var(--disabled-btn);
-  font-size: 0.8em;
+.inventory-tab {
+  padding: 6px 12px;
+  border: 1px solid #555;
+  background: transparent;
+  color: #ddd;
   cursor: pointer;
+}
+
+.inventory-tab.active {
+  background: #222;
+  border-color: #aaa;
+}
+
+/* ---------- Tier Accordion ---------- */
+
+.tier-group {
+  border-top: 1px solid #333;
+  margin-bottom: 6px;
+}
+
+.tier-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tier-items {
+  display: none;
+  padding-left: 10px;
+}
+
+.tier-group.open .tier-items {
+  display: block;
+}
+
+/* ---------- Item Row ---------- */
+
+.inventory-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.inventory-item:hover {
+  color: #fff;
 }
 
 .reset-btn {

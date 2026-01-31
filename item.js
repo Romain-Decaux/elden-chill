@@ -13,6 +13,7 @@ export const ITEMS = {
   ============================*/
   fists: {
     name: "poings",
+    tier: 0,
     description: "+5 Force",
     type: ITEM_TYPES.WEAPON,
     applyFlat: (stats, itemLevel) => {
@@ -22,6 +23,7 @@ export const ITEMS = {
 
   rune_fragment: {
     name: "Fragment de Runes",
+    tier: 0,
     type: ITEM_TYPES.ACCESSORY,
     description: "C'es super joli mais pas très utile ...",
     isAlwaysMax: true,
@@ -34,6 +36,7 @@ export const ITEMS = {
   ============================*/
   iron_sword: {
     name: "Épée en Fer",
+    tier: 1,
     description: "+5 Force <em style='color: grey;'>(+ 2 / Niv)</em>",
     type: ITEM_TYPES.WEAPON,
     applyFlat: (stats, itemLevel) => {
@@ -42,6 +45,7 @@ export const ITEMS = {
   },
   crimson_amber: {
     name: "Médaillon d'Ambre",
+    tier: 1,
     type: ITEM_TYPES.ACCESSORY,
     description: "Vigueur  +1 par Niv",
     applyFlat: (stats, itemLevel) => {
@@ -50,6 +54,7 @@ export const ITEMS = {
   },
   leather_vest: {
     name: "Veste en Cuir",
+    tier: 1,
     type: ITEM_TYPES.ARMOR,
     description:
       "Augmente l'armure de 5. <em style='color: grey;'>(+2 par Niv)</em>",
@@ -60,6 +65,7 @@ export const ITEMS = {
   },
   keen_dagger: {
     name: "Dague Afilée",
+    tier: 1,
     type: ITEM_TYPES.WEAPON,
     description: "+5% Chance Crit. <em style='color: grey;'>(+2% par Niv)</em>",
     applyMult: (stats, itemLevel) => {
@@ -68,6 +74,7 @@ export const ITEMS = {
   },
   scholars_ring: {
     name: "Anneau d'Érudit",
+    tier: 1,
     type: ITEM_TYPES.ACCESSORY,
     description: "+5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
     applyFlat: (stats, itemLevel) => {
@@ -76,6 +83,7 @@ export const ITEMS = {
   },
   leather_boots: {
     name: "Bottes de Cuir",
+    tier: 1,
     type: ITEM_TYPES.ARMOR,
     description: "+5 Dextérité <em style='color: grey;'>(+2 / Niv)</em>",
     applyFlat: (stats, itemLevel) => {
@@ -84,6 +92,7 @@ export const ITEMS = {
   },
   kama: {
     name: "Faucille",
+    tier: 1,
     type: ITEM_TYPES.WEAPON,
     description:
       "Une faucille rapide qui inflige 2 Poison. +5 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
@@ -98,6 +107,7 @@ export const ITEMS = {
   ============================*/
   bloodhound_fang: {
     name: "Croc de Limier",
+    tier: 2,
     type: ITEM_TYPES.WEAPON,
     description:
       "+2 Dextérité <em style='color: grey;'>(+2 / Niv)</em>. Convertit 20% de la Dextérité en force bonus. 35% chance d'appliquer 3 saignements.<em style='color: grey;'>(+5% dext scaling par Niv)</em>",
@@ -113,6 +123,7 @@ export const ITEMS = {
 
   margit_shackle: {
     name: "Entraves de Margit",
+    tier: 2,
     type: ITEM_TYPES.ACCESSORY,
     isAlwaysMax: true,
     description: "Vous gagnez 8% de chance d'étourdir l'ennemi",
@@ -121,6 +132,7 @@ export const ITEMS = {
 
   briar_armor: {
     name: "Armure de Ronce",
+    tier: 2,
     type: ITEM_TYPES.ARMOR,
     description:
       "+5  Vigueur  + 1/Niv, Votre armure vous donne épine constament.",
@@ -131,6 +143,7 @@ export const ITEMS = {
   },
   astronomer_staff: {
     name: "Bâton de l'Astronome",
+    tier: 2,
     type: ITEM_TYPES.WEAPON,
     description:
       "Convertit 20% de l'Intelligence en Force et en Dégâts de zone bonus. <em style='color: grey;'>(+5% par Niv)</em>. +7 Intelligence <em style='color: grey;'>(+2 / Niv)</em>",
@@ -145,6 +158,7 @@ export const ITEMS = {
   },
   styptic_boluses: {
     name: "Boluses Styptiques",
+    tier: 2,
     type: ITEM_TYPES.ARMOR,
     description:
       "+5 d'armure <em style='color: grey;'>(+0.5 / Niv)</em>Réduit de moitié les charges de Saignement au début de votre tour.",
@@ -156,6 +170,7 @@ export const ITEMS = {
 
   troll_necklace: {
     name: "Pendentif de Troll",
+    tier: 2,
     type: ITEM_TYPES.ACCESSORY,
     description:
       "+30% de chance d'appliquer 4 poisons. BONUS : Si vous avez 20 Intelligence de base, +2% Crit Chance par Niveau",
@@ -169,6 +184,7 @@ export const ITEMS = {
   },
   knight_greatsword: {
     name: "Grande Épée de Chevalier",
+    tier: 2,
     type: ITEM_TYPES.WEAPON,
     description:
       "+10 Force, -5 Vigueur, +15% Force <em style='color: grey;'>(+4 Force/ Niv)</em>",
@@ -186,6 +202,7 @@ export const ITEMS = {
   ============================*/
   margit_hammer: {
     name: "Marteau de Margit",
+    tier: 3,
     type: ITEM_TYPES.WEAPON,
     description:
       "Requiert 20 Dextérité de base pour être utilisé.+10 Force par level. Donne 20% de Force  (+1% / Niveau), Convertit +100% de la Dextérité en Dégats de zone. Converit 50% de la Dextérité en Force. <em style='color: grey;'>(+5% de chance d'étourdir l'ennemi pendant 2 tours.</em>",
@@ -208,6 +225,7 @@ export const ITEMS = {
 
   burned_dragon_hearth: {
     name: "Cœur de Dragon Brûlé",
+    tier: 3,
     type: ITEM_TYPES.ACCESSORY,
     description:
       "Le coeur de dragon pompe votre vigueur -0.8 / Niveau. Si vous touchez un ennemi brulé, vous vous soignez de 10PV / Niveau",
@@ -233,6 +251,7 @@ export const ITEMS = {
 
   burn_sword: {
     name: "Épée Brûlante",
+    tier: 3,
     type: ITEM_TYPES.WEAPON,
     description:
       "Attaques avec 30% de chance d'infliger 3 Brûlures. +10 Force <em style='color: grey;'>(+3 / Niv)</em>.",
@@ -244,6 +263,7 @@ export const ITEMS = {
 
   piercing_talisman: {
     name: "Sceau de la Grande Brèche",
+    tier: 3,
     type: ITEM_TYPES.ACCESSORY,
     description:
       "Pénétration fixe +5. Gagnez 5% de pénétration d'armure <em style='color: grey;'>(+1% / Niv)</em>",
@@ -257,6 +277,7 @@ export const ITEMS = {
 
   zamor_curved_sword: {
     name: "Épée Courbe de Zamor",
+    tier: 3,
     type: ITEM_TYPES.WEAPON,
     description:
       "Requiert 18 de Force et 15 de Dextérité de base pour être utilisé. +2 de Force et de Dextérité par Niveau. Convertit +6% de la dextérité en Force par Niveau. 25% de chance d'infliger 3 Gelures.",
@@ -277,6 +298,7 @@ export const ITEMS = {
 
   queen_staff: {
     name: "Bâton de la Reine",
+    tier: 3,
     type: ITEM_TYPES.WEAPON,
     description:
       "Vous convertissez 75% de votre inteligence en force bonus. +15 d'intelligence <em style='color: grey;'>(+5 / Niv)</em>",
@@ -291,6 +313,7 @@ export const ITEMS = {
 
   radagon_scarseal: {
     name: "Sceau Meurtri de Radagon",
+    tier: 3,
     type: ITEM_TYPES.ACCESSORY,
     description:
       "Vous gagnez un peu de points dans toutes les stats (+1/Niv) mais perdez 20 d'armure",
@@ -306,6 +329,7 @@ export const ITEMS = {
 
   night_cavalry_armor: {
     name: "Armure de Cavalier de la Nuit",
+    tier: 3,
     type: ITEM_TYPES.ARMOR,
     description:
       "Requiert 40 de vigueur de base pour être utilisé. Une armure sombre qui augmente la Force de 10 (+3 / Niv) et réduit les dégâts subis en augmentant l'Armure de 15 (+5 / Niv). Et donne 15% de chance d'appliquer 2 saignements",
@@ -321,6 +345,7 @@ export const ITEMS = {
 
   sentinel_armor: {
     name: "Armure de Sentinelle",
+    tier: 3,
     type: ITEM_TYPES.ARMOR,
     description:
       "Gagnez +5 vigueur <em style='color: grey;'>(+2 / Niv) et +1 d'armure / Niv</em>",
@@ -332,6 +357,7 @@ export const ITEMS = {
 
   twin_blade: {
     name: "Lames Jumelles",
+    tier: 3,
     type: ITEM_TYPES.WEAPON,
     description:
       "Attaque 2 fois, 35% de chance d'appliquer 3 saignements mais réduit la Force de 60%. <em style='color: grey;'>(Malus réduit de 3% par Niv)</em>",
@@ -346,6 +372,7 @@ export const ITEMS = {
   //========== TIER CAELID
   great_shield: {
     name: "Pavois du Chevalier",
+    tier: 4,
     type: ITEM_TYPES.ARMOR,
     description:
       "Vigueur +30% mais -50% Dextérité. Ajoute 15% de votre Vigueur à votre Force. <em style='color: grey;'>(+3% / Niv)</em>",
@@ -361,6 +388,7 @@ export const ITEMS = {
 
   scavenger_mask: {
     name: "Masque de Pillard",
+    tier: 4,
     type: ITEM_TYPES.ACCESSORY,
     description:
       "Dégâts Crit x2 mais Vigueur -40% <em style='color: grey;'>(+4% Vigueur par Niv)</em>",

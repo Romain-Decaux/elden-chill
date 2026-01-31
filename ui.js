@@ -24,6 +24,7 @@ const dungeonSongs = [
 
 let currentCampSongIndex = Math.floor(Math.random() * campSongs.length);
 let currentDungeonSongIndex = 0;
+let activeInventoryType = "Arme";
 
 const campAudio = new Audio();
 const dungeonAudio = new Audio();
@@ -171,41 +172,52 @@ const updateStatDisplay = () => {
 };
 
 const updateEquipmentDisplay = () => {
-  Object.keys(gameState.equipped).forEach((slotType) => {
-    const itemId = gameState.equipped[slotType];
+  // ---- Equipment slots (weapon / armor / accessory) ----
+  Object.entries(gameState.equipped).forEach(([slotType, itemId]) => {
     const slot = document.getElementById(`slot-${slotType}`);
     if (!slot) return;
-    if (itemId) {
-      const itemInInv = gameState.inventory.find((i) => i.id === itemId);
-      if (itemInInv) {
-        slot.innerText = `${itemInInv.name} (Lv.${itemInInv.level})`;
-        slot.onmouseenter = (e) => showTooltip(e, itemInInv);
-        slot.onmousemove = (e) => moveTooltip(e);
-        slot.onmouseleave = () => hideTooltip();
-        return;
-      }
+
+    if (!itemId) {
+      clearSlot(slot);
+      return;
     }
-    slot.innerText = "Vide";
-    slot.onmouseenter = null;
-    slot.onmousemove = null;
-    slot.onmouseleave = null;
+
+    const itemInInv = gameState.inventory.find((i) => i.id === itemId);
+    if (!itemInInv) {
+      clearSlot(slot);
+      return;
+    }
+
+    slot.innerText = `${itemInInv.name} (Lv.${itemInInv.level})`;
+    slot.onmouseenter = (e) => showTooltip(e, itemInInv);
+    slot.onmousemove = moveTooltip;
+    slot.onmouseleave = hideTooltip;
   });
 
+  // ---- Ash of War slot ----
   const ashSlot = document.getElementById("slot-ash");
-  const equippedAshId = gameState.equippedAsh;
-  if (equippedAshId) {
-    const ashData = ASHES_OF_WAR[equippedAshId];
-    ashSlot.innerText = ashData.name;
-    ashSlot.onmouseenter = (e) => showAshTooltip(e, equippedAshId);
-    ashSlot.onmousemove = (e) => moveTooltip(e);
-    ashSlot.onmouseleave = () => hideTooltip();
-  } else {
-    ashSlot.innerText = "Vide";
-    ashSlot.onmouseenter = null;
-    ashSlot.onmousemove = null;
-    ashSlot.onmouseleave = null;
+  if (!ashSlot) return;
+
+  if (!gameState.equippedAsh) {
+    clearSlot(ashSlot);
+    return;
   }
+
+  const ashData = ASHES_OF_WAR[gameState.equippedAsh];
+  ashSlot.innerText = ashData.name;
+  ashSlot.onmouseenter = (e) => showAshTooltip(e, gameState.equippedAsh);
+  ashSlot.onmousemove = moveTooltip;
+  ashSlot.onmouseleave = hideTooltip;
 };
+
+// ---- Helper ----
+const clearSlot = (slot) => {
+  slot.innerText = "Vide";
+  slot.onmouseenter = null;
+  slot.onmousemove = null;
+  slot.onmouseleave = null;
+};
+
 
 const updateBiomeDisplay = () => {
   const list = document.getElementById("biome-list");
@@ -226,6 +238,8 @@ const updateBiomeDisplay = () => {
 
 const updateInventoryDisplay = () => {
   const invGrid = document.getElementById("inventory-grid");
+  if (!invGrid) return;
+
   invGrid.innerHTML = "";
 
   if (gameState.inventory.length === 0) {
@@ -234,59 +248,112 @@ const updateInventoryDisplay = () => {
     return;
   }
 
-  // 1. Définir l'ordre de tri (Arme > Armure > Accessoire)
-  const typeOrder = {
-    Arme: 1,
-    Armure: 2,
-    Accessoire: 3,
-  };
+  // ---------- Tabs ----------
+  const tabsContainer = document.createElement("div");
+  tabsContainer.className = "inventory-tabs";
 
-  // 2. Trier une copie de l'inventaire
-  const sortedInventory = [...gameState.inventory].sort((a, b) => {
-    const typeA = ITEMS[a.id].type; // On récupère le type via l'ID
-    const typeB = ITEMS[b.id].type;
+  const itemTypes = ["Arme", "Armure", "Accessoire"];
 
-    // Tri par type selon l'ordre défini
-    if (typeOrder[typeA] !== typeOrder[typeB]) {
-      return typeOrder[typeA] - typeOrder[typeB];
+  itemTypes.forEach((type) => {
+    const tab = document.createElement("button");
+    tab.className = "inventory-tab";
+    tab.innerText = type;
+
+    if (type === activeInventoryType) {
+      tab.classList.add("active");
     }
 
-    // Optionnel : trier par niveau si les types sont identiques
-    return b.level - a.level;
+    tab.onclick = () => {
+      activeInventoryType = type;
+      updateInventoryDisplay();
+    };
+
+    tabsContainer.appendChild(tab);
   });
 
-  const typeToSlotKey = {
+  invGrid.appendChild(tabsContainer);
+
+  // ---------- Filter items by active type ----------
+  const filteredItems = gameState.inventory
+    .map((item) => ({ ...item, data: ITEMS[item.id] }))
+    .filter((item) => item.data.type === activeInventoryType);
+
+  if (filteredItems.length === 0) {
+    invGrid.innerHTML +=
+      '<div style="color: grey; margin-top: 10px;">Aucun objet de ce type</div>';
+    return;
+  }
+
+  // ---------- Group by tier ----------
+  const itemsByTier = {};
+  filteredItems.forEach((item) => {
+    if (!itemsByTier[item.data.tier]) {
+      itemsByTier[item.data.tier] = [];
+    }
+    itemsByTier[item.data.tier].push(item);
+  });
+
+  const slotKeyByType = {
     Arme: "weapon",
     Armure: "armor",
     Accessoire: "accessory",
   };
 
-  // 3. On utilise sortedInventory au lieu de gameState.inventory pour l'affichage
-  sortedInventory.forEach((item) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "inventory-item";
+  const equippedSlotKey = slotKeyByType[activeInventoryType];
+  const equippedItemId = gameState.equipped[equippedSlotKey];
 
-    const itemData = ITEMS[item.id];
-    const slotKey = typeToSlotKey[itemData.type];
+  // ---------- Render tiers ----------
+  Object.keys(itemsByTier)
+    .map(Number)
+    .sort((a, b) => b - a)
+    .forEach((tier, index, arr) => {
+      const tierGroup = document.createElement("div");
+      tierGroup.className = "tier-group";
 
-    if (slotKey) {
-      itemDiv.classList.add(`item-type-${slotKey}`);
-    }
+      // Auto-open highest tier
+      if (tier === Math.max(...arr)) {
+        tierGroup.classList.add("open");
+      }
 
-    const currentlyEquippedId = gameState.equipped[slotKey];
-    if (currentlyEquippedId && currentlyEquippedId === item.id) {
-      itemDiv.classList.add("equipped-highlight"); // Ajoute un style pour l'objet équipé
-    }
+      const header = document.createElement("div");
+      header.className = "tier-header";
+      header.innerText = `Tier ${tier}`;
 
-    const progressText =
-      item.level >= 10 ? "MAX" : `(${item.count}/${item.level})`;
-    itemDiv.innerHTML = `<strong>${item.name}</strong><br>Niv.${item.level}<br>${progressText}`;
-    attachTooltipEvents(itemDiv, item);
+      const itemsContainer = document.createElement("div");
+      itemsContainer.className = "tier-items";
 
-    itemDiv.onclick = () => equipItem(item.id);
-    invGrid.appendChild(itemDiv);
-  });
+      itemsByTier[tier].forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "inventory-item";
+
+        if (item.id === equippedItemId) {
+          row.classList.add("equipped-highlight");
+        }
+
+        const progressText =
+          item.level >= 10 ? "MAX" : `(${item.count}/${item.level})`;
+
+        row.innerHTML = `
+          <strong>${item.name}</strong>
+          <small>Niv.${item.level} ${progressText}</small>
+        `;
+
+        attachTooltipEvents(row, item);
+        row.onclick = () => equipItem(item.id);
+
+        itemsContainer.appendChild(row);
+      });
+
+      header.onclick = () => {
+        tierGroup.classList.toggle("open");
+      };
+
+      tierGroup.appendChild(header);
+      tierGroup.appendChild(itemsContainer);
+      invGrid.appendChild(tierGroup);
+    });
 };
+
 
 export const updateStatusIcons = () => {
   const pContainer = document.getElementById("player-status-container");
@@ -721,18 +788,24 @@ export const setAudioListener = () => {
 // ui.js
 
 const attachTooltipEvents = (element, itemOrId, isAsh = false) => {
-  // 1. Pour PC : Le hover classique
-  element.onmouseenter = (e) =>
-    isAsh ? showAshTooltip(e, itemOrId) : showTooltip(e, itemOrId);
-  element.onmouseleave = () => hideTooltip();
-  element.onmousemove = (e) => moveTooltip(e);
+  let pressTimer;
 
-  // 2. Pour Mobile (et PC au clic) : Appuyer pour afficher, relâcher pour cacher
+  const show = (e) => (isAsh ? showAshTooltip(e, itemOrId) : showTooltip(e, itemOrId));
+  const hide = () => hideTooltip();
+
+  // PC hover
+  element.onmouseenter = show;
+  element.onmousemove = (e) => { moveTooltip(e); };
+  element.onmouseleave = hide;
+
+  // Mobile / touch: long press
   element.onpointerdown = (e) => {
-    // Empêche le clic droit ou les menus contextuels mobiles de gêner
-    isAsh ? showAshTooltip(e, itemOrId) : showTooltip(e, itemOrId);
+    pressTimer = setTimeout(() => show(e), 300); // 500ms hold
   };
+  element.onpointerup = () => { clearTimeout(pressTimer); hide(); };
+  element.onpointercancel = () => { clearTimeout(pressTimer); hide(); };
 
-  element.onpointerup = () => hideTooltip();
-  element.onpointercancel = () => hideTooltip(); // Si le doigt glisse hors de l'écran
+  // Click for equip remains
+  element.onclick = () => equipItem(itemOrId.id || itemOrId);
 };
+
