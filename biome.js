@@ -82,7 +82,6 @@ export const BIOMES = {
     monsters: ["kaiden_sellsword", "godrick_knight1"],
     boss: "bloodhound_knight_darriwil",
     length: 12,
-    unlocks: null,
     unlocks: ["weeping_peninsula", "caelid_west"],
   },
   limgrave_north: {
