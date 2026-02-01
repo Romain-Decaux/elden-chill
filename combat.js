@@ -574,6 +574,15 @@ export const combatLoop = (sessionId) => {
             gameState.ennemyEffects,
           );
 
+          if (runtimeState.currentEnemyGroup[0].hp <= 0) {
+            ActionLog(
+              `${runtimeState.currentEnemyGroup[0].name} succombe à ses blessures !`,
+            );
+            updateHealthBars();
+            setTimeout(continueCombat, 500);
+            return;
+          }
+
           if (enemyStatus.logMessages.length > 0) {
             enemyStatus.logMessages.forEach((msg) =>
               ActionLog(msg, "log-status"),

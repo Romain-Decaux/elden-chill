@@ -48,7 +48,81 @@ export const ITEM_SETS = {
       },
     },
   },
+
+  MARIONETTE_MASTER: {
+    name: "Tenue du Marionnettiste",
+    bonuses: {
+      2: {
+        desc: "Jointures Souples : Dextérité totale +15%.",
+        effect: (stats) => {
+          stats.dexterity *= 1.15;
+        },
+      },
+      3: {
+        desc: "Frénésie : Gagnez +1 Attaque par tour.",
+        effect: (stats) => {
+          stats.attacksPerTurn += 1;
+        },
+      },
+    },
+  },
+
+  ACADEMY_PRIME: {
+    name: "Maîtrise de l'Académie",
+    bonuses: {
+      2: {
+        desc: "Érudition : Intelligence totale +20%.",
+        effect: (stats) => {
+          stats.intelligence *= 1.2;
+        },
+      },
+      3: {
+        desc: "Marteau de Haima : Convertit 80% de votre Intelligence totale en Force. Et votre Armure augmente de 20% de votre Intelligence totale.",
+        effect: (stats) => {
+          stats.strength += Math.floor(stats.intelligence * 0.8);
+          stats.armor += Math.floor(stats.intelligence * 0.2);
+        },
+      },
+    },
+  },
+
+  MARSH_WARDEN: {
+    name: "Panoplie du Gardien des Marais",
+    bonuses: {
+      2: {
+        desc: "Constitution de Fer : Convertit 20% de votre Vigueur totale en Force.",
+        effect: (stats) => {
+          stats.strength += Math.floor(stats.vigor * 0.2);
+        },
+      },
+      3: {
+        desc: "Force Tellurique : Convertit 10% de votre Vigueur totale en Armure.",
+        effect: (stats) => {
+          stats.armor += Math.floor(stats.vigor * 0.1);
+        },
+      },
+    },
+  },
+
+  CRYSTAL_BULWARK: {
+    name: "Set du Rempart de Cristal",
+    bonuses: {
+      2: {
+        desc: "Impact Lourd : Force totale +15%.",
+        effect: (stats) => {
+          stats.strength *= 1.15;
+        },
+      },
+      3: {
+        desc: "Gravité Cristalline : Convertit 50% de votre Force totale en Armure.",
+        effect: (stats) => {
+          stats.armor += Math.floor(stats.strength * 0.5);
+        },
+      },
+    },
+  },
 };
+
 export const ITEMS = {
   /*===========================
             TIER 0
@@ -129,12 +203,12 @@ export const ITEMS = {
     name: "Faucille",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Une faucille rapide qui inflige 2 Poison <small>dégats du poison = 1% PV max de la cible + 50% Int</small>. +5 Intelligence, +1% d'intelligence par niveau",
+      "Une lame rapide. Ajoute 30% de votre Intelligence à votre Force. Inflige 2 Poison (1% PV Max + 50% Int). +5 d'Inelligence",
     applyFlat: (stats, itemLevel) => {
       stats.intelligence += 5;
     },
     applyMult: (stats, itemLevel) => {
-      stats.intelligence *= 1 + 0.01 * itemLevel;
+      stats.strength += Math.floor(stats.intelligence * 0.3);
     },
     onHitEffect: { id: "POISON", duration: 2, chance: 1 },
   },
@@ -635,6 +709,7 @@ export const ITEMS = {
   winged_sword_insignia: {
     name: "Insigne de l'Épée Ailée",
     type: ITEM_TYPES.ACCESSORY,
+    set: "MARIONETTE_MASTER",
     description:
       "Dextérité +10%. Augmente vos Dégâts Critiques de 0.1x pour chaque tranche de 10 points de Dextérité de BASE. (+0.02x / Niv)",
     applyMult: (stats, itemLevel) => {
@@ -707,18 +782,27 @@ export const ITEMS = {
       }
     },
   },
+  // -----
 
   carian_glintstone_staff: {
     name: "Bâton de Pierre d'Éclat Carien",
     set: "CARIAN_KNIGHT",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Int +15%. Vos coups critiques augmentent désormais votre Intelligence totale de 20% pour le reste du combat.",
+      "Int +15%. +60% de votre intelligenc en force. Vous drainez la vie des ennemis. Vous soigne de 10% de votre Intelligence totale à chaque coup. (+3% / Niveau).",
     applyMult: (stats, itemLevel) => {
-      stats.intelligence *= 1.15 + 0.01 * itemLevel;
+      stats.intelligence = Math.floor(stats.intelligence * 1.15);
+      stats.strength += Math.floor(stats.intelligence * 0.6);
     },
     funcOnHit: (stats, targetEffects, itemLevel) => {
-      // Logique de boost temporaire si besoin, ou passif simple
+      if (!itemLevel) return;
+      const heal = Math.floor(stats.intelligence * (0.1 + 0.03 * itemLevel));
+      const maxHp = getHealth(stats.vigor);
+      runtimeState.playerCurrentHp = Math.min(
+        maxHp,
+        runtimeState.playerCurrentHp + heal,
+      );
+      ActionLog(`Siphon Carien : +${heal} PV`, "log-heal");
     },
   },
 
@@ -771,6 +855,172 @@ export const ITEMS = {
     applyMult: (stats, itemLevel) => {
       stats.dexterity *= 1.1;
       stats.critDamage += 0.1 * itemLevel;
+    },
+  },
+
+  // --- ITEM DE DRAGON (SAMARAG) ---
+  glintstone_dragon_heart: {
+    name: "Cœur de Dragon d'Éclat",
+    type: ITEM_TYPES.ACCESSORY,
+    isAlwaysMax: true,
+    description:
+      "La faim de Smarag : Convertit 100% de votre Intelligence totale en Force. Cependant, la magie pèse sur votre corps : -20% Vigueur.",
+    applyFlat: (stats, itemLevel) => {
+      const intPower = stats.intelligence;
+      stats.strength += Math.floor(intPower * (1 + 0.05 * itemLevel));
+      stats.vigor *= 0.8;
+    },
+  },
+
+  // --- SET DE L'ACADÉMIE ---
+  academy_glintstone_staff: {
+    name: "Bâton d'Éclat de l'Académie",
+    type: ITEM_TYPES.WEAPON,
+    set: "ACADEMY_PRIME",
+    description:
+      "Intelligence +15%. Vos sorts ignorent 20% de l'armure (+1% / Niv). Ajoute 20% de l'Int à la Force. (+1% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.intelligence *= 1.15;
+      stats.percentDamagePenetration += 0.2 + 0.01 * itemLevel;
+      stats.strength += Math.floor(
+        stats.intelligence * (0.2 + 0.01 * itemLevel),
+      );
+    },
+  },
+
+  raya_lucaria_robe: {
+    name: "Robe d'Érudit de Raya Lucaria",
+    type: ITEM_TYPES.ARMOR,
+    set: "ACADEMY_PRIME",
+    description:
+      "Intelligence +10% et Vigueur +10%. Réduit les dégâts de Poison et de Brûlure.",
+    applyMult: (stats, itemLevel) => {
+      stats.intelligence *= 1.1;
+      stats.vigor *= 1.1;
+    },
+    passiveStatusReduction: (playerEffects, itemLevel) => {
+      playerEffects.forEach((eff) => {
+        if (eff.id === "POISON" || eff.id === "BURN") {
+          if (Math.random() < 0.2) {
+            eff.duration = Math.max(0, eff.duration - 1);
+            ActionLog(
+              `Robe de Raya Lucaria : Résistance élémentaire activée ! (-1 ${eff.id})`,
+              "log-heal",
+            );
+          }
+        }
+      });
+      return playerEffects;
+    },
+  },
+
+  karolos_mask: {
+    name: "Masque de Pierre d'Éclat de Karolos",
+    type: ITEM_TYPES.ACCESSORY,
+    set: "ACADEMY_PRIME",
+    description:
+      "Intelligence +15%. Augmente vos chances de coup critique de 5% (+0.5% / Niv).",
+    applyMult: (stats, itemLevel) => {
+      stats.intelligence *= 1.15;
+      stats.critChance += 0.05 + 0.005 * itemLevel;
+    },
+  },
+
+  // --- ITEMS VIGUEUR rares liurnia E et W---
+  marsh_great_hammer: {
+    name: "Grand Marteau des Marais",
+    type: ITEM_TYPES.WEAPON,
+    set: "MARSH_WARDEN",
+    description:
+      "Vigueur +15%. Ajoute 20% de votre Vigueur à votre Force. (+1% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.vigor *= 1.15;
+      stats.strength += Math.floor(stats.vigor * (0.2 + 0.01 * itemLevel));
+    },
+  },
+  lobster_shell_plate: {
+    name: "Plastron de Carapace de Homard",
+    type: ITEM_TYPES.ARMOR,
+    set: "MARSH_WARDEN",
+    description:
+      "Vigueur +15%. Réduit de 1 les charges de Poison au début de votre tour.",
+    applyMult: (stats, itemLevel) => {
+      stats.vigor *= 1.15;
+    },
+    passiveStatusReduction: (playerEffects, itemLevel) => {
+      if (playerEffects.some((eff) => eff.id === "POISON")) {
+        playerEffects.forEach((eff) => {
+          if (eff.id === "POISON") {
+            eff.duration = Math.max(0, eff.duration - 1);
+            ActionLog(
+              "Plastron de Homard : Le poison est filtré ! (-1 charge)",
+              "log-heal",
+            );
+          }
+        });
+      }
+      return playerEffects;
+    },
+  },
+
+  // --- ITEMS FORCE (Liurnia Est/Ouest) ---
+  carian_crusher: {
+    name: "Broyeur Carien",
+    type: ITEM_TYPES.WEAPON,
+    set: "CRYSTAL_BULWARK",
+    description: "Force +15%. Ignore 20% de l'armure ennemie. (+1% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.strength *= 1.15;
+      stats.percentDamagePenetration += 0.2 + 0.01 * itemLevel;
+    },
+  },
+  heavy_crystal_gauntlets: {
+    name: "Gantelets de Cristal Massif",
+    type: ITEM_TYPES.ACCESSORY,
+    set: "CRYSTAL_BULWARK",
+    description:
+      "Force +10%. Vous avez 20% de chance de vous appliquer 1 épine (+0.5 durée / Niveau).",
+    applyMult: (stats, itemLevel) => {
+      stats.strength *= 1.1;
+    },
+    funcOnHit: (stats, targetEffects, itemLevel) => {
+      if (Math.random() < 0.2) {
+        const duration = 1 + Math.floor(0.5 * (itemLevel - 1));
+        applyEffect(gameState.playerEffects, "THORNS", duration);
+        ActionLog(
+          `Gantelets de Cristal : Épines activées (${duration} tours) !`,
+          "log-status",
+        );
+      }
+    },
+  },
+
+  bog_amulet: {
+    name: "Amulette de la Tourbière",
+    type: ITEM_TYPES.ACCESSORY,
+    set: "MARSH_WARDEN",
+    description:
+      "Vigueur +10%. La pression du marais renforce vos coups : chaque point de Vigueur de base ajoute 0.25 à votre Pénétration d'Armure Fixe. (+0.05 / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.vigor *= 1.1;
+      const baseVig = gameState.stats.vigor || 0;
+      stats.flatDamagePenetration += Math.floor(
+        baseVig * (0.25 + 0.05 * itemLevel),
+      );
+    },
+  },
+
+  crystal_crust_armor: {
+    name: "Armure de Croûte Cristalline",
+    type: ITEM_TYPES.ARMOR,
+    set: "CRYSTAL_BULWARK",
+    description:
+      "Force +10%. Votre armure est si dense qu'elle augmente votre Force totale de 5% si vous avez plus de 150 d'Armure. (+1% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.strength *= 1.1;
+      if (stats.armor > 150) {
+        stats.strength *= 1.05 + 0.01 * itemLevel;
+      }
     },
   },
 };

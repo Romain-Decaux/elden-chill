@@ -69,6 +69,24 @@ export const LOOT_TABLES = {
     { id: "icerind_hatchet", chance: 0.25 },
     { id: "black_knife_gauntlets", chance: 0.35 },
   ],
+  raya_lucaria_academy: [
+    { id: "academy_glintstone_staff", chance: 0.3 },
+    { id: "carian_crusher", chance: 0.3 },
+    { id: "karolos_mask", chance: 0.4 },
+  ],
+  liurnia_west: [
+    { id: "raya_lucaria_robe", chance: 0.4 },
+    { id: "heavy_crystal_gauntlets", chance: 0.3 },
+    { id: "crystal_crust_armor", chance: 0.3 },
+  ],
+
+  liurnia_east: [
+    { id: "crystal_crust_armor", chance: 0.5 },
+    { id: "carian_crusher", chance: 0.5 },
+    { id: "bog_amulet", chance: 0.4 },
+  ],
+
+  liurnia_marsh: [{ id: "glintstone_dragon_heart", chance: 1 }],
 };
 
 export const BIOMES = {
@@ -171,35 +189,37 @@ export const BIOMES = {
     monsters: ["clayman", "raya_sorcerer"],
     boss: "red_wolf_radagon",
     length: 14,
-    unlocks: null,
-    // unlocks: ["liurnia_east", "liurnia_west"],
+    unlocks: ["liurnia_east", "liurnia_west", "liurnia_marsh"],
   },
+
+  liurnia_marsh: {
+    name: "Marais de Liurnia",
+    rareMonsters: ["giant_lobster"],
+    maxRareSpawns: 5,
+    monsters: ["clayman"],
+    boss: "liurnia_dragon_smarag",
+    length: 12,
+    unlocks: null,
+  },
+
   liurnia_east: {
-    name: "WIP Liurnia des Lacs - Est",
-    rareMonsters: [""],
-    maxRareSpawns: 1,
-    monsters: ["", ""],
-    boss: "",
-    length: 12,
-    unlocks: ["ainsel_river"],
+    name: "Liurnia des Lacs (Est)",
+    monsters: ["raya_sorcerer", "marionette_soldier"],
+    rareMonsters: ["abductor_virgin", "fingercreeper_large"],
+    maxRareSpawns: 3,
+    boss: "bell_bearing_hunter_liurnia",
+    length: 13,
+    unlocks: ["raya_lucaria_academy"],
   },
-  ainsel_river: {
-    name: "WIP Rivière Ainsel",
-    rareMonsters: [""],
-    maxRareSpawns: 1,
-    monsters: ["", ""],
-    boss: "",
-    length: 12,
-    unlocks: null,
-  },
+
   liurnia_west: {
-    name: "WIP Liurnia des Lacs - Ouest",
-    rareMonsters: [""],
-    maxRareSpawns: 1,
-    monsters: ["", ""],
-    boss: "",
-    length: 12,
-    unlocks: ["caria_mansion", "raya_lucaria_academy"],
+    name: "Liurnia des Lacs (Ouest)",
+    monsters: ["marionette_soldier", "raya_sorcerer"],
+    rareMonsters: ["abductor_virgin", "fingercreeper_large"],
+    maxRareSpawns: 3,
+    boss: "carian_knight_bols",
+    length: 13,
+    unlocks: ["raya_lucaria_academy"],
   },
   caria_mansion: {
     name: "WIP Manoir de Caria",
@@ -211,13 +231,14 @@ export const BIOMES = {
     unlocks: ["siofra_river"],
   },
   raya_lucaria_academy: {
-    name: "WIP Académie de Raya Lucaria",
-    rareMonsters: [""],
-    maxRareSpawns: 1,
-    monsters: ["clayman", "sorcerer"],
+    name: "Académie de Raya Lucaria",
+    rareMonsters: ["living_jar_large"],
+    maxRareSpawns: 2,
+    monsters: ["marionette_soldier", "raya_sorcerer"],
     boss: "rennala",
     length: 18,
     unlocks: null,
+    // unlocks: ["altus_plateau"],
   },
   siofra_river: {
     name: "WIP Rivière Siofra",
@@ -227,7 +248,15 @@ export const BIOMES = {
     boss: "",
     length: 12,
   },
-
+  ainsel_river: {
+    name: "WIP Rivière Ainsel",
+    rareMonsters: [""],
+    maxRareSpawns: 1,
+    monsters: ["", ""],
+    boss: "",
+    length: 12,
+    unlocks: null,
+  },
   redmane_castle: {
     name: "Château du Lion rouge",
     monsters: ["rotten_stray", "giant_crow"],
