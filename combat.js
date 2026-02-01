@@ -405,17 +405,20 @@ export const combatLoop = (sessionId) => {
     Object.values(gameState.equipped).forEach((itemId) => {
       const item = ITEMS[itemId];
       if (item?.passiveStatusReduction) {
+        const effectsBefore = JSON.stringify(gameState.playerEffects);
         gameState.playerEffects = item.passiveStatusReduction(
           gameState.playerEffects,
           item.level,
         );
-        reductionHappened = true;
+        if (effectsBefore !== JSON.stringify(gameState.playerEffects)) {
+          reductionHappened = true;
+        }
       }
     });
     updateHealthBars();
     updateUI();
 
-    let delay = reductionHappened ? 1000 : 0;
+    let delay = reductionHappened ? 500 : 0;
     setTimeout(() => {
       const playerStatus = processTurnEffects(
         playerObj,
