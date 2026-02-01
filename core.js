@@ -171,10 +171,24 @@ export const handleVictory = (sessionId) => {
       }
     }
 
-    const loot = LOOT_TABLES[gameState.world.currentBiome];
-    if (loot) {
-      const rolled = getWeightedDrop(loot);
-      dropItem(rolled.id);
+    const currentLootTable = LOOT_TABLES[gameState.world.currentBiome];
+    if (currentLootTable) {
+      const eligibleLoot = currentLootTable.filter((lootItem) => {
+        const inventoryItem = gameState.inventory.find(
+          (i) => i.id === lootItem.id,
+        );
+        return !inventoryItem || inventoryItem.level < 10;
+      });
+
+      let itemToDrop;
+      if (eligibleLoot.length > 0) {
+        const rolled = getWeightedDrop(eligibleLoot);
+        itemToDrop = rolled.id;
+      } else {
+        itemToDrop = "rune_fragment";
+      }
+
+      dropItem(itemToDrop);
       saveGame();
     }
 

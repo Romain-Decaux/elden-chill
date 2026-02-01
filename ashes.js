@@ -73,7 +73,7 @@ export const ASHES_OF_WAR = {
     effect: (stats, enemy) => {
       return {
         damageMult: 1.5,
-        status: { id: "FROSTBITE", stacks: 5 },
+        status: { id: "FROSTBITE", duration: 5 },
         msg: "Une vague de givre se propage au sol !",
       };
     },
