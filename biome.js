@@ -63,6 +63,12 @@ export const LOOT_TABLES = {
     { id: "sage_caelid_robe", chance: 0.3 },
     { id: "winged_sword_insignia", chance: 0.35 },
   ],
+  liurnia_south: [
+    { id: "carian_glintstone_staff", chance: 0.25 },
+    { id: "moon_of_nokstella", chance: 0.15 },
+    { id: "icerind_hatchet", chance: 0.25 },
+    { id: "black_knife_gauntlets", chance: 0.35 },
+  ],
 };
 
 export const BIOMES = {
@@ -141,7 +147,7 @@ export const BIOMES = {
     monsters: ["stormveil_hawk"],
     boss: "godrick",
     length: 6,
-    unlocks: null,
+    unlocks: ["liurnia_south"],
   },
 
   caelid_west: {
@@ -159,13 +165,14 @@ export const BIOMES = {
     Tier 4
   ============================*/
   liurnia_south: {
-    name: "WIP Liurnia des Lacs - Sud",
-    rareMonsters: [""],
-    maxRareSpawns: 1,
-    monsters: ["clayman", "sorcerer"],
-    boss: "rennala",
-    length: 18,
-    unlocks: ["liurnia_east", "liurnia_west"],
+    name: "Liurnia des Lacs (Sud)",
+    rareMonsters: ["giant_lobster"],
+    maxRareSpawns: 3,
+    monsters: ["clayman", "raya_sorcerer"],
+    boss: "red_wolf_radagon",
+    length: 14,
+    unlocks: null,
+    // unlocks: ["liurnia_east", "liurnia_west"],
   },
   liurnia_east: {
     name: "WIP Liurnia des Lacs - Est",

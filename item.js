@@ -8,6 +8,47 @@ export const ITEM_TYPES = {
   ACCESSORY: "Accessoire",
 };
 
+// item.js
+
+export const ITEM_SETS = {
+  CARIAN_KNIGHT: {
+    name: "Panoplie du Chevalier Carien",
+    bonuses: {
+      2: {
+        desc: "Intelligence totale +10%.",
+        effect: (stats) => {
+          stats.intelligence *= 1.1;
+        },
+      },
+      3: {
+        desc: "Intelligence totale +20% et Chance Crit +10%.",
+        effect: (stats) => {
+          stats.intelligence *= 1.2;
+          stats.critChance += 0.1;
+        },
+      },
+    },
+  },
+
+  FROST_ASSASSIN: {
+    name: "Set de l'Assassin de Givre",
+    bonuses: {
+      2: {
+        desc: "Dextérité totale +10%.",
+        effect: (stats) => {
+          stats.dexterity *= 1.1;
+        },
+      },
+      3: {
+        desc: "50% de la Dex convertie en Force et +0.2x Dégâts Crit.",
+        effect: (stats) => {
+          stats.strength += Math.floor(stats.dexterity * 0.5);
+          stats.critDamage += 0.2;
+        },
+      },
+    },
+  },
+};
 export const ITEMS = {
   /*===========================
             TIER 0
@@ -169,11 +210,15 @@ export const ITEMS = {
     name: "Pendentif de Troll",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "+45% de chance d'appliquer 3 poisons. BONUS : Si vous avez 20 Intelligence de base, +2% Crit Chance par Niveau",
+      "Intelligence +5 et 45% de chance d'appliquer 3 poison. Si vous avez 20 Intelligence de base, vous gagnez en précision : +1% Chance Crit par tranche de 10 Int de base. (+0.5% / Niv)",
     applyFlat: (stats, itemLevel) => {
+      stats.intelligence += 5;
+    },
+    applyMult: (stats, itemLevel) => {
       const baseInt = gameState.stats.intelligence || 0;
       if (baseInt >= 20) {
-        stats.critChance += 0.02 * itemLevel;
+        const critBonus = Math.floor(baseInt / 10) * 0.01 + 0.005 * itemLevel;
+        stats.critChance += critBonus;
       }
     },
     onHitEffect: { id: "POISON", duration: 3, chance: 0.45 },
@@ -264,7 +309,7 @@ export const ITEMS = {
     applyFlat: (stats, itemLevel) => {
       const baseStr = gameState.stats.strength || 0;
       const baseDex = gameState.stats.dexterity || 0;
-      if (baseStr >= 18 && baseDex >= 15) {
+      if (baseStr >= 15 && baseDex >= 18) {
         stats.strength *= 1 + 0.01 * itemLevel;
         stats.dexterity *= 1 + 0.02 * itemLevel;
       }
@@ -273,7 +318,7 @@ export const ITEMS = {
       const baseStr = gameState.stats.strength || 0;
       const baseDex = gameState.stats.dexterity || 0;
       const ratio = 0.04 * itemLevel;
-      if (baseStr >= 18 && baseDex >= 15) {
+      if (baseStr >= 15 && baseDex >= 18) {
         stats.strength += Math.floor(ratio * stats.dexterity);
       }
     },
@@ -401,12 +446,12 @@ export const ITEMS = {
     name: "Cape du Chasseur",
     type: ITEM_TYPES.ARMOR,
     description:
-      "Requiert 10 de dextérité de base. Pour chaque tranche de 10 points de dextérité de BASE -> +5% de Chance de Critique . Augmente votre armure de 10% (+1% / Niv)",
+      "Requiert 10 Dex. +5% Armure (+0.5% / Niv). Chaque tranche de 10 Dex de base offre +3% Chance Crit.",
     applyFlat: (stats, itemLevel) => {
       const baseDex = gameState.stats.dexterity || 0;
       if (baseDex >= 10) {
-        stats.armor *= 1.1 + 0.01 * itemLevel;
-        stats.critChance += 0.05 * Math.floor(baseDex / 10);
+        stats.armor *= 1.05 + 0.005 * itemLevel;
+        stats.critChance += 0.03 * Math.floor(baseDex / 10);
       }
     },
   },
@@ -415,14 +460,12 @@ export const ITEMS = {
     name: "Veste de l'Alchimiste",
     type: ITEM_TYPES.ARMOR,
     description:
-      "Requiert 20 Intelligence de base. Vous gagnez 10% (+2%/Niv) de votre intelligence de base en vigueur. Vos sorts se divisent ! -30% d'Intelligence de base convertis en dégats de zone",
+      "Requiert 20 Intelligence de base. Ajoute 15% (+2% / Niveau) de votre Int de base à votre Vigueur. Vos sorts se divisent : 30% de l'Int de base devient des Dégâts de zone.",
     applyFlat: (stats, itemLevel) => {
       const baseInt = gameState.stats.intelligence || 0;
       if (baseInt >= 20) {
-        stats.intelligence -= Math.floor(baseInt * 0.3);
-        stats.vigor += Math.floor((0.1 + 0.02 * itemLevel) * baseInt);
-        const bonus = Math.floor(0.3 * baseInt);
-        stats.splashDamage += bonus;
+        stats.vigor += Math.floor((0.15 + 0.02 * itemLevel) * baseInt);
+        stats.splashDamage += Math.floor(0.3 * baseInt);
       }
     },
   },
@@ -563,13 +606,13 @@ export const ITEMS = {
   snail_slime_mantle: {
     name: "Manteau de Cristal",
     type: ITEM_TYPES.ARMOR,
+    set: "FROST_ASSASSIN",
     description:
-      "Dextérité +15%. Pour chaque tranche de 10 points de Dextérité de BASE, gagnez +1% de Chance de Critique. (+0.5% / Niv)",
+      "Dextérité +15%. La finesse ignore l'armure : +1 Pénétration Fixe par tranche de 10 Dex de base. (+1 / Niv)",
     applyMult: (stats, itemLevel) => {
       stats.dexterity *= 1.15;
       const baseDex = gameState.stats.dexterity || 0;
-      const critBonus = Math.floor(baseDex / 10) * 0.01 + 0.005 * itemLevel;
-      stats.critChance += critBonus;
+      stats.flatDamagePenetration += Math.floor(baseDex / 10) + itemLevel;
     },
   },
 
@@ -620,11 +663,11 @@ export const ITEMS = {
     name: "Graine de Vermillon",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "Requiert 42 de Vigueur. +15% Vigueur (+1% / Niv). Vous soigne de 3% de vos PV Max à chaque coup porté.",
+      "Requiert 42 de Vigueur. +10% Vigueur (+1% / Niv). Vous soigne de 1% de vos PV Max à chaque coup porté.",
     applyMult: (stats, itemLevel) => {
       const baseVig = gameState.stats.vigor || 0;
       if (baseVig >= 42) {
-        stats.vigor *= 1.15 + 0.01 * (itemLevel - 1);
+        stats.vigor *= 1.1 + 0.01 * (itemLevel - 1);
       }
     },
     funcOnHit: (stats, targetEffects, itemLevel) => {
@@ -632,7 +675,7 @@ export const ITEMS = {
       const baseVig = gameState.stats.vigor || 0;
       if (baseVig < 42) return;
 
-      const heal = Math.floor(getHealth(stats.vigor) * 0.03);
+      const heal = Math.floor(getHealth(stats.vigor) * 0.01);
       runtimeState.playerCurrentHp = Math.min(
         getHealth(stats.vigor),
         runtimeState.playerCurrentHp + heal,
@@ -651,14 +694,83 @@ export const ITEMS = {
     name: "Plume de Faucon de Tempête",
     type: ITEM_TYPES.ACCESSORY,
     description:
-      "Une plume imprégnée de vents ancestraux. Augmente vos dégâts finaux de 25% contre les ennemis de type 'Greffé'. +5% Dextérité par Niveau.",
+      "Vents de tempête : +2% Str, Dex et Int par Niveau. +25% dégâts contre les 'Greffés'.",
     applyMult: (stats, itemLevel) => {
-      stats.dexterity *= 1 + 0.05 * itemLevel;
+      const mult = 1 + 0.02 * itemLevel;
+      stats.dexterity *= mult;
+      stats.strength *= mult;
+      stats.intelligence *= mult;
     },
     funcOnHit: (stats, targetEffects, itemLevel) => {
       if (runtimeState.currentEnemyGroup[0]?.name.includes("Greffé")) {
-        runtimeState.nextAtkMultBonus += 0.25;
+        runtimeState.nextAtkMultBonus = 1.25;
       }
+    },
+  },
+
+  carian_glintstone_staff: {
+    name: "Bâton de Pierre d'Éclat Carien",
+    set: "CARIAN_KNIGHT",
+    type: ITEM_TYPES.WEAPON,
+    description:
+      "Int +15%. Vos coups critiques augmentent désormais votre Intelligence totale de 20% pour le reste du combat.",
+    applyMult: (stats, itemLevel) => {
+      stats.intelligence *= 1.15 + 0.01 * itemLevel;
+    },
+    funcOnHit: (stats, targetEffects, itemLevel) => {
+      // Logique de boost temporaire si besoin, ou passif simple
+    },
+  },
+
+  moon_of_nokstella: {
+    name: "Lune de Nokstella",
+    type: ITEM_TYPES.ACCESSORY,
+    set: "CARIAN_KNIGHT",
+    description:
+      "Intelligence +10%. Chaque tranche de 10 points d'Int de BASE augmente vos Dégâts de Zone (Splash) de 15%. (+2% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.intelligence *= 1.1;
+      const baseInt = gameState.stats.intelligence || 0;
+      const splashMult = Math.floor(baseInt / 10) * 0.15 + 0.02 * itemLevel;
+      stats.splashDamage *= 1 + splashMult;
+    },
+  },
+
+  carian_knight_armor: {
+    name: "Armure de Chevalier Carien",
+    set: "CARIAN_KNIGHT",
+    type: ITEM_TYPES.ARMOR,
+    description:
+      "Vigueur +15%. Ajoute 10% de votre Intelligence totale à votre Armure physique. (+2% / Niv)",
+    applyMult: (stats, itemLevel) => {
+      stats.vigor *= 1.15;
+      const intToArmor = stats.intelligence * (0.1 + 0.02 * itemLevel);
+      stats.armor += Math.floor(intToArmor);
+    },
+  },
+
+  icerind_hatchet: {
+    name: "Hachette de Givre",
+    type: ITEM_TYPES.WEAPON,
+    set: "FROST_ASSASSIN",
+    description:
+      "Dextérité +15%. Vos attaques ignorent 10% de l'armure adverse (+1% / Niveau). Applique 2 Gelures (35% chance).",
+    applyMult: (stats, itemLevel) => {
+      stats.dexterity *= 1.15;
+      stats.percentDamagePenetration += 0.1 + 0.01 * itemLevel;
+    },
+    onHitEffect: { id: "FROSTBITE", duration: 2, chance: 0.35 },
+  },
+
+  black_knife_gauntlets: {
+    name: "Gantelets de Mailles Noires",
+    type: ITEM_TYPES.ACCESSORY,
+    set: "FROST_ASSASSIN",
+    description:
+      "Dextérité +10%. Vos coups critiques sont plus brutaux (+0.1x Deg. Crit. / Niv).",
+    applyMult: (stats, itemLevel) => {
+      stats.dexterity *= 1.1;
+      stats.critDamage += 0.1 * itemLevel;
     },
   },
 };

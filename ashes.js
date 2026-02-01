@@ -65,4 +65,17 @@ export const ASHES_OF_WAR = {
       };
     },
   },
+  hoarfrost_stomp: {
+    name: "Frimas (Piétinement de Givre)",
+    description:
+      "Frappe le sol pour créer un cône de glace. Inflige des dégâts de zone (x1.5) et applique 5 charges de Gelure.",
+    maxUses: 3,
+    effect: (stats, enemy) => {
+      return {
+        damageMult: 1.5,
+        status: { id: "FROSTBITE", stacks: 5 },
+        msg: "Une vague de givre se propage au sol !",
+      };
+    },
+  },
 };

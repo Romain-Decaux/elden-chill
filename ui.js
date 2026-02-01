@@ -79,7 +79,7 @@ function playDungeonMusic() {
 import { ASHES_OF_WAR } from "./ashes.js";
 import { BIOMES, LOOT_TABLES } from "./biome.js";
 import { MONSTERS } from "./monster.js";
-import { ITEMS } from "./item.js";
+import { ITEM_SETS, ITEMS } from "./item.js";
 import { STATUS_EFFECTS } from "./status.js";
 import {
   gameState,
@@ -148,15 +148,33 @@ const updateStatDisplay = () => {
   });
 
   const updateCrit = (id, statName, isPercent) => {
-    const val = eff[statName];
+    const val = eff[statName]; // Valeur effective totale (ex: 0.15 pour 15%)
+    const baseVal = base[statName]; // Valeur de base sans équipement (ex: 0.05)
+    const bonus = val - baseVal; // Différence apportée par les items/sets (ex: 0.10)
+
     const cost = getUpgradeCost(statName);
     const btn = document.querySelector(
       `button[onclick="upgradeStat('${statName}')"]`,
     );
 
+    // Affichage de la valeur totale (ex: 15.0%)
     document.getElementById(`eff-${id}`).innerText = isPercent
       ? (val * 100).toFixed(1) + "%"
       : val.toFixed(1) + "x";
+
+    // Gestion de l'affichage du bonus (ex: +10.0%)
+    const bonusEl = document.getElementById(`bonus-${id}`);
+    if (bonusEl) {
+      if (bonus !== 0) {
+        bonusEl.innerText = isPercent
+          ? ` (+${(bonus * 100).toFixed(1)}%)`
+          : ` (+${bonus.toFixed(1)}x)`;
+        bonusEl.style.color = bonus > 0 ? "#4dff4d" : "#ff4d4d";
+      } else {
+        bonusEl.innerText = "";
+      }
+    }
+
     document.getElementById(`cost-${id}`).innerText = formatNumber(cost);
 
     if (btn) {
@@ -566,11 +584,32 @@ export const showTooltip = (e, item) => {
     statBonus += `<br><span style="color:#4dff4d">+${modified.attacksPerTurn - base.attacksPerTurn} Attaque(s)</span>`;
   }
 
+  let setInfo = "";
+  if (itemData.set) {
+    const setDef = ITEM_SETS[itemData.set];
+    const count = Object.values(gameState.equipped).filter(
+      (id) => ITEMS[id]?.set === itemData.set,
+    ).length;
+
+    setInfo = `<hr style="border:0; border-top:1px solid #444; margin:5px 0;">`;
+    setInfo += `<strong style="color:var(--hover-btn)">PANOPLIE : ${setDef.name} (${count}/3)</strong>`;
+
+    Object.keys(setDef.bonuses).forEach((tier) => {
+      const isActive = count >= parseInt(tier);
+      const color = isActive ? "#4dff4d" : "#777";
+      const prefix = isActive ? "✅" : "🔒";
+      const bonusDesc = setDef.bonuses[tier].desc; // Utilise la variable du set
+
+      setInfo += `<br><span style="color:${color}; font-size: 0.9em;">${prefix} [${tier} pcs] : ${bonusDesc}</span>`;
+    });
+  }
+
   tooltip.innerHTML = `
-    <strong style="color:var(--active-btn)">${itemData.name} (Niv.${item.level})</strong><br>
-    <small style="font-style:italic; color:#aaa;">${itemData.description}</small>
+    <strong style="color:var(--active-btn)">${itemData.name} (Niv.${item.level})</strong>
+    <br><small style="font-style:italic; color:#aaa;">${itemData.description}</small>
     <hr style="border:0; border-top:1px solid #444; margin:5px 0;">
-    <strong>Bonus actuels :</strong>${statBonus || "<br><span style='color:grey'>Aucun effet</span>"}
+    <strong>Bonus de l'objet :</strong>${statBonus || "<br><span style='color:grey'>Aucun</span>"}
+    ${setInfo}
   `;
 
   tooltip.classList.remove("tooltip-hidden");

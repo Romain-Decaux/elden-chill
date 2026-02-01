@@ -260,6 +260,8 @@ export function performAttack({
     if (isCrit) {
       splash *= critDamage;
     }
+
+    splash = Math.round(splash);
     if (splash > 0 && targetGroup?.length > 1) {
       for (let i = 1; i < targetGroup.length; i++) {
         targetGroup[i].hp -= splash;
