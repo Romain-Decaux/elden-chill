@@ -550,7 +550,7 @@ export const MONSTERS = {
     armor: 140,
     onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.25 },
     drops: [
-      { id: "carian_glintstone_staff", chance: 0.22 },
+      { id: "carian_glintstone_staff", chance: 0.62 },
       { id: "carian_knight_armor", chance: 0.7 },
       { id: "snail_slime_mantle", chance: 0.9 },
       { ashId: "hoarfrost_stomp", chance: 0.07, unique: true },
