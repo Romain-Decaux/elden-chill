@@ -1,4 +1,4 @@
-import { ITEMS } from "./item.js";
+import { ITEM_SETS, ITEMS } from "./item.js";
 
 // Saved state
 export const DEFAULT_GAME_STATE = {
@@ -102,33 +102,56 @@ export function getEffectiveStats() {
       if (itemData && itemData[type]) {
         const invItem = gameState.inventory.find((i) => i.id === itemId);
         const level = invItem ? invItem.level : 1;
-
         itemData[type](effStats, level);
       }
     });
   };
 
-  // Premier passage : Les bonus "Flat" (additions)
+  // 1. Bonus "Flat" (Additions fixes des objets)
   applyItemBonus("applyFlat");
-  effStats.armor += Math.floor((gameState.stats.dexterity * 0.5) / 4);
 
+  // 2. Scaling de base des attributs (Dex -> Armure/Force, Int -> Force)
+  effStats.armor += Math.floor((gameState.stats.dexterity * 0.5) / 4);
   effStats.strength += Math.floor(
     gameState.stats.dexterity / 4 + gameState.stats.intelligence / 4,
   );
 
-  // Second passage : Les bonus "Mult" (multiplications)
+  // 3. LOGIQUE DES PANOPLIES (SETS)
+  const setCounts = {};
+  Object.values(gameState.equipped).forEach((itemId) => {
+    if (itemId && ITEMS[itemId]?.set) {
+      const setName = ITEMS[itemId].set;
+      setCounts[setName] = (setCounts[setName] || 0) + 1;
+    }
+  });
+
+  Object.keys(setCounts).forEach((setName) => {
+    const count = setCounts[setName];
+    const setDef = ITEM_SETS[setName];
+    if (setDef && setDef.bonuses) {
+      // On applique chaque palier atteint (ex: bonus de 2 pièces, puis de 3)
+      for (let i = 1; i <= count; i++) {
+        if (setDef.bonuses[i] && setDef.bonuses[i].effect) {
+          setDef.bonuses[i].effect(effStats);
+        }
+      }
+    }
+  });
+
+  // 4. Bonus "Mult" (Multiplicateurs % des objets)
   applyItemBonus("applyMult");
 
-  //floor toutes les stats
-  Object.keys(effStats).forEach((key) => {
-    if (
-      key === "strength" ||
-      key === "vigor" ||
-      key === "dexterity" ||
-      key === "intelligence"
-    ) {
-      effStats[key] = Math.floor(effStats[key]);
-    }
+  // 5. Arrondi final pour éviter les PV/Dégâts à virgule
+  const keysToFloor = [
+    "strength",
+    "vigor",
+    "dexterity",
+    "intelligence",
+    "armor",
+    "splashDamage",
+  ];
+  keysToFloor.forEach((key) => {
+    if (effStats[key] !== undefined) effStats[key] = Math.floor(effStats[key]);
   });
 
   return effStats;

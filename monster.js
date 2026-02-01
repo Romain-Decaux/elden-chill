@@ -205,7 +205,7 @@ export const MONSTERS = {
   servant_poison: {
     name: "Servante empoisonée",
     hp: 55,
-    atk: 20,
+    atk: 15,
     onHitEffect: { id: "POISON", duration: 2, chance: 0.5 },
     runes: 153,
     groupCombinations: [
@@ -217,7 +217,7 @@ export const MONSTERS = {
   bats: {
     name: "Chauve-souris",
     hp: 22,
-    atk: 8,
+    atk: 6,
     runes: 95,
     companion: ["chanting_dame"],
     companionCount: 1,
@@ -265,7 +265,7 @@ export const MONSTERS = {
   nighth_cavalery: {
     name: "Cavalier de la Nuit",
     hp: 380,
-    atk: 55,
+    atk: 48,
     runes: 700,
     isRare: true,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.5 },
@@ -336,7 +336,7 @@ export const MONSTERS = {
     isBoss: true,
     armor: 115,
     dodgeChance: 0.25,
-    specificStats: { attacksPerTurn: 2 },
+    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.8 },
     onHitEffect: { id: "STUN", duration: 1, chance: 0.25 },
 
     hasSecondPhase: true,
@@ -471,8 +471,8 @@ export const MONSTERS = {
 
   crystal_snail: {
     name: "Escargot de Cristal",
-    hp: 340,
-    atk: 15,
+    hp: 440,
+    atk: 35,
     runes: 300,
     armor: 250,
     isRare: true,
@@ -509,6 +509,63 @@ export const MONSTERS = {
     companionCount: 2,
     flavorTextPhase2:
       "Le Commandant plante son étendard dans la terre corrompue !",
+    hasSecondPhase: true,
+    thresholdForPhase2: 0.5,
+    dmgMultPhase2: 1.3,
+  },
+
+  // monster.js
+
+  // === LIURNIA SOUTH ===
+  clayman: {
+    name: "Homme d'Argile",
+    hp: 280,
+    atk: 32,
+    runes: 450,
+    armor: 180,
+    groupCombinations: [
+      { size: 2, chance: 0.7 },
+      { size: 3, chance: 0.3 },
+    ],
+  },
+
+  raya_sorcerer: {
+    name: "Sorcier de l'Académie",
+    hp: 190,
+    atk: 58,
+    runes: 520,
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.15 },
+    groupCombinations: [
+      { size: 1, chance: 0.8 },
+      { size: 2, chance: 0.2 },
+    ],
+  },
+
+  giant_lobster: {
+    name: "Homard Géant",
+    hp: 850,
+    atk: 75,
+    runes: 1800,
+    isRare: true,
+    armor: 140,
+    onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.25 },
+    drops: [
+      { id: "carian_glintstone_staff", chance: 0.08 },
+      { id: "carian_knight_armor", chance: 0.28 },
+      { id: "snail_slime_mantle", chance: 0.45 },
+      { ashId: "hoarfrost_stomp", chance: 0.07, unique: true },
+    ],
+  },
+
+  red_wolf_radagon: {
+    name: "Loup Rouge de Radagon",
+    hp: 2400,
+    atk: 70,
+    runes: 8500,
+    isBoss: true,
+    dodgeChance: 0.35,
+    specificStats: { attacksPerTurn: 2, critChance: 0.15, critDamage: 1.5 },
+    flavorTextPhase2: "Le loup invoque une lame magique étincelante !",
     hasSecondPhase: true,
     thresholdForPhase2: 0.5,
     dmgMultPhase2: 1.3,
