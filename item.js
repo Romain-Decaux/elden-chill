@@ -827,10 +827,10 @@ export const ITEMS = {
     set: "CARIAN_KNIGHT",
     type: ITEM_TYPES.ARMOR,
     description:
-      "Vigueur +15%. Ajoute 10% de votre Intelligence totale à votre Armure physique. (+2% / Niv)",
+      "Vigueur +25%. Ajoute 20% de votre Intelligence totale à votre Armure physique. (+2% / Niv)",
     applyMult: (stats, itemLevel) => {
-      stats.vigor *= 1.15;
-      const intToArmor = stats.intelligence * (0.1 + 0.02 * itemLevel);
+      stats.vigor *= 1.25;
+      const intToArmor = stats.intelligence * (0.2 + 0.02 * itemLevel);
       stats.armor += Math.floor(intToArmor);
     },
   },
