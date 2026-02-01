@@ -487,16 +487,18 @@ export const ITEMS = {
       stats.critChance = Math.max(0, stats.critChance - 0.15);
     },
     passiveStatusReduction: (playerEffects, itemLevel) => {
-      if (playerEffects.some((eff) => eff.id === "STUN")) {
-        playerEffects.forEach((eff) => {
-          if (eff.id === "STUN") {
-            eff.duration = Math.max(0, eff.duration - 1);
+      for (let i = playerEffects.length - 1; i >= 0; i--) {
+        if (playerEffects[i].id === "STUN") {
+          playerEffects[i].duration -= 1;
+
+          if (playerEffects[i].duration <= 0) {
+            playerEffects.splice(i, 1);
             ActionLog(
-              "Casque de Citrouille : L'étourdissement est réduit !",
+              "Casque de Citrouille : L'étourdissement est annulé !",
               "log-heal",
             );
           }
-        });
+        }
       }
       return playerEffects;
     },

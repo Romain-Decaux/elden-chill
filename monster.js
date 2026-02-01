@@ -72,9 +72,9 @@ export const MONSTERS = {
     flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
     groupCombinations: [{ size: 2, chance: 1.0 }],
     drops: [
-      { id: "troll_necklace", chance: 0.35 },
-      { id: "leather_boots", chance: 0.45 },
-      { id: "kama", chance: 0.2 },
+      { id: "troll_necklace", chance: 0.7 },
+      { id: "leather_boots", chance: 0.8 },
+      { id: "kama", chance: 0.45 },
     ],
   },
   runeBear1: {
@@ -89,9 +89,9 @@ export const MONSTERS = {
       { size: 2, chance: 0.1 },
     ],
     drops: [
-      { id: "styptic_boluses", chance: 0.2 },
+      { id: "styptic_boluses", chance: 0.35 },
       { id: "leather_vest", chance: 0.6 },
-      { id: "bloodhound_fang", chance: 0.2 },
+      { id: "bloodhound_fang", chance: 0.45 },
       { ashId: "bloody_slash", chance: 0.02, unique: true },
     ],
   },
@@ -189,8 +189,8 @@ export const MONSTERS = {
       { size: 2, chance: 0.5 },
     ],
     drops: [
-      { id: "astronomer_staff", chance: 0.65 },
-      { id: "scholars_ring", chance: 0.5 },
+      { id: "astronomer_staff", chance: 0.75 },
+      { id: "scholars_ring", chance: 0.65 },
     ],
   },
   limgrave_dragon: {
@@ -204,7 +204,7 @@ export const MONSTERS = {
   // === WEEPING PENINSULA ===
   servant_poison: {
     name: "Servante empoisonée",
-    hp: 55,
+    hp: 34,
     atk: 15,
     onHitEffect: { id: "POISON", duration: 2, chance: 0.5 },
     runes: 153,
@@ -216,7 +216,7 @@ export const MONSTERS = {
 
   bats: {
     name: "Chauve-souris",
-    hp: 22,
+    hp: 10,
     atk: 6,
     runes: 95,
     companion: ["chanting_dame"],
@@ -228,7 +228,7 @@ export const MONSTERS = {
   },
   chanting_dame: {
     name: "Sirène Chantante",
-    hp: 90,
+    hp: 50,
     atk: 20,
     runes: 250,
     onHitEffect: { id: "STUN", duration: 2, chance: 0.15 },
@@ -237,7 +237,7 @@ export const MONSTERS = {
   servant_poison_companion: {
     name: "Servante empoisonée",
     runes: 70,
-    hp: 50,
+    hp: 24,
     atk: 13,
     onHitEffect: { id: "POISON", duration: 2, chance: 0.8 },
     groupCombinations: [
@@ -257,7 +257,7 @@ export const MONSTERS = {
     drops: [
       {
         id: "queen_staff",
-        chance: 0.5,
+        chance: 0.75,
       },
     ],
   },
@@ -323,7 +323,7 @@ export const MONSTERS = {
     isRare: true,
     onHitEffect: { id: "STUN", duration: 1, chance: 0.35 },
     drops: [
-      { id: "pumkin_helm", chance: 0.6 },
+      { id: "pumkin_helm", chance: 0.7 },
       { id: "grafted_blade_greatsword", chance: 0.02 },
     ],
   },
@@ -390,8 +390,8 @@ export const MONSTERS = {
     isRare: true,
     armor: 135,
     drops: [
-      { id: "hunter_cap", chance: 0.4 },
-      { id: "alchimist_suit", chance: 0.4 },
+      { id: "hunter_cap", chance: 0.85 },
+      { id: "alchimist_suit", chance: 0.75 },
       { ashId: "storm_stomp", chance: 0.025, unique: true },
     ],
     onHitEffect: { id: "STUN", duration: 1, chance: 0.1 },
@@ -479,8 +479,8 @@ export const MONSTERS = {
     passiveStatus: "THORNS",
     onHitEffect: { id: "POISON", duration: 3, chance: 0.2 },
     drops: [
-      { id: "crystal_shell_mail", chance: 0.15 },
-      { id: "snail_slime_mantle", chance: 0.15 },
+      { id: "crystal_shell_mail", chance: 0.65 },
+      { id: "snail_slime_mantle", chance: 0.65 },
     ],
   },
 
@@ -492,8 +492,8 @@ export const MONSTERS = {
     isRare: true,
     armor: 140,
     drops: [
-      { id: "stormhawk_feather", chance: 0.15 },
-      { id: "winged_sword_insignia", chance: 0.35 },
+      { id: "stormhawk_feather", chance: 0.65 },
+      { id: "winged_sword_insignia", chance: 0.85 },
     ],
     onHitEffect: { id: "SCARLET_ROT", duration: 2, chance: 0.2 },
   },
@@ -550,9 +550,9 @@ export const MONSTERS = {
     armor: 140,
     onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.25 },
     drops: [
-      { id: "carian_glintstone_staff", chance: 0.08 },
-      { id: "carian_knight_armor", chance: 0.28 },
-      { id: "snail_slime_mantle", chance: 0.45 },
+      { id: "carian_glintstone_staff", chance: 0.22 },
+      { id: "carian_knight_armor", chance: 0.7 },
+      { id: "snail_slime_mantle", chance: 0.9 },
       { ashId: "hoarfrost_stomp", chance: 0.07, unique: true },
     ],
   },
@@ -607,8 +607,8 @@ export const MONSTERS = {
     armor: 250,
     onHitEffect: { id: "STUN", duration: 2, chance: 0.4 },
     drops: [
-      { id: "lobster_shell_plate", chance: 0.4 },
-      { id: "marsh_great_hammer", chance: 0.2 },
+      { id: "lobster_shell_plate", chance: 0.7 },
+      { id: "marsh_great_hammer", chance: 0.6 },
     ],
   },
 
@@ -621,8 +621,8 @@ export const MONSTERS = {
     specificStats: { attacksPerTurn: 3, critChance: 0.1 },
     onHitEffect: { id: "STUN", duration: 1, chance: 0.05 },
     drops: [
-      { id: "marsh_great_hammer", chance: 0.3 },
-      { id: "lobster_shell_plate", chance: 0.3 },
+      { id: "marsh_great_hammer", chance: 0.65 },
+      { id: "lobster_shell_plate", chance: 0.65 },
     ],
   },
 
@@ -647,6 +647,10 @@ export const MONSTERS = {
     armor: 220,
     isRare: true,
     onHitEffect: { id: "STUN", duration: 2, chance: 0.3 },
+    drops: [
+      { id: "heavy_crystal_gauntlets", chance: 0.75 },
+      { id: "crystal_crust_armor", chance: 0.75 },
+    ],
   },
 
   rennala: {
