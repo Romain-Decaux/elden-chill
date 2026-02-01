@@ -44,7 +44,7 @@ export const MONSTERS = {
     isInSecondPhase: false,
     thresholdForPhase2: 0.5,
     dmgMultPhase2: 2,
-    flavorTextPhase2: "Le Troll, fou de rage, sort sont épée !",
+    flavorTextPhase2: "Le Troll, fou de rage, sort son épée !",
   },
   // === LIMGRAVE EAST===
   godrick_knight1: {
@@ -571,14 +571,110 @@ export const MONSTERS = {
     dmgMultPhase2: 1.3,
   },
 
-  // === LIURNIA===
-  clayman: { name: "Homme d'Argile", hp: 250, atk: 35, runes: 400 },
-  sorcerer: { name: "Sorcier de Raya Lucaria", hp: 180, atk: 55, runes: 550 },
+  // --- BOSS DE LIURNIA EST ---
+  bell_bearing_hunter_liurnia: {
+    name: "Chasseur de Perles de Liurnia",
+    hp: 2800,
+    atk: 82,
+    runes: 5500,
+    isBoss: true,
+    hasSecondPhase: true,
+    thresholdForPhase2: 0.5,
+    flavorTextPhase2: "Le Chasseur de Perles vous traque !",
+    dmgMultPhase2: 1.5,
+    armor: 150,
+    onHitEffect: { id: "BLEED", duration: 3, chance: 0.6 },
+  },
+
+  // --- BOSS DE LIURNIA OUEST ---
+  carian_knight_bols: {
+    name: "Bols, Chevalier Carien",
+    hp: 3200,
+    atk: 75,
+    runes: 5500,
+    isBoss: true,
+    armor: 200,
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.3 },
+  },
+
+  // --- MONSTRES RARES ---
+  abductor_virgin: {
+    name: "Vierge Ravisseuse",
+    hp: 1200,
+    atk: 70,
+    runes: 2200,
+    isRare: true,
+    armor: 250,
+    onHitEffect: { id: "STUN", duration: 2, chance: 0.4 },
+    drops: [
+      { id: "lobster_shell_plate", chance: 0.4 },
+      { id: "marsh_great_hammer", chance: 0.2 },
+    ],
+  },
+
+  fingercreeper_large: {
+    name: "Main de Doigts Géante",
+    hp: 850,
+    atk: 55,
+    runes: 1500,
+    isRare: true,
+    specificStats: { attacksPerTurn: 3, critChance: 0.1 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.05 },
+    drops: [
+      { id: "marsh_great_hammer", chance: 0.3 },
+      { id: "lobster_shell_plate", chance: 0.3 },
+    ],
+  },
+
+  // --- ACADÉMIE ---
+  marionette_soldier: {
+    name: "Soldat Marionnette",
+    hp: 310,
+    atk: 25,
+    runes: 480,
+    specificStats: { attacksPerTurn: 4, critChance: 0.1 },
+    groupCombinations: [
+      { size: 2, chance: 0.8 },
+      { size: 3, chance: 0.2 },
+    ],
+  },
+
+  living_jar_large: {
+    name: "Grande Jarre Vivante",
+    hp: 950,
+    atk: 65,
+    runes: 1200,
+    armor: 220,
+    isRare: true,
+    onHitEffect: { id: "STUN", duration: 2, chance: 0.3 },
+  },
+
   rennala: {
     name: "Rennala, Reine de la Pleine Lune",
-    hp: 3200,
-    atk: 80,
-    runes: 15000,
+    hp: 4500,
+    atk: 110,
+    runes: 10000,
     isBoss: true,
+    armor: 80,
+    hasSecondPhase: true,
+    thresholdForPhase2: 0.4,
+    flavorTextPhase2: "Naîs à nouveau, sous la lune de sang !",
+    effectsPhase2: { id: "STUN", duration: 2, chance: 0.4 },
+    specificStats: { attacksPerTurn: 1, critChance: 0.2, critDamage: 2.0 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.2 },
+  },
+
+  // === MARAIS DE LIURNIA
+  liurnia_dragon_smarag: {
+    name: "Smarag, Dragon de Pierre d'Éclat",
+    hp: 1600,
+    atk: 85,
+    runes: 12000,
+    isBoss: true,
+    armor: 130,
+    onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.3 }, // Le froid magique
+    drops: [
+      { id: "glintstone_dragon_heart", chance: 1.0 }, // Drop garanti
+    ],
   },
 };
