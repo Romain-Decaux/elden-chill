@@ -203,12 +203,12 @@ export const ITEMS = {
     name: "Faucille",
     type: ITEM_TYPES.WEAPON,
     description:
-      "Une lame rapide. Ajoute 30% de votre Intelligence à votre Force. Inflige 2 Poison (1% PV Max + 50% Int). +5 d'Inelligence",
+      "Une lame rapide. Ajoute 30% (+2%/Niv) de votre Intelligence à votre Force. Inflige 2 Poison (1% PV Max + 50% Int). +5 d'Inelligence",
     applyFlat: (stats, itemLevel) => {
       stats.intelligence += 5;
     },
     applyMult: (stats, itemLevel) => {
-      stats.strength += Math.floor(stats.intelligence * 0.3);
+      stats.strength += Math.floor(stats.intelligence * (0.3 + 0.2*itemLevel));
     },
     onHitEffect: { id: "POISON", duration: 2, chance: 1 },
   },
@@ -866,12 +866,14 @@ export const ITEMS = {
     type: ITEM_TYPES.ACCESSORY,
     isAlwaysMax: true,
     description:
-      "La faim de Smarag : Convertit 100% de votre Intelligence totale en Force. Cependant, la magie pèse sur votre corps : -20% Vigueur.",
+      "La faim de Smarag : Convertit 100% de votre Intelligence de base en Force. Cependant, la magie pèse sur votre corps : -35% Vigueur.",
     applyFlat: (stats, itemLevel) => {
-      const intPower = stats.intelligence;
-      stats.strength += Math.floor(intPower * (1 + 0.05 * itemLevel));
-      stats.vigor *= 0.8;
+      const intPower = gameState.stats.intelligence;
+      stats.strength += Math.floor(intPower1);
     },
+    applyMult: (stats, itemLevel) => {
+      stats.vigor *= 0.65;
+    }
   },
 
   // --- SET DE L'ACADÉMIE ---
