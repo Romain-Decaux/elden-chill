@@ -195,8 +195,8 @@ export const MONSTERS = {
   },
   limgrave_dragon: {
     name: "Dragon volant Agheel",
-    hp: 880,
-    atk: 62,
+    hp: 840,
+    atk: 42,
     runes: 2500,
     isBoss: true,
     onHitEffect: { id: "BURN", duration: 2, chance: 0.5 },
@@ -248,7 +248,7 @@ export const MONSTERS = {
 
   half_human_queen: {
     name: "Reine Demi-Humaine",
-    hp: 324,
+    hp: 294,
     atk: 35,
     runes: 605,
     isRare: true,
@@ -264,8 +264,8 @@ export const MONSTERS = {
 
   nighth_cavalery: {
     name: "Cavalier de la Nuit",
-    hp: 380,
-    atk: 48,
+    hp: 280,
+    atk: 28,
     runes: 700,
     isRare: true,
     onHitEffect: { id: "BLEED", duration: 3, chance: 0.5 },
@@ -278,9 +278,9 @@ export const MONSTERS = {
   hero_of_zamor: {
     name: "Héros de Zamor",
     isBoss: true,
-    hp: 950,
-    atk: 75,
-    armor: 125,
+    hp: 650,
+    atk: 55,
+    armor: 115,
     runes: 2000,
     dodgeChance: 0.22,
     effectsPhase2: { id: "FROSTBITE", duration: 5, chance: 0.5 },
@@ -293,7 +293,7 @@ export const MONSTERS = {
   // === MORNE CASTLE ===
   misbegotten_warrior: {
     name: "Chimère Léonine",
-    hp: 120,
+    hp: 98,
     atk: 35,
     runes: 280,
     groupCombinations: [
@@ -305,7 +305,7 @@ export const MONSTERS = {
 
   misbegotten_servant: {
     name: "Serviteur Chimérique",
-    hp: 65,
+    hp: 55,
     atk: 18,
     runes: 110,
     groupCombinations: [
@@ -330,8 +330,8 @@ export const MONSTERS = {
 
   misbegotten_leonine: {
     name: "Chimère Léonine",
-    hp: 1100,
-    atk: 45,
+    hp: 700,
+    atk: 35,
     runes: 3800,
     isBoss: true,
     armor: 115,
@@ -349,17 +349,29 @@ export const MONSTERS = {
   // === ENTER STORMWIND CASTLE ===
   exile_soldier1: {
     name: "Soldat d'Exil",
-    hp: 110,
+    hp: 70,
     atk: 25,
-    armor: 120,
+    armor: 110,
     runes: 210,
     groupCombinations: [
       { size: 1, chance: 0.6 },
       { size: 2, chance: 0.4 },
     ],
-    onHitEffect: { id: "BLEED", duration: 3, chance: 0.4 },
+    onHitEffect: { id: "BLEED", duration: 2, chance: 0.4 },
   },
   exile_soldier2: {
+    name: "Soldat d'Exil",
+    hp: 70,
+    atk: 25,
+    armor: 110,
+    runes: 210,
+    groupCombinations: [
+      { size: 1, chance: 0.6 },
+      { size: 2, chance: 0.4 },
+    ],
+    onHitEffect: { id: "BURN", duration: 2, chance: 0.4 },
+  },
+  exile_soldier3: {
     name: "Soldat d'Exil",
     hp: 100,
     atk: 25,
@@ -369,26 +381,14 @@ export const MONSTERS = {
       { size: 1, chance: 0.6 },
       { size: 2, chance: 0.4 },
     ],
-    onHitEffect: { id: "BURN", duration: 3, chance: 0.4 },
-  },
-  exile_soldier3: {
-    name: "Soldat d'Exil",
-    hp: 120,
-    atk: 25,
-    armor: 130,
-    runes: 210,
-    groupCombinations: [
-      { size: 1, chance: 0.6 },
-      { size: 2, chance: 0.4 },
-    ],
   },
   banished_knight: {
     name: "Chevalier Banni",
-    hp: 450,
-    atk: 50,
+    hp: 410,
+    atk: 35,
     runes: 600,
     isRare: true,
-    armor: 135,
+    armor: 125,
     drops: [
       { id: "hunter_cap", chance: 0.85 },
       { id: "alchimist_suit", chance: 0.75 },
@@ -399,7 +399,7 @@ export const MONSTERS = {
 
   grafted_scion: {
     name: "Rejeton Greffé",
-    hp: 1200,
+    hp: 712,
     atk: 35,
     runes: 2200,
     isBoss: true,
@@ -431,8 +431,8 @@ export const MONSTERS = {
 
   godrick: {
     name: "Godrick le Greffé",
-    hp: 1800,
-    atk: 85,
+    hp: 1100,
+    atk: 65,
     runes: 5000,
     armor: 125,
     dodgeChance: 0.05,
@@ -519,10 +519,10 @@ export const MONSTERS = {
   // === LIURNIA SOUTH ===
   clayman: {
     name: "Homme d'Argile",
-    hp: 280,
+    hp: 180,
     atk: 32,
     runes: 450,
-    armor: 180,
+    armor: 150,
     groupCombinations: [
       { size: 2, chance: 0.7 },
       { size: 3, chance: 0.3 },
@@ -533,6 +533,7 @@ export const MONSTERS = {
     name: "Sorcier de l'Académie",
     hp: 190,
     atk: 58,
+    armor : 85,
     runes: 520,
     onHitEffect: { id: "STUN", duration: 1, chance: 0.15 },
     groupCombinations: [
@@ -544,7 +545,7 @@ export const MONSTERS = {
   giant_lobster: {
     name: "Homard Géant",
     hp: 850,
-    atk: 75,
+    atk: 55,
     runes: 1800,
     isRare: true,
     armor: 140,
@@ -559,8 +560,8 @@ export const MONSTERS = {
 
   red_wolf_radagon: {
     name: "Loup Rouge de Radagon",
-    hp: 2400,
-    atk: 70,
+    hp: 1500,
+    atk: 65,
     runes: 8500,
     isBoss: true,
     dodgeChance: 0.35,
@@ -574,8 +575,8 @@ export const MONSTERS = {
   // --- BOSS DE LIURNIA EST ---
   bell_bearing_hunter_liurnia: {
     name: "Chasseur de Perles de Liurnia",
-    hp: 2800,
-    atk: 82,
+    hp: 1800,
+    atk: 62,
     runes: 5500,
     isBoss: true,
     hasSecondPhase: true,
@@ -589,22 +590,22 @@ export const MONSTERS = {
   // --- BOSS DE LIURNIA OUEST ---
   carian_knight_bols: {
     name: "Bols, Chevalier Carien",
-    hp: 3200,
-    atk: 75,
+    hp: 1800,
+    atk: 55,
     runes: 5500,
     isBoss: true,
-    armor: 200,
+    armor: 160,
     onHitEffect: { id: "STUN", duration: 1, chance: 0.3 },
   },
 
   // --- MONSTRES RARES ---
   abductor_virgin: {
     name: "Vierge Ravisseuse",
-    hp: 1200,
-    atk: 70,
+    hp: 600,
+    atk: 60,
     runes: 2200,
     isRare: true,
-    armor: 250,
+    armor: 140,
     onHitEffect: { id: "STUN", duration: 2, chance: 0.4 },
     drops: [
       { id: "lobster_shell_plate", chance: 0.7 },
@@ -615,7 +616,7 @@ export const MONSTERS = {
   fingercreeper_large: {
     name: "Main de Doigts Géante",
     hp: 850,
-    atk: 55,
+    atk: 27,
     runes: 1500,
     isRare: true,
     specificStats: { attacksPerTurn: 3, critChance: 0.1 },
@@ -629,7 +630,7 @@ export const MONSTERS = {
   // --- ACADÉMIE ---
   marionette_soldier: {
     name: "Soldat Marionnette",
-    hp: 310,
+    hp: 110,
     atk: 25,
     runes: 480,
     specificStats: { attacksPerTurn: 4, critChance: 0.1 },
@@ -642,7 +643,7 @@ export const MONSTERS = {
   living_jar_large: {
     name: "Grande Jarre Vivante",
     hp: 950,
-    atk: 65,
+    atk: 35,
     runes: 1200,
     armor: 220,
     isRare: true,
@@ -655,8 +656,8 @@ export const MONSTERS = {
 
   rennala: {
     name: "Rennala, Reine de la Pleine Lune",
-    hp: 4500,
-    atk: 110,
+    hp: 2200,
+    atk: 70,
     runes: 10000,
     isBoss: true,
     armor: 80,
@@ -671,12 +672,12 @@ export const MONSTERS = {
   // === MARAIS DE LIURNIA
   liurnia_dragon_smarag: {
     name: "Smarag, Dragon de Pierre d'Éclat",
-    hp: 1600,
-    atk: 85,
-    runes: 12000,
+    hp: 6600,
+    atk: 175,
+    runes: 42000,
     isBoss: true,
-    armor: 130,
-    onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.3 }, // Le froid magique
+    armor: 140,
+    onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.4 }, // Le froid magique
     drops: [
       { id: "glintstone_dragon_heart", chance: 1.0 }, // Drop garanti
     ],
