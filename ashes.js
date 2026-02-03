@@ -46,7 +46,7 @@ export const ASHES_OF_WAR = {
       "Sacrifie 5% de vos PV max pour infliger d'énormes dégâts (x2.5) et 3 saignements.",
     maxUses: 3,
     effect: (stats, enemy) => {
-      runtimeState.playerCurrentHp -= getHealth(getEffectiveStats().vigor);
+      runtimeState.playerCurrentHp -= getHealth(getEffectiveStats().vigor * 0.05);
       return {
         damageMult: 2.5,
         status: { id: "BLEED", duration: 3 },
