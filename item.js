@@ -869,7 +869,7 @@ export const ITEMS = {
       "La faim de Smarag : Convertit 100% de votre Intelligence de base en Force. Cependant, la magie pèse sur votre corps : -35% Vigueur.",
     applyFlat: (stats, itemLevel) => {
       const intPower = gameState.stats.intelligence;
-      stats.strength += Math.floor(intPower1);
+      stats.strength += Math.floor(intPower);
     },
     applyMult: (stats, itemLevel) => {
       stats.vigor *= 0.65;
