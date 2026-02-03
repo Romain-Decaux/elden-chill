@@ -77,10 +77,10 @@ export const ITEM_SETS = {
         },
       },
       3: {
-        desc: "Marteau de Haima : Convertit 80% de votre Intelligence totale en Force. Et votre Armure augmente de 20% de votre Intelligence totale.",
+        desc: "Marteau de Haima : Convertit 80% de votre Intelligence totale en Force. Et vos dégâts de zones augmentent de 20% de votre Intelligence totale.",
         effect: (stats) => {
           stats.strength += Math.floor(stats.intelligence * 0.8);
-          stats.armor += Math.floor(stats.intelligence * 0.2);
+          stats.splashDamage += Math.floor(stats.intelligence * 0.2);
         },
       },
     },
