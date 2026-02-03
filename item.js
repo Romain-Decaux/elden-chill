@@ -897,10 +897,10 @@ export const ITEMS = {
     type: ITEM_TYPES.ARMOR,
     set: "ACADEMY_PRIME",
     description:
-      "Intelligence +10% et Vigueur +10%. Réduit les dégâts de Poison et de Brûlure.",
+      "Intelligence +10% (+1% /Niv) et Vigueur +10% (+1% /Niv). Réduit les dégâts de Poison et de Brûlure.",
     applyMult: (stats, itemLevel) => {
-      stats.intelligence *= 1.1;
-      stats.vigor *= 1.1;
+      stats.intelligence *= 1.1 + 0.1 * itemLevel;
+      stats.vigor *= 1.1 + 0.1 * itemLevel;
     },
     passiveStatusReduction: (playerEffects, itemLevel) => {
       playerEffects.forEach((eff) => {
