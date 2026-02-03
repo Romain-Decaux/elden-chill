@@ -208,7 +208,7 @@ export const ITEMS = {
       stats.intelligence += 5;
     },
     applyMult: (stats, itemLevel) => {
-      stats.strength += Math.floor(stats.intelligence * (0.3 + 0.2*itemLevel));
+      stats.strength += Math.floor(stats.intelligence * (0.3 + 0.02*itemLevel));
     },
     onHitEffect: { id: "POISON", duration: 2, chance: 1 },
   },
