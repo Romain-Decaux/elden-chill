@@ -813,12 +813,11 @@ export const ITEMS = {
     type: ITEM_TYPES.ACCESSORY,
     set: "CARIAN_KNIGHT",
     description:
-      "Intelligence +20%. Chaque tranche de 10 points d'Int de BASE augmente vos Dégâts de Zone (Splash) de 15%. (+2% / Niv)",
+      "Chaque tranche de 10 points d'Int de BASE augmente vos Dégâts de Zone (Splash) de 1 dégât et vos dégâts Splash sont augmentés de 15%. (+2% / Niv)",
     applyMult: (stats, itemLevel) => {
-      stats.intelligence *= 1.2;
       const baseInt = gameState.stats.intelligence || 0;
-      const splashMult = Math.floor(baseInt / 10) * 0.15 + 0.02 * itemLevel;
-      stats.splashDamage *= 1 + splashMult;
+      const splash = Math.floor(baseInt / 10) * (1.15 + 0.02 * itemLevel);
+      stats.splashDamage += Math.floor(splash);
     },
   },
 
