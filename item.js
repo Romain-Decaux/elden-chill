@@ -937,7 +937,7 @@ onHitEffect: { id: "BURN", duration: 2, chance: 0.4}
     set: "MARSH_WARDEN",
     description:
       "Vigueur +15%. Ajoute 20% de votre Vigueur à votre Force. (+2% / Niv). 8% de chance d'étourdissement",
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.08 }
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.08 },
     applyMult: (stats, itemLevel) => {
       stats.vigor *= 1.15;
       stats.strength += Math.floor(stats.vigor * (0.2 + 0.02 * itemLevel));
