@@ -188,7 +188,7 @@ export const BIOMES = {
     maxRareSpawns: 3,
     monsters: ["clayman", "raya_sorcerer"],
     boss: "red_wolf_radagon",
-    length: 14,
+    length: 10,
     unlocks: ["liurnia_east", "liurnia_west", "liurnia_marsh"],
   },
 
