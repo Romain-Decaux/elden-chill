@@ -560,15 +560,15 @@ export const MONSTERS = {
 
   red_wolf_radagon: {
     name: "Loup Rouge de Radagon",
-    hp: 1500,
-    atk: 65,
+    hp: 900,
+    atk: 45,
     runes: 8500,
     isBoss: true,
-    dodgeChance: 0.35,
-    specificStats: { attacksPerTurn: 2, critChance: 0.15, critDamage: 1.5 },
+    dodgeChance: 0.15,
+    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.5 },
     flavorTextPhase2: "Le loup invoque une lame magique étincelante !",
     hasSecondPhase: true,
-    thresholdForPhase2: 0.5,
+    thresholdForPhase2: 0.45,
     dmgMultPhase2: 1.3,
   },
 
