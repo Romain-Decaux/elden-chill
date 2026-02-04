@@ -1005,16 +1005,16 @@ onHitEffect: { id: "BURN", duration: 2, chance: 0.4},
     type: ITEM_TYPES.ACCESSORY,
     set: "MARSH_WARDEN",
     description:
-      "Vigueur +20%. La pression du marais renforce vos coups : chaque tranche de 10 points de Vigueur de base ajoute 0.25 à votre Pénétration d'Armure Fixe. (+0.05 / Niv) ",
+      "Vigueur +20%. La pression du marais renforce vos coups : chaque points de Vigueur de base ajoute 0.25 à votre Pénétration d'Armure Fixe. (+0.05 / Niv) pour un maximum de 30",
     applyFlat : (stats, itemLevel) => {
       stats.vigor *= 1.2;
 },
     applyMult: (stats, itemLevel) => {
       
       const baseVig = gameState.stats.vigor || 0;
-      stats.flatDamagePenetration += Math.floor(
-        baseVig/10 * (0.25 + 0.05 * itemLevel),
-      );
+      stats.flatDamagePenetration += Math.min(30, Math.floor(
+        baseVig * (0.25 + 0.05 * itemLevel),
+      ));
     },
   },
 
