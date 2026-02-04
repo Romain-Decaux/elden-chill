@@ -64,10 +64,10 @@ export const LOOT_TABLES = {
     { id: "winged_sword_insignia", chance: 0.35 },
   ],
   liurnia_south: [
-    { id: "carian_glintstone_staff", chance: 0.25 },
-    { id: "moon_of_nokstella", chance: 0.15 },
-    { id: "icerind_hatchet", chance: 0.25 },
-    { id: "black_knife_gauntlets", chance: 0.35 },
+    { id: "carian_glintstone_staff", chance: 0.2},
+    { id: "moon_of_nokstella", chance: 0.2 },
+    { id: "icerind_hatchet", chance: 0.3},
+    { id: "black_knife_gauntlets", chance: 0.3 },
   ],
   raya_lucaria_academy: [
     { id: "academy_glintstone_staff", chance: 0.3 },
