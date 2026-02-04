@@ -388,7 +388,7 @@ export const MONSTERS = {
     atk: 35,
     runes: 600,
     isRare: true,
-    armor: 10,,
+    armor: 10,
     drops: [
       { id: "hunter_cap", chance: 0.85 },
       { id: "alchimist_suit", chance: 0.75 },
