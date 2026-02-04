@@ -336,8 +336,8 @@ export const MONSTERS = {
     isBoss: true,
     armor: 115,
     dodgeChance: 0.25,
-    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.8 },
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.25 },
+    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.5 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.09 },
 
     hasSecondPhase: true,
     thresholdForPhase2: 0.4,
