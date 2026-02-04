@@ -923,7 +923,7 @@ export const ITEMS = {
     set: "ACADEMY_PRIME",
     description:
       "Intelligence +15%. Augmente votre armure de 2% par Niveau. 40% de chance d'infliger brûlure.",
-onHitEffect: { id: "BURN", duration: 2, chance: 0.4}
+onHitEffect: { id: "BURN", duration: 2, chance: 0.4},
     applyMult: (stats, itemLevel) => {
       stats.intelligence *= 1.15;
       stats.armor *= 1 + 0.02 * itemLevel;
