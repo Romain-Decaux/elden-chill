@@ -519,7 +519,7 @@ export const MONSTERS = {
   // === LIURNIA SOUTH ===
   clayman: {
     name: "Homme d'Argile",
-    hp: 110,
+    hp: 78,
     atk: 20,
     runes: 450,
     armor: 140,
@@ -531,7 +531,7 @@ export const MONSTERS = {
 
   raya_sorcerer: {
     name: "Sorcier de l'Académie",
-    hp: 120,
+    hp: 98,
     atk: 30,
     armor : 85,
     runes: 520,
@@ -548,7 +548,7 @@ export const MONSTERS = {
     atk: 35,
     runes: 1800,
     isRare: true,
-    armor: 140,
+    armor: 130,
     onHitEffect: { id: "FROSTBITE", duration: 3, chance: 0.25 },
     drops: [
       { id: "carian_glintstone_staff", chance: 0.62 },
@@ -560,8 +560,8 @@ export const MONSTERS = {
 
   red_wolf_radagon: {
     name: "Loup Rouge de Radagon",
-    hp: 900,
-    atk: 45,
+    hp: 916,
+    atk: 41,
     runes: 8500,
     isBoss: true,
     dodgeChance: 0.15,
