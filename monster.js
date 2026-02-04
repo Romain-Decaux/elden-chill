@@ -448,7 +448,7 @@ export const MONSTERS = {
   rotten_stray: {
     name: "Chien Errant Putréfié",
     hp: 85,
-    atk: 32,
+    atk: 22,
     runes: 210,
     onHitEffect: { id: "SCARLET_ROT", duration: 3, chance: 0.35 },
     groupCombinations: [
@@ -575,7 +575,7 @@ export const MONSTERS = {
   // --- BOSS DE LIURNIA EST ---
   bell_bearing_hunter_liurnia: {
     name: "Chasseur de Perles de Liurnia",
-    hp: 1800,
+    hp: 1200,
     atk: 62,
     runes: 5500,
     isBoss: true,
@@ -590,7 +590,7 @@ export const MONSTERS = {
   // --- BOSS DE LIURNIA OUEST ---
   carian_knight_bols: {
     name: "Bols, Chevalier Carien",
-    hp: 1800,
+    hp: 1200,
     atk: 55,
     runes: 5500,
     isBoss: true,
@@ -601,11 +601,11 @@ export const MONSTERS = {
   // --- MONSTRES RARES ---
   abductor_virgin: {
     name: "Vierge Ravisseuse",
-    hp: 600,
-    atk: 60,
+    hp: 500,
+    atk: 50,
     runes: 2200,
     isRare: true,
-    armor: 140,
+    armor: 135,
     onHitEffect: { id: "STUN", duration: 2, chance: 0.4 },
     drops: [
       { id: "lobster_shell_plate", chance: 0.7 },
@@ -615,8 +615,8 @@ export const MONSTERS = {
 
   fingercreeper_large: {
     name: "Main de Doigts Géante",
-    hp: 850,
-    atk: 27,
+    hp: 650,
+    atk: 21,
     runes: 1500,
     isRare: true,
     specificStats: { attacksPerTurn: 3, critChance: 0.1 },
