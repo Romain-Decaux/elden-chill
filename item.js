@@ -936,10 +936,11 @@ export const ITEMS = {
     type: ITEM_TYPES.WEAPON,
     set: "MARSH_WARDEN",
     description:
-      "Vigueur +15%. Ajoute 20% de votre Vigueur à votre Force. (+1% / Niv)",
+      "Vigueur +15%. Ajoute 20% de votre Vigueur à votre Force. (+2% / Niv). 8% de chance d'étourdissement",
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.08 }
     applyMult: (stats, itemLevel) => {
       stats.vigor *= 1.15;
-      stats.strength += Math.floor(stats.vigor * (0.2 + 0.01 * itemLevel));
+      stats.strength += Math.floor(stats.vigor * (0.2 + 0.02 * itemLevel));
     },
   },
   lobster_shell_plate: {
@@ -947,9 +948,9 @@ export const ITEMS = {
     type: ITEM_TYPES.ARMOR,
     set: "MARSH_WARDEN",
     description:
-      "Vigueur +15%. Réduit de 1 les charges de Poison au début de votre tour.",
+      "Vigueur +15% (+3% / Niv). Réduit de 1 les charges de Poison au début de votre tour.",
     applyMult: (stats, itemLevel) => {
-      stats.vigor *= 1.15;
+      stats.vigor *= 1.15 + 0.03 * itemLevel;
     },
     passiveStatusReduction: (playerEffects, itemLevel) => {
       if (playerEffects.some((eff) => eff.id === "POISON")) {
@@ -1004,9 +1005,12 @@ export const ITEMS = {
     type: ITEM_TYPES.ACCESSORY,
     set: "MARSH_WARDEN",
     description:
-      "Vigueur +10%. La pression du marais renforce vos coups : chaque point de Vigueur de base ajoute 0.25 à votre Pénétration d'Armure Fixe. (+0.05 / Niv)",
+      "Vigueur +20%. La pression du marais renforce vos coups : chaque point de Vigueur de base ajoute 0.25 à votre Pénétration d'Armure Fixe. (+0.05 / Niv)",
+    apply flat : (stats, itemLevel) => {
+      stats.vigor *= 1.2;
+}
     applyMult: (stats, itemLevel) => {
-      stats.vigor *= 1.1;
+      
       const baseVig = gameState.stats.vigor || 0;
       stats.flatDamagePenetration += Math.floor(
         baseVig * (0.25 + 0.05 * itemLevel),
