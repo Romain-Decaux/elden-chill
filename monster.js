@@ -336,8 +336,8 @@ export const MONSTERS = {
     isBoss: true,
     armor: 115,
     dodgeChance: 0.25,
-    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.8 },
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.25 },
+    specificStats: { attacksPerTurn: 2, critChance: 0.1, critDamage: 1.5 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.09 },
 
     hasSecondPhase: true,
     thresholdForPhase2: 0.4,
@@ -350,7 +350,7 @@ export const MONSTERS = {
   exile_soldier1: {
     name: "Soldat d'Exil",
     hp: 70,
-    atk: 25,
+    atk: 15,
     armor: 110,
     runes: 210,
     groupCombinations: [
@@ -362,7 +362,7 @@ export const MONSTERS = {
   exile_soldier2: {
     name: "Soldat d'Exil",
     hp: 70,
-    atk: 25,
+    atk: 8,
     armor: 110,
     runes: 210,
     groupCombinations: [
@@ -374,7 +374,7 @@ export const MONSTERS = {
   exile_soldier3: {
     name: "Soldat d'Exil",
     hp: 100,
-    atk: 25,
+    atk: 20,
     armor: 110,
     runes: 210,
     groupCombinations: [
@@ -384,11 +384,11 @@ export const MONSTERS = {
   },
   banished_knight: {
     name: "Chevalier Banni",
-    hp: 410,
+    hp: 350,
     atk: 35,
     runes: 600,
     isRare: true,
-    armor: 125,
+    armor: 10,,
     drops: [
       { id: "hunter_cap", chance: 0.85 },
       { id: "alchimist_suit", chance: 0.75 },
@@ -406,7 +406,7 @@ export const MONSTERS = {
     armor: 110,
     hasSecondPhase: true,
     isInSecondPhase: false,
-    thresholdForPhase2: 0.5,
+    thresholdForPhase2: 0.4,
     dmgMultPhase2: 2,
     flavorTextPhase2: "Le Rejeton Greffé hurle et déchaîne ses nombreux bras !",
     effectsPhase2: { id: "BLEED", duration: 4, chance: 0.5 },
@@ -419,9 +419,9 @@ export const MONSTERS = {
   stormveil_hawk: {
     name: "Faucon de Tempête",
     hp: 65,
-    atk: 32,
+    atk: 12,
     runes: 180,
-    dodgeChance: 0.3,
+    dodgeChance: 0.05,
     groupCombinations: [
       { size: 2, chance: 0.4 },
       { size: 3, chance: 0.6 },
@@ -519,10 +519,10 @@ export const MONSTERS = {
   // === LIURNIA SOUTH ===
   clayman: {
     name: "Homme d'Argile",
-    hp: 180,
-    atk: 32,
+    hp: 110,
+    atk: 20,
     runes: 450,
-    armor: 150,
+    armor: 140,
     groupCombinations: [
       { size: 2, chance: 0.7 },
       { size: 3, chance: 0.3 },
@@ -531,11 +531,11 @@ export const MONSTERS = {
 
   raya_sorcerer: {
     name: "Sorcier de l'Académie",
-    hp: 190,
-    atk: 58,
+    hp: 120,
+    atk: 30,
     armor : 85,
     runes: 520,
-    onHitEffect: { id: "STUN", duration: 1, chance: 0.15 },
+    onHitEffect: { id: "STUN", duration: 1, chance: 0.05 },
     groupCombinations: [
       { size: 1, chance: 0.8 },
       { size: 2, chance: 0.2 },
@@ -544,8 +544,8 @@ export const MONSTERS = {
 
   giant_lobster: {
     name: "Homard Géant",
-    hp: 850,
-    atk: 55,
+    hp: 550,
+    atk: 35,
     runes: 1800,
     isRare: true,
     armor: 140,
@@ -631,7 +631,7 @@ export const MONSTERS = {
   marionette_soldier: {
     name: "Soldat Marionnette",
     hp: 110,
-    atk: 25,
+    atk: 10,
     runes: 480,
     specificStats: { attacksPerTurn: 4, critChance: 0.1 },
     groupCombinations: [
@@ -642,12 +642,12 @@ export const MONSTERS = {
 
   living_jar_large: {
     name: "Grande Jarre Vivante",
-    hp: 950,
+    hp: 550,
     atk: 35,
     runes: 1200,
     armor: 220,
     isRare: true,
-    onHitEffect: { id: "STUN", duration: 2, chance: 0.3 },
+    onHitEffect: { id: "STUN", duration: 2, chance: 0.08 },
     drops: [
       { id: "heavy_crystal_gauntlets", chance: 0.75 },
       { id: "crystal_crust_armor", chance: 0.75 },
