@@ -174,7 +174,7 @@ export const BIOMES = {
     maxRareSpawns: 5,
     monsters: ["rotten_stray", "kindred_of_rot"],
     boss: "commander_oneil_weak",
-    length: 18,
+    length: 14,
     unlocks: null,
     //unlocks: ["redmane_castle"]
   },
@@ -198,7 +198,7 @@ export const BIOMES = {
     maxRareSpawns: 5,
     monsters: ["clayman"],
     boss: "liurnia_dragon_smarag",
-    length: 12,
+    length: 6,
     unlocks: null,
   },
 
@@ -208,7 +208,7 @@ export const BIOMES = {
     rareMonsters: ["abductor_virgin", "fingercreeper_large"],
     maxRareSpawns: 3,
     boss: "bell_bearing_hunter_liurnia",
-    length: 13,
+    length: 10,
     unlocks: ["raya_lucaria_academy"],
   },
 
@@ -218,7 +218,7 @@ export const BIOMES = {
     rareMonsters: ["abductor_virgin", "fingercreeper_large"],
     maxRareSpawns: 3,
     boss: "carian_knight_bols",
-    length: 13,
+    length: 10,
     unlocks: ["raya_lucaria_academy"],
   },
   caria_mansion: {
@@ -236,7 +236,7 @@ export const BIOMES = {
     maxRareSpawns: 2,
     monsters: ["marionette_soldier", "raya_sorcerer"],
     boss: "rennala",
-    length: 18,
+    length: 12,
     unlocks: null,
     // unlocks: ["altus_plateau"],
   },
