@@ -77,10 +77,10 @@ export const ITEM_SETS = {
         },
       },
       3: {
-        desc: "Marteau de Haima : Convertit 80% de votre Intelligence totale en Force. Et vos dégâts de zones augmentent de 20% de votre Intelligence totale.",
+        desc: "Marteau de Haima : Convertit 80% de votre Intelligence totale en Force.",
         effect: (stats) => {
           stats.strength += Math.floor(stats.intelligence * 0.8);
-          stats.splashDamage += Math.floor(stats.intelligence * 0.2);
+         
         },
       },
     },
@@ -922,10 +922,11 @@ export const ITEMS = {
     type: ITEM_TYPES.ACCESSORY,
     set: "ACADEMY_PRIME",
     description:
-      "Intelligence +15%. Augmente vos chances de coup critique de 5% (+0.5% / Niv).",
+      "Intelligence +15%. Augmente votre armure de 2% par Niveau. 40% de chance d'infliger brûlure.",
+onHitEffect: { id: "BURN", duration: 2, chance: 0.4}
     applyMult: (stats, itemLevel) => {
       stats.intelligence *= 1.15;
-      stats.critChance += 0.05 + 0.005 * itemLevel;
+      stats.armor *= 1 + 0.02 * itemLevel;
     },
   },
 
